@@ -180,7 +180,7 @@ export default function Home() {
             {/* About Company Section */}
             <section
               ref={aboutSectionRef}
-              className="relative w-full flex flex-col items-center justify-center scroll-fade-in bg-[url('/2_About%20company/luk4.png')] bg-no-repeat bg-center bg-cover md:bg-cover"
+              className="relative w-full flex flex-col items-center justify-center  bg-[url('/2_About%20company/luk4.png')] bg-no-repeat bg-center bg-cover md:bg-cover"
               style={{
                 minHeight: "90vh",
                 paddingTop: "clamp(100px, 15vh, 200px)",
