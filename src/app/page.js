@@ -25,55 +25,34 @@ export default function Home() {
     const aboutRef = aboutSectionRef.current;
     const affiliateRef = affiliateSectionRef.current;
 
-    if (aboutRef) {
-      observer.observe(aboutRef);
-    }
-    if (affiliateRef) {
-      observer.observe(affiliateRef);
-    }
+    if (aboutRef) observer.observe(aboutRef);
+    if (affiliateRef) observer.observe(affiliateRef);
 
     return () => {
-      if (aboutRef) {
-        observer.unobserve(aboutRef);
-      }
-      if (affiliateRef) {
-        observer.unobserve(affiliateRef);
-      }
+      if (aboutRef) observer.unobserve(aboutRef);
+      if (affiliateRef) observer.unobserve(affiliateRef);
     };
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       if (aboutSectionRef.current && mainRef.current) {
-        const scrollY = window.scrollY;
         const aboutTop = aboutSectionRef.current.getBoundingClientRect().top;
-        const viewportHeight = window.innerHeight;
-
-        // Threshold: 200px from top on all screens
         const threshold = 200;
 
-        // Calculate background position based on scroll
         if (aboutTop > threshold) {
-          // Before About section reaches threshold - background stays fixed (offset = 0)
           setBackgroundOffset(0);
         } else {
-          // After About section reaches threshold - background scrolls upward with content
-          // Calculate offset smoothly from the point where About section hits threshold
-          // Use the distance scrolled since About section reached threshold
           const distanceScrolled = Math.abs(aboutTop - threshold);
-          // Background moves upward (negative offset) at half speed for smooth effect
-          // Start from 0 and gradually increase as we scroll
           setBackgroundOffset(-(distanceScrolled * 0.5));
         }
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Check initial state
+    handleScroll();
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -139,7 +118,7 @@ export default function Home() {
 
       <main
         ref={mainRef}
-        className="block w-full bg-[url('/1_Home%20page/home2.png')] lg:bg-[url('/1_Home%20page/home.png')] bg-no-repeat bg-fixed"
+        className="block w-full bg-[url('/1_Home%20page/home4.png')] lg:bg-[url('/1_Home%20page/home3.png')] bg-no-repeat bg-fixed"
         style={{
           height: "auto",
           backgroundSize: "100% auto",
@@ -174,8 +153,9 @@ export default function Home() {
         </div>
 
         {/* Wrapper for About and Affiliate sections with shared background */}
+        {/* ✅ CHANGE: background moved to an absolute layer to prevent first-load snap */}
         <div
-          className="w-full bg-[url('/3_Affiliate/backgroundPhone.png')]  lg:bg-[url('/3_Affiliate/background3.png')] bg-no-repeat bg-center scrool-fade-in bg-cover"
+          className="relative w-full scrool-fade-in overflow-hidden"
           style={{
             marginTop: "-200px",
             position: "relative",
@@ -183,148 +163,163 @@ export default function Home() {
             paddingTop: "clamp(250px, 35vh, 500px)",
           }}
         >
-          {/* About Company Section */}
-          <section
-            ref={aboutSectionRef}
-            className="relative w-full flex flex-col items-center justify-center scroll-fade-in bg-[url('/2_About%20company/luk3.png')] bg-no-repeat bg-center bg-cover md:bg-contain"
-            style={{
-              minHeight: "90vh",
-              paddingTop: "clamp(100px, 15vh, 200px)",
-              paddingBottom: "clamp(3rem, 8vw, 6rem)",
-              paddingLeft: "clamp(2rem, 5vw, 4rem)",
-              paddingRight: "clamp(2rem, 5vw, 4rem)",
-              overflow: "visible",
-              marginTop: "0px",
-              backgroundPosition: "center center",
-            }}
-          >
-            {/* Center Content - Two boxes side by side */}
-            <div
-              className="relative flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 z-20 w-full px-4"
-              style={{
-                minHeight: "auto",
-                maxWidth: "1200px",
-                margin: "0 auto",
-                marginTop: "clamp(80vh, 80%, 450px)",
-              }}
-            >
-              {/* Our Vision Box */}
-              <div
-                className="bg-gray-200/40 backdrop-blur-sm rounded-2xl text-center p-6 flex flex-col"
-                style={{
-                  minHeight: "250px",
-                  width: "clamp(300px, 45%, 450px)",
-                }}
-              >
-                <h3
-                  className="font-bold mb-6"
-                  style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}
-                >
-                  Our Vision
-                </h3>
-                <p
-                  className="leading-relaxed"
-                  style={{ fontSize: "clamp(0.875rem, 1.5vw, 1.125rem)" }}
-                >
-                  Entertainment first. Transparency always. Gamble Shield is an
-                  independent gambling platform built by experienced players and
-                  analysts who have tested thousands of bonuses across hundreds
-                  of online casinos. We stream real play, explain the math
-                  behind gambling, expose unfair terms, and help players
-                  understand where and why money is really lost.
-                </p>
-              </div>
-
-              {/* Our Mission Box */}
-              <div
-                className="bg-gray-200/40 backdrop-blur-sm rounded-2xl text-center p-6 flex flex-col"
-                style={{
-                  minHeight: "250px",
-                  width: "clamp(300px, 45%, 450px)",
-                }}
-              >
-                <h3
-                  className="font-bold mb-6"
-                  style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}
-                >
-                  Our Mission
-                </h3>
-                <p
-                  className="leading-relaxed"
-                  style={{ fontSize: "clamp(0.875rem, 1.5vw, 1.125rem)" }}
-                >
-                  To make online gambling more transparent, fair, and informed,
-                  without pretending it&apos;s risk-free. We educate players,
-                  reward good operators, and hold casinos accountable through
-                  real testing, data analysis, and public standards. A gambling
-                  industry where terms are clear and withdrawals are paid as
-                  promised.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* Affiliate Section with 8 Columns using CSS Grid */}
+          {/* Background layer (stays stable even when content height changes) */}
           <div
-            className="mt-[30px] flex justify-around w-full"
+            aria-hidden
+            className="absolute inset-0 bg-[url('/3_Affiliate/backgroundPhone.png')] lg:bg-[url('/3_Affiliate/background3.png')] bg-no-repeat bg-cover"
             style={{
-              minHeight: "70vh",
-              overflow: "visible",
-              position: "relative",
-              paddingTop: "clamp(80px, 10vw, 150px)",
-              paddingBottom: "clamp(2rem, 5vw, 4rem)",
+              backgroundPosition: "center top",
+              zIndex: 0,
+              transform: "translateZ(0)",
+              willChange: "transform",
             }}
-          >
-            <div
-              ref={affiliateSectionRef}
-              className="relative w-full max-w-[1400px] mx-auto scroll-fade-in"
+          />
+
+          {/* Content layer */}
+          <div className="relative z-10">
+            {/* About Company Section */}
+            <section
+              ref={aboutSectionRef}
+              className="relative w-full flex flex-col items-center justify-center scroll-fade-in bg-[url('/2_About%20company/luk3.png')] bg-no-repeat bg-center bg-cover md:bg-contain"
               style={{
-                display: "flex",
-                alignItems: "flex-start",
-                justifyContent: "center",
-                paddingLeft: "clamp(1rem, 3vw, 2rem)",
-                paddingRight: "clamp(1rem, 3vw, 2rem)",
-                zIndex: 10,
+                minHeight: "90vh",
+                paddingTop: "clamp(100px, 15vh, 200px)",
+                paddingBottom: "clamp(3rem, 8vw, 6rem)",
+                paddingLeft: "clamp(2rem, 5vw, 4rem)",
+                paddingRight: "clamp(2rem, 5vw, 4rem)",
                 overflow: "visible",
+                marginTop: "0px",
+                backgroundPosition: "center center",
               }}
             >
-              {/* Grid Container - Responsive: 2 columns on small screens, 4 on large */}
+              {/* Center Content - Two boxes side by side */}
               <div
-                className="relative w-full grid grid-cols-2 lg:grid-cols-4 place-items-center"
+                className="relative flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 z-20 w-full px-4"
                 style={{
-                  columnGap: "clamp(0.5rem, 4vw, 3rem)",
-                  rowGap: "clamp(1rem, 3vh, 2rem)",
+                  minHeight: "auto",
+                  maxWidth: "1200px",
+                  margin: "0 auto",
+                  marginTop: "clamp(80vh, 80%, 450px)",
+                }}
+              >
+                {/* Our Vision Box */}
+                <div
+                  className="bg-gray-200/40 backdrop-blur-sm rounded-2xl text-center p-6 flex flex-col"
+                  style={{
+                    minHeight: "250px",
+                    width: "clamp(300px, 45%, 450px)",
+                  }}
+                >
+                  <h3
+                    className="font-bold mb-6"
+                    style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}
+                  >
+                    Our Vision
+                  </h3>
+                  <p
+                    className="leading-relaxed"
+                    style={{ fontSize: "clamp(0.875rem, 1.5vw, 1.125rem)" }}
+                  >
+                    Entertainment first. Transparency always. Gamble Shield is
+                    an independent gambling platform built by experienced
+                    players and analysts who have tested thousands of bonuses
+                    across hundreds of online casinos. We stream real play,
+                    explain the math behind gambling, expose unfair terms, and
+                    help players understand where and why money is really lost.
+                  </p>
+                </div>
+
+                {/* Our Mission Box */}
+                <div
+                  className="bg-gray-200/40 backdrop-blur-sm rounded-2xl text-center p-6 flex flex-col"
+                  style={{
+                    minHeight: "250px",
+                    width: "clamp(300px, 45%, 450px)",
+                  }}
+                >
+                  <h3
+                    className="font-bold mb-6"
+                    style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}
+                  >
+                    Our Mission
+                  </h3>
+                  <p
+                    className="leading-relaxed"
+                    style={{ fontSize: "clamp(0.875rem, 1.5vw, 1.125rem)" }}
+                  >
+                    To make online gambling more transparent, fair, and
+                    informed, without pretending it&apos;s risk-free. We educate
+                    players, reward good operators, and hold casinos accountable
+                    through real testing, data analysis, and public standards. A
+                    gambling industry where terms are clear and withdrawals are
+                    paid as promised.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* Affiliate Section with 8 Columns using CSS Grid */}
+            <div
+              className="mt-[30px] flex justify-around w-full"
+              style={{
+                minHeight: "70vh",
+                overflow: "visible",
+                position: "relative",
+                paddingTop: "clamp(80px, 10vw, 150px)",
+                paddingBottom: "clamp(2rem, 5vw, 4rem)",
+              }}
+            >
+              <div
+                ref={affiliateSectionRef}
+                className="relative w-full max-w-[1400px] mx-auto scroll-fade-in"
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  paddingLeft: "clamp(1rem, 3vw, 2rem)",
+                  paddingRight: "clamp(1rem, 3vw, 2rem)",
+                  zIndex: 10,
                   overflow: "visible",
                 }}
               >
-                {[
-                  {
-                    color: "green",
-                    folder: "zelena_zastava/1-10 _za animaciju",
-                    suffix: "",
-                  },
-                  { color: "blue", folder: "blue", suffix: "_blue" },
-                  { color: "red", folder: "red", suffix: "_red" },
-                  { color: "golden", folder: "golden", suffix: "_gold" },
-                  { color: "purple", folder: "purple", suffix: "_purple" },
-                  { color: "brown", folder: "brown", suffix: "_recolored" },
-                  {
-                    color: "green",
-                    folder: "zelena_zastava/1-10 _za animaciju",
-                    suffix: "",
-                  },
-                  { color: "blue", folder: "blue", suffix: "_blue" },
-                ].map((flagConfig, idx) => (
-                  <AffiliateColumn
-                    key={idx}
-                    stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.svg"
-                    stupWidth={1567}
-                    stupHeight={1200}
-                    index={idx}
-                    flagFolder={flagConfig.folder}
-                    flagSuffix={flagConfig.suffix}
-                  />
-                ))}
+                {/* Grid Container - Responsive: 2 columns on small screens, 4 on large */}
+                <div
+                  className="relative w-full grid grid-cols-2 lg:grid-cols-4 place-items-center"
+                  style={{
+                    columnGap: "clamp(0.5rem, 4vw, 3rem)",
+                    rowGap: "clamp(1rem, 3vh, 2rem)",
+                    overflow: "visible",
+                  }}
+                >
+                  {[
+                    {
+                      color: "green",
+                      folder: "zelena_zastava/1-10 _za animaciju",
+                      suffix: "",
+                    },
+                    { color: "blue", folder: "blue", suffix: "_blue" },
+                    { color: "red", folder: "red", suffix: "_red" },
+                    { color: "golden", folder: "golden", suffix: "_gold" },
+                    { color: "purple", folder: "purple", suffix: "_purple" },
+                    { color: "brown", folder: "brown", suffix: "_recolored" },
+                    {
+                      color: "green",
+                      folder: "zelena_zastava/1-10 _za animaciju",
+                      suffix: "",
+                    },
+                    { color: "blue", folder: "blue", suffix: "_blue" },
+                  ].map((flagConfig, idx) => (
+                    <AffiliateColumn
+                      key={idx}
+                      stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.svg"
+                      stupWidth={1567}
+                      stupHeight={1200}
+                      index={idx}
+                      flagFolder={flagConfig.folder}
+                      flagSuffix={flagConfig.suffix}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -343,12 +338,10 @@ function AffiliateColumn({
   flagFolder = "zelena_zastava/1-10 _za animaciju",
   flagSuffix = "",
 }) {
-  // State for 1 flag
   const [currentFrame, setCurrentFrame] = useState(5);
   const [isAnimating, setIsAnimating] = useState(false);
   const [direction, setDirection] = useState("backward");
-
-  const [textOpacity, setTextOpacity] = useState(1); // For smooth text transitions
+  const [textOpacity, setTextOpacity] = useState(1);
 
   const handleFlagClick = () => {
     if (isAnimating) return;
@@ -356,11 +349,9 @@ function AffiliateColumn({
     setIsAnimating(true);
 
     if (direction === "backward") {
-      // Fade out text before animation
       setTextOpacity(0);
 
       setTimeout(() => {
-        // Animate from current frame to 1
         let frame = currentFrame;
         const interval = setInterval(() => {
           frame--;
@@ -369,17 +360,14 @@ function AffiliateColumn({
             clearInterval(interval);
             setIsAnimating(false);
             setDirection("forward");
-            // Fade in new text
             setTimeout(() => setTextOpacity(1), 100);
           }
-        }, 10); // 10ms per frame
-      }, 300); // Wait for fade out
+        }, 10);
+      }, 300);
     } else {
-      // Fade out text before animation
       setTextOpacity(0);
 
       setTimeout(() => {
-        // Animate from 1 to 5 (original state)
         let frame = 1;
         const interval = setInterval(() => {
           frame++;
@@ -388,19 +376,15 @@ function AffiliateColumn({
             clearInterval(interval);
             setIsAnimating(false);
             setDirection("backward");
-            // Fade in new text
             setTimeout(() => setTextOpacity(1), 100);
           }
-        }, 10); // 10ms per frame
-      }, 300); // Wait for fade out
+        }, 10);
+      }, 300);
     }
   };
 
-  // Calculate offset based on index
-  // For 2 columns per row (small screens): rows 2, 3, 4 have offset (index >= 2)
-  // For 4 columns per row (large screens): row 2 has offset (index >= 4)
-  const isSecondRowSmall = index >= 2; // Small screens: 2 columns per row
-  const isSecondRowLarge = index >= 4; // Large screens: 4 columns per row
+  const isSecondRowSmall = index >= 2;
+  const isSecondRowLarge = index >= 4;
 
   return (
     <div
@@ -430,6 +414,7 @@ function AffiliateColumn({
           zIndex: 1,
         }}
       />
+
       {/* Single Flag positioned at top */}
       <div
         className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer"
@@ -445,7 +430,8 @@ function AffiliateColumn({
           alt="Flag"
           style={{ width: "100%", height: "auto", display: "block" }}
         />
-        {/* Text Overlay - Different content based on state */}
+
+        {/* Text Overlay */}
         <div
           className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
           style={{
@@ -455,7 +441,6 @@ function AffiliateColumn({
           }}
         >
           {currentFrame === 5 && (
-            // Original state - Brief text
             <div className="text-center text-white">
               <h3
                 className="font-bold mb-2"
@@ -478,7 +463,6 @@ function AffiliateColumn({
           )}
 
           {currentFrame === 1 && (
-            // Fully open state - More detailed text
             <div className="text-center text-white">
               <h3
                 className="font-bold mb-3"
@@ -513,7 +497,7 @@ function AffiliateColumn({
         </div>
       </div>
 
-      {/* Casumo logo na vrhu – iznad stupa i zastave */}
+      {/* Casumo logo */}
       <div
         className="absolute left-0 right-0 flex justify-center px-1"
         style={{
