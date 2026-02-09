@@ -160,7 +160,7 @@ export default function Home() {
             marginTop: "-200px",
             position: "relative",
             zIndex: 30,
-            paddingTop: "clamp(250px, 35vh, 500px)",
+            paddingTop: "",
           }}
         >
           {/* Background layer (stays stable even when content height changes) */}
@@ -170,17 +170,18 @@ export default function Home() {
             style={{
               backgroundPosition: "center top",
               zIndex: 0,
+
               transform: "translateZ(0)",
               willChange: "transform",
             }}
           />
 
           {/* Content layer */}
-          <div className="relative z-10">
+          <div className="relative z-2000">
             {/* About Company Section */}
             <section
               ref={aboutSectionRef}
-              className="relative w-full flex flex-col items-center justify-center  bg-[url('/2_About%20company/luk4.png')] bg-no-repeat bg-center bg-cover md:bg-cover"
+              className="relative w-full flex flex-col items-center justify-center  bg-[url('/2_About%20company/luk4.png')] bg-no-repeat bg-center bg-cover md:bg-contain"
               style={{
                 minHeight: "90vh",
                 paddingTop: "clamp(100px, 15vh, 200px)",
@@ -188,8 +189,10 @@ export default function Home() {
                 paddingLeft: "clamp(2rem, 5vw, 4rem)",
                 paddingRight: "clamp(2rem, 5vw, 4rem)",
                 overflow: "visible",
-                marginTop: "0px",
+                marginTop: "-300px",
                 backgroundPosition: "center center",
+                overflow: "visible",
+                zIndex: 2000,
               }}
             >
               {/* Center Content - Two boxes side by side */}
@@ -311,7 +314,7 @@ export default function Home() {
                   ].map((flagConfig, idx) => (
                     <AffiliateColumn
                       key={idx}
-                      stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.svg"
+                      stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.png"
                       stupWidth={1567}
                       stupHeight={1200}
                       index={idx}
@@ -419,7 +422,7 @@ function AffiliateColumn({
       <div
         className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer"
         style={{
-          top: "10%",
+          top: "18%",
           width: "clamp(65%, 85%, 105%)",
           zIndex: 10,
         }}
