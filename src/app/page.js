@@ -8,7 +8,11 @@ export default function Home() {
   const aboutSectionRef = useRef(null);
   const affiliateSectionRef = useRef(null);
   const mainRef = useRef(null);
-  const [backgroundOffset, setBackgroundOffset] = useState(0);
+
+  // ✅ NEW: ref za register wrapper (da ga syncamo s backgroundom)
+  const registerWrapRef = useRef(null);
+
+  const [backgroundOffset, setBackgroundOffset] = useState(0); // ostavljam ga, ali ga više ne koristimo za scroll
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -34,25 +38,49 @@ export default function Home() {
     };
   }, []);
 
+  // ✅ REF + RAF scroll update (instant, bez rerendera)
   useEffect(() => {
-    const handleScroll = () => {
-      if (aboutSectionRef.current && mainRef.current) {
-        const aboutTop = aboutSectionRef.current.getBoundingClientRect().top;
-        const threshold = 200;
+    let rafId = null;
 
-        if (aboutTop > threshold) {
-          setBackgroundOffset(0);
-        } else {
-          const distanceScrolled = Math.abs(aboutTop - threshold);
-          setBackgroundOffset(-(distanceScrolled * 0.5));
-        }
+    const apply = () => {
+      rafId = null;
+      if (!aboutSectionRef.current || !mainRef.current) return;
+
+      const aboutTop = aboutSectionRef.current.getBoundingClientRect().top;
+      const threshold = 0;
+
+      let offset = 0;
+      if (aboutTop <= threshold) {
+        const distanceScrolled = Math.abs(aboutTop - threshold);
+        offset = -(distanceScrolled * 1);
+      }
+
+      // direktno u DOM — instant
+      mainRef.current.style.backgroundPosition = `center ${offset}px`;
+
+      // ✅ NEW: sync register gumba u istom trenutku kad i background
+      if (registerWrapRef.current && aboutTop <= threshold) {
+        // zadrži tvoj početni translateY(10px) + dodaj scroll offset
+        registerWrapRef.current.style.transform = `translate3d(0, ${
+          offset 
+        }px, 0)`;
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
+    const handleScroll = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(apply);
+    };
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    // init
+    apply();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
@@ -118,12 +146,12 @@ export default function Home() {
 
       <main
         ref={mainRef}
-        className="block w-full bg-[url('/1_Home%20page/home4.png')] lg:bg-[url('/1_Home%20page/home3.png')] bg-no-repeat bg-fixed"
+        className="block w-full bg-[url('/1_Home%20page/home4.png')] lg:bg-[url('/1_Home%20page/home.png')] bg-no-repeat bg-fixed"
         style={{
           height: "auto",
           backgroundSize: "100% auto",
+          // ✅ inicijalno (scroll effect poslije preuzima)
           backgroundPosition: `center ${backgroundOffset}px`,
-          transition: "background-position 0.1s ease-out",
           display: "block",
           overflow: "visible",
           position: "relative",
@@ -134,7 +162,8 @@ export default function Home() {
         <div style={{ height: "120vh", position: "relative" }}>
           {/* Register Button Centered */}
           <div
-            className="fixed inset-0 flex items-center justify-center pointer-events-none"
+            ref={registerWrapRef}
+            className=" fixed inset-0 flex items-center justify-center pointer-events-none"
             style={{ zIndex: 20 }}
           >
             <Link
@@ -153,7 +182,6 @@ export default function Home() {
         </div>
 
         {/* Wrapper for About and Affiliate sections with shared background */}
-        {/* ✅ CHANGE: background moved to an absolute layer to prevent first-load snap */}
         <div
           className="relative w-full scrool-fade-in overflow-hidden"
           style={{
@@ -163,22 +191,18 @@ export default function Home() {
             paddingTop: "",
           }}
         >
-          {/* Background layer (stays stable even when content height changes) */}
           <div
             aria-hidden
-            className="absolute inset-0 bg-[url('/3_Affiliate/backgroundPhone.png')] lg:bg-[url('/3_Affiliate/background3.png')] bg-no-repeat bg-cover"
+            className="absolute inset-0 "
             style={{
               backgroundPosition: "center top",
               zIndex: 0,
-
               transform: "translateZ(0)",
               willChange: "transform",
             }}
           />
 
-          {/* Content layer */}
           <div className="relative z-2000">
-            {/* About Company Section */}
             <section
               ref={aboutSectionRef}
               className="relative w-full flex flex-col items-center justify-center  bg-[url('/2_About%20company/luk4.png')] bg-no-repeat bg-center bg-cover md:bg-contain"
@@ -195,7 +219,6 @@ export default function Home() {
                 zIndex: 2000,
               }}
             >
-              {/* Center Content - Two boxes side by side */}
               <div
                 className="relative flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 z-20 w-full px-4"
                 style={{
@@ -205,7 +228,6 @@ export default function Home() {
                   marginTop: "clamp(80vh, 80%, 450px)",
                 }}
               >
-                {/* Our Vision Box */}
                 <div
                   className="bg-gray-200/40 backdrop-blur-sm rounded-2xl text-center p-6 flex flex-col"
                   style={{
@@ -232,7 +254,6 @@ export default function Home() {
                   </p>
                 </div>
 
-                {/* Our Mission Box */}
                 <div
                   className="bg-gray-200/40 backdrop-blur-sm rounded-2xl text-center p-6 flex flex-col"
                   style={{
@@ -261,9 +282,8 @@ export default function Home() {
               </div>
             </section>
 
-            {/* Affiliate Section with 8 Columns using CSS Grid */}
             <div
-              className="mt-[30px] flex justify-around w-full"
+              className="mt-[30px] flex justify-around w-full bg-amber-500"
               style={{
                 minHeight: "70vh",
                 overflow: "visible",
@@ -285,41 +305,34 @@ export default function Home() {
                   overflow: "visible",
                 }}
               >
-                {/* Grid Container - Responsive: 2 columns on small screens, 4 on large */}
                 <div
-                  className="relative w-full grid grid-cols-2 lg:grid-cols-4 place-items-center"
+                  className="relative w-full grid grid-cols-2 lg:grid-cols-4 place-items-center grid-col-gap-10"
                   style={{
-                    columnGap: "clamp(0.5rem, 4vw, 3rem)",
+                    columnGap: "clamp(2rem, 10vw, 15rem)",
                     rowGap: "clamp(1rem, 3vh, 2rem)",
                     overflow: "visible",
                   }}
                 >
                   {[
-                    {
-                      color: "green",
-                      folder: "zelena_zastava/1-10 _za animaciju",
-                      suffix: "",
-                    },
-                    { color: "blue", folder: "blue", suffix: "_blue" },
-                    { color: "red", folder: "red", suffix: "_red" },
-                    { color: "golden", folder: "golden", suffix: "_gold" },
-                    { color: "purple", folder: "purple", suffix: "_purple" },
-                    { color: "brown", folder: "brown", suffix: "_recolored" },
-                    {
-                      color: "green",
-                      folder: "zelena_zastava/1-10 _za animaciju",
-                      suffix: "",
-                    },
-                    { color: "blue", folder: "blue", suffix: "_blue" },
+                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
+                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
+                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
+                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
+                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
+                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
+                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
+                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
                   ].map((flagConfig, idx) => (
                     <AffiliateColumn
                       key={idx}
                       stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.png"
-                      stupWidth={1567}
+                      stupWidth={1800}
                       stupHeight={1200}
                       index={idx}
                       flagFolder={flagConfig.folder}
                       flagSuffix={flagConfig.suffix}
+                      flagPrefix={flagConfig.prefix}
+                      maxFrame={flagConfig.maxFrame}
                     />
                   ))}
                 </div>
@@ -338,10 +351,12 @@ function AffiliateColumn({
   stupWidth,
   stupHeight,
   index = 0,
-  flagFolder = "zelena_zastava/1-10 _za animaciju",
+  flagFolder = "novi scroll zlatna",
   flagSuffix = "",
+  flagPrefix = "gold",
+  maxFrame = 6,
 }) {
-  const [currentFrame, setCurrentFrame] = useState(5);
+  const [currentFrame, setCurrentFrame] = useState(4);
   const [isAnimating, setIsAnimating] = useState(false);
   const [direction, setDirection] = useState("backward");
   const [textOpacity, setTextOpacity] = useState(1);
@@ -361,9 +376,21 @@ function AffiliateColumn({
           setCurrentFrame(frame);
           if (frame <= 1) {
             clearInterval(interval);
-            setIsAnimating(false);
-            setDirection("forward");
-            setTimeout(() => setTextOpacity(1), 100);
+
+            setTimeout(() => {
+              let forwardFrame = 1;
+              const forwardInterval = setInterval(() => {
+                forwardFrame++;
+                setCurrentFrame(forwardFrame);
+                if (forwardFrame >= maxFrame) {
+                  clearInterval(forwardInterval);
+                  setCurrentFrame(forwardFrame);
+                  setIsAnimating(false);
+                  setDirection("forward");
+                  setTimeout(() => setTextOpacity(1), 100);
+                }
+              }, 10);
+            }, 300);
           }
         }, 10);
       }, 300);
@@ -371,15 +398,27 @@ function AffiliateColumn({
       setTextOpacity(0);
 
       setTimeout(() => {
-        let frame = 1;
+        let frame = maxFrame;
         const interval = setInterval(() => {
-          frame++;
+          frame--;
           setCurrentFrame(frame);
-          if (frame >= 5) {
+          if (frame <= 1) {
             clearInterval(interval);
-            setIsAnimating(false);
-            setDirection("backward");
-            setTimeout(() => setTextOpacity(1), 100);
+
+            setTimeout(() => {
+              let forwardFrame = 1;
+              const forwardInterval = setInterval(() => {
+                forwardFrame++;
+                setCurrentFrame(forwardFrame);
+                if (forwardFrame >= 4) {
+                  clearInterval(forwardInterval);
+                  setCurrentFrame(forwardFrame);
+                  setIsAnimating(false);
+                  setDirection("backward");
+                  setTimeout(() => setTextOpacity(1), 100);
+                }
+              }, 10);
+            }, 300);
           }
         }, 10);
       }, 300);
@@ -395,8 +434,7 @@ function AffiliateColumn({
         isSecondRowSmall ? "-mt-[50%]" : ""
       } ${isSecondRowLarge ? "lg:mt-[-30%] lg:ml-[5%]" : "lg:mt-0"}`}
       style={{
-        minWidth: "180px",
-        maxWidth: "320px",
+        width: "clamp(250px, 30vw, 450px)",
         maxHeight: "60vh",
         minHeight: "150px",
         overflow: "visible",
@@ -409,32 +447,30 @@ function AffiliateColumn({
         alt="Affiliate Column"
         width={stupWidth}
         height={stupHeight}
-        className="h-auto w-full"
         style={{
-          maxHeight: "100vh",
+          width: "120vh",
+          maxHeight: "140vh",
           objectFit: "contain",
           position: "relative",
           zIndex: 1,
         }}
       />
 
-      {/* Single Flag positioned at top */}
       <div
         className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer"
         style={{
-          top: "18%",
+          top: "15%",
           width: "clamp(65%, 85%, 105%)",
           zIndex: 10,
         }}
         onClick={handleFlagClick}
       >
         <img
-          src={`/3_Affiliate/${flagFolder}/${currentFrame}${flagSuffix}.png`}
+          src={`/3_Affiliate/${flagFolder}/${flagPrefix}${currentFrame}${flagSuffix}.png`}
           alt="Flag"
           style={{ width: "100%", height: "auto", display: "block" }}
         />
 
-        {/* Text Overlay */}
         <div
           className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
           style={{
@@ -443,8 +479,8 @@ function AffiliateColumn({
             padding: "10%",
           }}
         >
-          {currentFrame === 5 && (
-            <div className="text-center text-white">
+          {currentFrame === 4 && (
+            <div className="text-center mt-[-80%] text-white">
               <h3
                 className="font-bold mb-2"
                 style={{
@@ -465,12 +501,12 @@ function AffiliateColumn({
             </div>
           )}
 
-          {currentFrame === 1 && (
-            <div className="text-center text-white">
+          {currentFrame === maxFrame && (
+            <div className="text-center text-white flex flex-col items-center justify-center">
               <h3
                 className="font-bold mb-3"
                 style={{
-                  fontSize: "clamp(1rem, 2vw, 1.5rem)",
+                  fontSize: "clamp(1rem, 2vw, 1.2rem)",
                   textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
                 }}
               >
@@ -479,6 +515,8 @@ function AffiliateColumn({
               <p
                 className="mb-2"
                 style={{
+                  width: "80%",
+                  textAlign: "center",
                   fontSize: "clamp(0.7rem, 1.2vw, 1rem)",
                   textShadow: "1px 1px 3px rgba(0,0,0,0.7)",
                   lineHeight: "1.4",
@@ -500,7 +538,6 @@ function AffiliateColumn({
         </div>
       </div>
 
-      {/* Casumo logo */}
       <div
         className="absolute left-0 right-0 flex justify-center px-1"
         style={{
