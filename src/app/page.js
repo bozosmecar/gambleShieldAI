@@ -358,69 +358,69 @@ export default function Home() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                   {/* Watch Stream */}
-                  <div className="text-center">
-                    <div className="mx-auto mb-4 flex items-center justify-center">
+                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)" }}>
+                    <div className="mx-auto mb-6 flex items-center justify-center">
                       <Image
                         src="/how_it_works/watch.png"
                         alt="Watch Stream"
-                        width={200}
-                        height={200}
-                        className="w-full max-w-[200px] h-auto"
+                        width={300}
+                        height={300}
+                        className="w-full max-w-[300px] h-auto"
                         style={{ objectFit: "contain" }}
                       />
                     </div>
-                    <p className="text-gray-600" style={{ fontSize: "clamp(0.875rem, 1.5vw, 1rem)" }}>
+                    <p className="text-gray-600" style={{ fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)", lineHeight: "1.6" }}>
                       Watch live gambling streams and real gameplay. Learn from experienced players and see how bonuses work in practice.
                     </p>
                   </div>
 
                   {/* Upgrade Your Character */}
-                  <div className="text-center">
-                    <div className="mx-auto mb-4 flex items-center justify-center">
+                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)" }}>
+                    <div className="mx-auto mb-6 flex items-center justify-center">
                       <Image
                         src="/how_it_works/upgrade.png"
                         alt="Upgrade Your Character"
-                        width={200}
-                        height={200}
-                        className="w-full max-w-[200px] h-auto"
+                        width={300}
+                        height={300}
+                        className="w-full max-w-[300px] h-auto"
                         style={{ objectFit: "contain" }}
                       />
                     </div>
-                    <p className="text-gray-600" style={{ fontSize: "clamp(0.875rem, 1.5vw, 1rem)" }}>
+                    <p className="text-gray-600" style={{ fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)", lineHeight: "1.6" }}>
                       Upgrade your character and unlock new features. Progress through levels and unlock exclusive rewards.
                     </p>
                   </div>
 
                   {/* Vote Which Slot Will Be Played */}
-                  <div className="text-center ">
-                    <div className="mx-auto mb-4 flex items-center justify-center">
+                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)" }}>
+                    <div className="mx-auto mb-6 flex items-center justify-center">
                       <Image
                         src="/how_it_works/vote.png"
                         alt="Vote Which Slot Will Be Played"
-                        width={200}
-                        height={200}
-                        className="w-full max-w-[200px] h-auto"
+                        width={300}
+                        height={300}
+                        className="w-full max-w-[300px] h-auto"
                         style={{ objectFit: "contain" }}
                       />
                     </div>
-                    <p className="text-gray-600" style={{ fontSize: "clamp(0.875rem, 1.5vw, 1rem)" }}>
+                    <p className="text-gray-600" style={{ fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)", lineHeight: "1.6" }}>
                       Use your points to vote on which slot game will be played next. Influence the stream and interact with streamers in real-time.
                     </p>
                   </div>
 
                   {/* Play Extra Games to Earn More */}
-                  <div className="text-center">
-                    <div className="mx-auto mb-4 flex items-center justify-center">
+                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)" }}>
+                    <div className="mx-auto mb-6 flex items-center justify-center">
                       <Image
                         src="/how_it_works/play.png"
                         alt="Play Extra Games to Earn More"
-                        width={200}
-                        height={200}
-                        className="w-full max-w-[200px] h-auto"
+                        width={300}
+                        height={300}
+                        className="w-full max-w-[300px] h-auto"
                         style={{ objectFit: "contain" }}
                       />
                     </div>
-                    <p className="text-gray-600" style={{ fontSize: "clamp(0.875rem, 1.5vw, 1rem)" }}>
+                    <p className="text-gray-600" style={{ fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)", lineHeight: "1.6" }}>
                       Play additional games and mini-games to earn extra points. Boost your rewards and unlock special bonuses.
                     </p>
                   </div>
