@@ -304,9 +304,9 @@ export default function Home() {
                 }}
               >
                 <div
-                  className="relative w-full grid grid-cols-2 lg:grid-cols-4 place-items-center grid-col-gap-10"
+                  className="relative w-full grid grid-cols-2 lg:grid-cols-4 place-items-center grid-col-gap-14"
                   style={{
-                    columnGap: "clamp(2rem, 8vw, 10rem)",
+                    columnGap: "clamp(10rem, 18vw, 24rem)",
                     rowGap: "clamp(1rem, 3vh, 2rem)",
                     overflow: "visible",
                   }}
