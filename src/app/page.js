@@ -8,9 +8,7 @@ export default function Home() {
   const aboutSectionRef = useRef(null);
   const affiliateSectionRef = useRef(null);
   const mainRef = useRef(null);
-
-  // ✅ NEW: ref za register wrapper (da ga syncamo s backgroundom)
-  const registerWrapRef = useRef(null);
+  const vrataRef = useRef(null);
 
   const [backgroundOffset, setBackgroundOffset] = useState(0); // ostavljam ga, ali ga više ne koristimo za scroll
 
@@ -58,12 +56,9 @@ export default function Home() {
       // direktno u DOM — instant
       mainRef.current.style.backgroundPosition = `center ${offset}px`;
 
-      // ✅ NEW: sync register gumba u istom trenutku kad i background
-      if (registerWrapRef.current && aboutTop <= threshold) {
-        // zadrži tvoj početni translateY(10px) + dodaj scroll offset
-        registerWrapRef.current.style.transform = `translate3d(0, ${
-          offset 
-        }px, 0)`;
+      // Sync vrata s background pozicijom - koristi isti offset kao background
+      if (vrataRef.current) {
+        vrataRef.current.style.transform = `translateY(${offset}px)`;
       }
     };
 
@@ -160,24 +155,27 @@ export default function Home() {
         }}
       >
         <div style={{ height: "120vh", position: "relative" }}>
-          {/* Register Button Centered */}
+          {/* Vrata Image - syncs with background */}
           <div
-            ref={registerWrapRef}
-            className=" fixed inset-0 flex items-center justify-center pointer-events-none"
-            style={{ zIndex: 20 }}
+            ref={vrataRef}
+            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300"
+            style={{
+              left: "43.4%",
+              top: "17.3vw",
+              width: "clamp(9vw, 13vw, 17vw)",
+              height: "auto",
+              zIndex: 15,
+              willChange: "transform",
+            }}
           >
-            <Link
-              href="/register"
-              className="pointer-events-auto px-10 py-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl shadow-lg text-2xl font-bold transition duration-200"
-              style={{
-                fontSize: "clamp(1.25rem, 3vw, 2rem)",
-                fontFamily: "inherit",
-                letterSpacing: "0.03em",
-                marginLeft: "20px",
-              }}
-            >
-              Register
-            </Link>
+            <Image
+              src="/1_Home page/vrata.png"
+              alt="Vrata"
+              width={400}
+              height={200}
+              className="w-full h-auto"
+              style={{ objectFit: "contain" }}
+            />
           </div>
         </div>
 
@@ -314,14 +312,14 @@ export default function Home() {
                   }}
                 >
                   {[
-                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
-                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
-                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
-                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
-                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
-                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
-                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
-                    { folder: "novi scroll zlatna", suffix: "", prefix: "gold", maxFrame: 6 },
+                    { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
+                    { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
+                    { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
+                    { folder: "ljubicasta", suffix: "", prefix: "", maxFrame: 6 },
+                    { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
+                    { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
+                    { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
+                    { folder: "ljubicasta", suffix: "", prefix: "", maxFrame: 6 },
                   ].map((flagConfig, idx) => (
                     <AffiliateColumn
                       key={idx}
@@ -348,7 +346,7 @@ export default function Home() {
                 paddingBottom: "clamp(4rem, 8vw, 6rem)",
               }}
             >
-              <div className="max-w-7xl mx-auto">
+              <div className="w-full">
                 <h2
                   className="text-center font-bold mb-12 text-red-600"
                   style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
@@ -356,9 +354,9 @@ export default function Home() {
                   How It Works
                 </h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div className="flex flex-wrap gap-8 mb-12 w-full" style={{ justifyContent: "center" }}>
                   {/* Watch Stream */}
-                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)" }}>
+                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)", width: "20%", minWidth: "200px" }}>
                     <div className="mx-auto mb-6 flex items-center justify-center">
                       <Image
                         src="/how_it_works/watch.png"
@@ -375,7 +373,7 @@ export default function Home() {
                   </div>
 
                   {/* Upgrade Your Character */}
-                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)" }}>
+                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)", width: "20%", minWidth: "200px" }}>
                     <div className="mx-auto mb-6 flex items-center justify-center">
                       <Image
                         src="/how_it_works/upgrade.png"
@@ -392,7 +390,7 @@ export default function Home() {
                   </div>
 
                   {/* Vote Which Slot Will Be Played */}
-                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)" }}>
+                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)", width: "20%", minWidth: "200px" }}>
                     <div className="mx-auto mb-6 flex items-center justify-center">
                       <Image
                         src="/how_it_works/vote.png"
@@ -409,7 +407,7 @@ export default function Home() {
                   </div>
 
                   {/* Play Extra Games to Earn More */}
-                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)" }}>
+                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)", width: "20%", minWidth: "200px" }}>
                     <div className="mx-auto mb-6 flex items-center justify-center">
                       <Image
                         src="/how_it_works/play.png"
@@ -550,9 +548,9 @@ function AffiliateColumn({
   stupWidth,
   stupHeight,
   index = 0,
-  flagFolder = "novi scroll zlatna",
+  flagFolder = "crvena",
   flagSuffix = "",
-  flagPrefix = "gold",
+  flagPrefix = "",
   maxFrame = 6,
 }) {
   const [currentFrame, setCurrentFrame] = useState(4);
@@ -658,14 +656,14 @@ function AffiliateColumn({
       <div
         className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer"
         style={{
-          top: "15%",
+          top: "20%",
           width: "clamp(65%, 85%, 105%)",
           zIndex: 10,
         }}
         onClick={handleFlagClick}
       >
         <img
-          src={`/3_Affiliate/${flagFolder}/${flagPrefix}${currentFrame}${flagSuffix}.png`}
+          src={`/3_Affiliate/${flagFolder}/${flagPrefix || ""}${currentFrame}${flagSuffix}.png`}
           alt="Flag"
           style={{ width: "100%", height: "auto", display: "block" }}
         />
@@ -679,9 +677,9 @@ function AffiliateColumn({
           }}
         >
           {currentFrame === 4 && (
-            <div className="text-center mt-[-80%] text-white">
+            <div className="text-center mt-[-00%] text-white">
               <h3
-                className="font-bold mb-2"
+                className="font-bold "
                 style={{
                   fontSize: "clamp(0.8rem, 1.5vw, 1.2rem)",
                   textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
