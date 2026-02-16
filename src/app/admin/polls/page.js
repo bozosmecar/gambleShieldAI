@@ -7,7 +7,7 @@ import { getPolls, createPoll } from "@/lib/polls";
 export default function AdminPollsPage() {
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState(["", ""]);
-  const [resolvesAt, setResolvesAt] = useState("");
+  const [durationMinutes, setDurationMinutes] = useState("30");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
   const [polls, setPolls] = useState([]);
@@ -36,18 +36,20 @@ export default function AdminPollsPage() {
       setMessage({ type: "error", text: "Add at least 2 options." });
       return;
     }
-    if (!resolvesAt) {
-      setMessage({ type: "error", text: "Set when the poll ends." });
+    const mins = parseInt(durationMinutes, 10);
+    if (!mins || mins < 1) {
+      setMessage({ type: "error", text: "Enter a valid duration (at least 1 minute)." });
       return;
     }
     setSaving(true);
-    const result = await createPoll(question.trim(), trimmed, new Date(resolvesAt).toISOString());
+    const result = await createPoll(question.trim(), trimmed, mins);
     setSaving(false);
     if (result) {
+      const resolvesAt = new Date(Date.now() + mins * 60 * 1000).toISOString();
       setMessage({ type: "success", text: "Poll created." });
       setQuestion("");
       setOptions(["", ""]);
-      setResolvesAt("");
+      setDurationMinutes("30");
       setPolls((prev) => [{ id: result.id, question: question.trim(), resolves_at: resolvesAt, created_at: new Date().toISOString() }, ...prev]);
     } else {
       setMessage({ type: "error", text: "Failed to create poll." });
@@ -110,12 +112,14 @@ export default function AdminPollsPage() {
               </button>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Voting ends at</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Duration (minutes)</label>
               <input
-                type="datetime-local"
-                value={resolvesAt}
-                onChange={(e) => setResolvesAt(e.target.value)}
+                type="number"
+                min={1}
+                value={durationMinutes}
+                onChange={(e) => setDurationMinutes(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                placeholder="e.g. 30"
               />
             </div>
             <button type="submit" disabled={saving} className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50">

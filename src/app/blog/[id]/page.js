@@ -121,22 +121,6 @@ export default function BlogPostPage() {
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
-        {/* Share Section */}
-        <div className="mt-16 pt-8 border-t border-gray-200">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Share this article</h3>
-          <div className="flex gap-3">
-            <button className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-              Twitter
-            </button>
-            <button className="px-6 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-900 transition-colors font-medium">
-              Facebook
-            </button>
-            <button className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium">
-              Email
-            </button>
-          </div>
-        </div>
-
         {/* Related Articles */}
         <div className="mt-16 pt-8 border-t border-gray-200">
           <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>

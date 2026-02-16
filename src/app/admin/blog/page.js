@@ -24,6 +24,28 @@ export default function AdminBlogPage() {
   const [saving, setSaving] = useState(false);
   const [settingFeaturedId, setSettingFeaturedId] = useState(null);
   const [error, setError] = useState(null);
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+
+  const ITEMS_PER_PAGE = 5;
+
+  const filteredArticles = articles.filter((a) => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase().trim();
+    return (
+      (a.title || '').toLowerCase().includes(q) ||
+      (a.excerpt || '').toLowerCase().includes(q) ||
+      (a.category || '').toLowerCase().includes(q) ||
+      (a.author || '').toLowerCase().includes(q)
+    );
+  });
+
+  const totalPages = Math.max(1, Math.ceil(filteredArticles.length / ITEMS_PER_PAGE));
+  const currentPage = Math.min(page, totalPages);
+  const paginatedArticles = filteredArticles.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   useEffect(() => {
     async function load() {
@@ -33,6 +55,10 @@ export default function AdminBlogPage() {
     }
     load();
   }, []);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
 
   const handleEdit = (article) => {
     setEditingId(article.id);
@@ -171,6 +197,17 @@ export default function AdminBlogPage() {
           </div>
         )}
 
+        {/* Search */}
+        <div className="mb-4">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by title, excerpt, category, or author..."
+            className="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+          />
+        </div>
+
         {/* Article list */}
         <div className="bg-white rounded-xl shadow overflow-hidden">
           <table className="w-full">
@@ -185,14 +222,14 @@ export default function AdminBlogPage() {
               </tr>
             </thead>
             <tbody>
-              {articles.length === 0 ? (
+              {paginatedArticles.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="py-8 text-center text-gray-500">
-                    No articles yet. Click &quot;Add new article&quot; to create one.
+                    {search.trim() ? 'No articles match your search.' : 'No articles yet. Click &quot;Add new article&quot; to create one.'}
                   </td>
                 </tr>
               ) : (
-                articles.map((article) => (
+                paginatedArticles.map((article) => (
                   <tr
                     key={article.id}
                     className="border-b border-gray-100 hover:bg-gray-50"
@@ -243,6 +280,44 @@ export default function AdminBlogPage() {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {filteredArticles.length > ITEMS_PER_PAGE && (
+          <div className="mt-4 flex items-center justify-between">
+            <p className="text-sm text-gray-600">
+              Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(currentPage * ITEMS_PER_PAGE, filteredArticles.length)} of {filteredArticles.length}
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage <= 1}
+                className="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Previous
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                <button
+                  key={n}
+                  onClick={() => setPage(n)}
+                  className={`px-3 py-1 rounded-lg ${
+                    n === currentPage
+                      ? 'bg-green-600 text-white'
+                      : 'border border-gray-300 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {n}
+                </button>
+              ))}
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage >= totalPages}
+                className="px-3 py-1 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Edit / Add form */}
         {editingId !== null && (

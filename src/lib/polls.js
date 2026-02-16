@@ -79,12 +79,14 @@ export async function getPollWithOptionsAndVotes(pollId, userId = null) {
  * Create a poll (admin only). Options are created in same transaction via separate inserts.
  * @param {string} question
  * @param {string[]} optionTexts
- * @param {string} resolvesAt - ISO timestamp
+ * @param {number} durationMinutes - how long the poll stays open (minutes from now)
  * @returns {Promise<{ id: string } | null>}
  */
-export async function createPoll(question, optionTexts, resolvesAt) {
+export async function createPoll(question, optionTexts, durationMinutes) {
   const supabase = getSupabaseClient();
   if (!supabase || !question?.trim() || !Array.isArray(optionTexts) || optionTexts.length < 2) return null;
+
+  const resolvesAt = new Date(Date.now() + durationMinutes * 60 * 1000).toISOString();
 
   const { data: poll, error: pollError } = await supabase
     .from("polls")

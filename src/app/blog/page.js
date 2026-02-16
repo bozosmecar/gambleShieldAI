@@ -198,23 +198,6 @@ export default function BlogPage() {
           </div>
         )}
 
-        {/* Newsletter Section */}
-        <div className="mt-20 bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 rounded-2xl p-12 text-white text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Stay Updated</h2>
-          <p className="text-xl text-orange-100 mb-8 max-w-2xl mx-auto">
-            Subscribe to our newsletter for the latest insights on responsible gaming
-          </p>
-          <div className="max-w-md mx-auto flex gap-3">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-6 py-3 rounded-lg text-gray-800 focus:outline-none focus:ring-4 focus:ring-orange-300"
-            />
-            <button className="px-8 py-3 bg-white text-orange-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-              Subscribe
-            </button>
-          </div>
-        </div>
       </div>
 
       {/* Footer */}
