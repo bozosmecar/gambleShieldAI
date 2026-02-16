@@ -1,19 +1,29 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useUserProfile } from '@/hooks/useUserProfile';
+import { getSupabaseClient } from '@/lib/supabaseClient';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, isAdmin } = useUserProfile();
+
+  const handleLogout = async () => {
+    const supabase = getSupabaseClient();
+    if (supabase) await supabase.auth.signOut();
+    router.push('/');
+    router.refresh();
+  };
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/profile', label: 'Profile' },
+    ...(user ? [{ href: '/profile', label: 'Profile' }] : []),
     { href: '/stream', label: 'Stream' },
     { href: '/blog', label: 'Blog' },
-    { href: '/admin/blog', label: 'Admin' },
-    { href: '/register', label: 'Register' },
-    { href: '/login', label: 'Login' },
+    ...(isAdmin ? [{ href: '/admin/blog', label: 'Admin' }, { href: '/admin/polls', label: 'Polls' }] : []),
+    ...(!user ? [{ href: '/register', label: 'Register' }, { href: '/login', label: 'Login' }] : []),
   ];
 
   return (
@@ -53,6 +63,16 @@ export default function Navbar() {
               </Link>
             );
           })}
+          {user && (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="font-medium text-gray-700 hover:text-green-600 transition-colors"
+              style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)' }}
+            >
+              Log out
+            </button>
+          )}
         </div>
       </div>
     </nav>

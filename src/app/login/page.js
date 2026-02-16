@@ -3,12 +3,17 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export default function Login() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,12 +23,37 @@ export default function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage({ type: "", text: "" });
 
-    // TODO: Add login logic here
-    console.log("Login data:", formData);
-    alert("Login functionality coming soon!");
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      setMessage({ type: "error", text: "Service unavailable. Please try again later." });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: formData.email.trim(),
+        password: formData.password,
+      });
+
+      if (error) {
+        setMessage({ type: "error", text: error.message });
+        setLoading(false);
+        return;
+      }
+
+      setMessage({ type: "success", text: "Logged in. Redirecting…" });
+      router.push("/");
+      router.refresh();
+    } catch (err) {
+      setMessage({ type: "error", text: err.message || "Login failed." });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,6 +84,18 @@ export default function Login() {
                 <p className="text-center text-gray-600 mb-8">
                   Log in to your GambleShield account
                 </p>
+
+                {message.text && (
+                  <div
+                    className={`mb-4 p-3 rounded-lg text-sm ${
+                      message.type === "error"
+                        ? "bg-red-50 text-red-700 border border-red-200"
+                        : "bg-green-50 text-green-700 border border-green-200"
+                    }`}
+                  >
+                    {message.text}
+                  </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Email */}
@@ -123,9 +165,10 @@ export default function Login() {
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    className="w-full py-3 px-6 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow-lg transition duration-200 transform hover:scale-105"
+                    disabled={loading}
+                    className="w-full py-3 px-6 bg-green-600 hover:bg-green-700 disabled:opacity-70 text-white font-bold rounded-lg shadow-lg transition duration-200 transform hover:scale-105 disabled:transform-none"
                   >
-                    Log In
+                    {loading ? "Logging in…" : "Log In"}
                   </button>
                 </form>
 

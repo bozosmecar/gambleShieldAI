@@ -145,6 +145,12 @@ export default function AdminBlogPage() {
           <h1 className="text-3xl font-bold text-gray-900">Manage Blog Articles</h1>
           <div className="flex gap-3">
             <Link
+              href="/admin/polls"
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
+            >
+              Polls
+            </Link>
+            <Link
               href="/blog"
               className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
             >

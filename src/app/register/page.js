@@ -3,14 +3,19 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export default function Register() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,18 +25,58 @@ export default function Register() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage({ type: "", text: "" });
 
-    // Basic validation
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      setMessage({ type: "error", text: "Passwords do not match." });
       return;
     }
 
-    // TODO: Add registration logic here
-    console.log("Registration data:", formData);
-    alert("Registration functionality coming soon!");
+    if (formData.password.length < 6) {
+      setMessage({ type: "error", text: "Password must be at least 6 characters." });
+      return;
+    }
+
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      setMessage({ type: "error", text: "Service unavailable. Please try again later." });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email.trim(),
+        password: formData.password,
+        options: {
+          data: { username: formData.username.trim() },
+        },
+      });
+
+      if (error) {
+        setMessage({ type: "error", text: error.message });
+        setLoading(false);
+        return;
+      }
+
+      if (data?.user?.identities?.length === 0) {
+        setMessage({ type: "error", text: "This email is already registered. Try logging in." });
+        setLoading(false);
+        return;
+      }
+
+      setMessage({
+        type: "success",
+        text: "Account created! Check your email to confirm, or go to Login if confirmation is disabled.",
+      });
+      setTimeout(() => router.push("/login"), 2000);
+    } catch (err) {
+      setMessage({ type: "error", text: err.message || "Registration failed." });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,6 +107,18 @@ export default function Register() {
                 <p className="text-center text-gray-600 mb-8">
                   Join GambleShield for responsible gambling
                 </p>
+
+                {message.text && (
+                  <div
+                    className={`mb-4 p-3 rounded-lg text-sm ${
+                      message.type === "error"
+                        ? "bg-red-50 text-red-700 border border-red-200"
+                        : "bg-green-50 text-green-700 border border-green-200"
+                    }`}
+                  >
+                    {message.text}
+                  </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Username */}
@@ -147,9 +204,10 @@ export default function Register() {
                   {/* Submit Button */}
                   <button
                     type="submit"
-                    className="w-full py-3 px-6 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow-lg transition duration-200 transform hover:scale-105"
+                    disabled={loading}
+                    className="w-full py-3 px-6 bg-green-600 hover:bg-green-700 disabled:opacity-70 text-white font-bold rounded-lg shadow-lg transition duration-200 transform hover:scale-105 disabled:transform-none"
                   >
-                    Create Account
+                    {loading ? "Creating account…" : "Create Account"}
                   </button>
                 </form>
 
