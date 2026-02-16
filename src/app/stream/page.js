@@ -93,17 +93,6 @@ export default function Stream() {
                   style={{ border: "none" }}
                   title="Kick stream"
                 />
-
-                {/* Stream Overlay Info */}
-                <div className="absolute top-4 left-4 flex gap-2 z-10">
-                  <span className="px-3 py-1 bg-red-600/90 backdrop-blur-sm text-white text-sm font-medium rounded flex items-center gap-2">
-                    <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                    LIVE
-                  </span>
-                  <span className="px-3 py-1 bg-green-600/90 backdrop-blur-sm text-white text-sm font-medium rounded">
-                    AI Monitoring Active
-                  </span>
-                </div>
               </div>
 
               {/* Kick Chat Embed */}

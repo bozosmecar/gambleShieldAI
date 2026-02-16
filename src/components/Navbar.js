@@ -67,7 +67,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={handleLogout}
-              className="font-medium text-gray-700 hover:text-green-600 transition-colors"
+              className="font-medium text-gray-700 hover:text-green-600 transition-colors cursor-pointer"
               style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)' }}
             >
               Log out
