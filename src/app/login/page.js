@@ -27,66 +27,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100">
-      {/* Navbar */}
-      <nav
-        className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow-md z-[100]"
-        style={{ height: "70px" }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
-          {/* Logo/Brand */}
-          <div className="flex items-center">
-            <Link href="/">
-              <h1
-                className="font-bold text-green-600 cursor-pointer"
-                style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-              >
-                GambleShield
-              </h1>
-            </Link>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="flex items-center gap-6 sm:gap-8">
-            <Link
-              href="/"
-              className="text-gray-700 hover:text-green-600 font-medium transition-colors"
-              style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}
-            >
-              Home
-            </Link>
-            <Link
-              href="/profile"
-              className="text-gray-700 hover:text-green-600 font-medium transition-colors"
-              style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}
-            >
-              Profile
-            </Link>
-            <Link
-              href="/stream"
-              className="text-gray-700 hover:text-green-600 font-medium transition-colors"
-              style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}
-            >
-              Stream
-            </Link>
-            <Link
-              href="/register"
-              className="text-gray-700 hover:text-green-600 font-medium transition-colors"
-              style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}
-            >
-              Register
-            </Link>
-            <Link
-              href="/login"
-              className="text-green-600 font-bold transition-colors border-b-2 border-green-600"
-              style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}
-            >
-              Login
-            </Link>
-          </div>
-        </div>
-      </nav>
-
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100" style={{ paddingTop: '70px' }}>
       {/* Login Form */}
       <main className="pt-24 pb-12 px-4">
         <div className="max-w-7xl mx-auto">
