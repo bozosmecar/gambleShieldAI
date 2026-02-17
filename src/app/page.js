@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
@@ -95,10 +96,10 @@ export default function Home() {
         }}
       >
         <div style={{ height: "120vh", position: "relative" }}>
-          {/* Vrata Image - syncs with background */}
+          {/* Vrata Image - syncs with background, clickable link to register */}
           <div
             ref={vrataRef}
-            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300"
+            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
             style={{
               left: "43.4%",
               top: "17.3vw",
@@ -108,14 +109,16 @@ export default function Home() {
               willChange: "transform",
             }}
           >
-            <Image
-              src="/1_Home page/vrata.png"
-              alt="Vrata"
-              width={400}
-              height={200}
-              className="w-full h-auto"
-              style={{ objectFit: "contain" }}
-            />
+            <Link href="/register" className="block w-full h-full cursor-pointer">
+              <Image
+                src="/1_Home page/vrata.png"
+                alt="Vrata - Go to Register"
+                width={400}
+                height={200}
+                className="w-full h-auto"
+                style={{ objectFit: "contain" }}
+              />
+            </Link>
           </div>
         </div>
 
