@@ -255,11 +255,21 @@ export default function Home() {
                     { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
                     { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
                     { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
-                    { folder: "ljubicasta", suffix: "", prefix: "", maxFrame: 6 },
+                    {
+                      folder: "ljubicasta",
+                      suffix: "",
+                      prefix: "",
+                      maxFrame: 6,
+                    },
                     { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
                     { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
                     { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
-                    { folder: "ljubicasta", suffix: "", prefix: "", maxFrame: 6 },
+                    {
+                      folder: "ljubicasta",
+                      suffix: "",
+                      prefix: "",
+                      maxFrame: 6,
+                    },
                   ].map((flagConfig, idx) => (
                     <AffiliateColumn
                       key={idx}
@@ -293,78 +303,160 @@ export default function Home() {
                 >
                   How It Works
                 </h2>
-                
-                <div className="flex flex-wrap gap-8 mb-12 w-full" style={{ justifyContent: "center" }}>
+
+                <div
+                  className="flex flex-wrap gap-8 mb-12 w-full"
+                  style={{ justifyContent: "center" }}
+                >
                   {/* Watch Stream */}
-                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)", width: "20%", minWidth: "200px" }}>
-                    <div className="mx-auto mb-6 flex items-center justify-center">
+                  <div
+                    className="text-center"
+                    style={{
+                      padding: "clamp(1.5rem, 3vw, 3rem)",
+                      width: "20%",
+                      minWidth: "200px",
+                    }}
+                  >
+                    <h3
+                      className="text-red-600 font-bold mb-4"
+                      style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
+                    >
+                      Watch Stream
+                    </h3>
+                    <div className="mx-auto mb-6 flex items-center justify-center h-[220px]">
                       <Image
                         src="/how_it_works/watch.png"
                         alt="Watch Stream"
                         width={300}
-                        height={300}
-                        className="w-full max-w-[300px] h-auto"
+                        height={220}
+                        className="h-full w-auto max-w-full"
                         style={{ objectFit: "contain" }}
                       />
                     </div>
-                    <p className="text-gray-600" style={{ fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)", lineHeight: "1.6" }}>
-                      Watch live gambling streams and real gameplay. Learn from experienced players and see how bonuses work in practice.
+                    <p
+                      className="text-gray-600"
+                      style={{
+                        fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)",
+                        lineHeight: "1.6",
+                      }}
+                    >
+                      Watch live gambling streams and real gameplay. Learn from
+                      experienced players and see how bonuses work in practice.
                     </p>
                   </div>
 
                   {/* Upgrade Your Character */}
-                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)", width: "20%", minWidth: "200px" }}>
-                    <div className="mx-auto mb-6 flex items-center justify-center">
+                  <div
+                    className="text-center"
+                    style={{
+                      padding: "clamp(1.5rem, 3vw, 3rem)",
+                      width: "20%",
+                      minWidth: "200px",
+                    }}
+                  >
+                    <h3
+                      className="text-red-600 font-bold mb-4"
+                      style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
+                    >
+                      Upgrade Your Character
+                    </h3>
+                    <div className="mx-auto mb-6 flex items-center justify-center h-[220px]">
                       <Image
                         src="/how_it_works/upgrade.png"
                         alt="Upgrade Your Character"
                         width={300}
-                        height={300}
-                        className="w-full max-w-[300px] h-auto"
+                        height={220}
+                        className="h-full w-auto max-w-full"
                         style={{ objectFit: "contain" }}
                       />
                     </div>
-                    <p className="text-gray-600" style={{ fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)", lineHeight: "1.6" }}>
-                      Upgrade your character and unlock new features. Progress through levels and unlock exclusive rewards.
+                    <p
+                      className="text-gray-600"
+                      style={{
+                        fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)",
+                        lineHeight: "1.6",
+                      }}
+                    >
+                      Upgrade your character and unlock new features. Progress
+                      through levels and unlock exclusive rewards.
                     </p>
                   </div>
 
                   {/* Vote Which Slot Will Be Played */}
-                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)", width: "20%", minWidth: "200px" }}>
-                    <div className="mx-auto mb-6 flex items-center justify-center">
+                  <div
+                    className="text-center"
+                    style={{
+                      padding: "clamp(1.5rem, 3vw, 3rem)",
+                      width: "20%",
+                      minWidth: "200px",
+                    }}
+                  >
+                    <h3
+                      className="text-red-600 font-bold mb-4"
+                      style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
+                    >
+                      Vote Which Slot Will Be Played
+                    </h3>
+                    <div className="mx-auto mb-6 flex items-center justify-center h-[220px]">
                       <Image
                         src="/how_it_works/vote.png"
                         alt="Vote Which Slot Will Be Played"
                         width={300}
-                        height={300}
-                        className="w-full max-w-[300px] h-auto"
+                        height={220}
+                        className="h-full w-auto max-w-full"
                         style={{ objectFit: "contain" }}
                       />
                     </div>
-                    <p className="text-gray-600" style={{ fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)", lineHeight: "1.6" }}>
-                      Use your points to vote on which slot game will be played next. Influence the stream and interact with streamers in real-time.
+                    <p
+                      className="text-gray-600"
+                      style={{
+                        fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)",
+                        lineHeight: "1.6",
+                      }}
+                    >
+                      Use your points to vote on which slot game will be played
+                      next. Influence the stream and interact with streamers in
+                      real-time.
                     </p>
                   </div>
 
                   {/* Play Extra Games to Earn More */}
-                  <div className="text-center" style={{ padding: "clamp(1.5rem, 3vw, 3rem)", width: "20%", minWidth: "200px" }}>
-                    <div className="mx-auto mb-6 flex items-center justify-center">
+                  <div
+                    className="text-center"
+                    style={{
+                      padding: "clamp(1.5rem, 3vw, 3rem)",
+                      width: "20%",
+                      minWidth: "200px",
+                    }}
+                  >
+                    <h3
+                      className="text-red-600 font-bold mb-4"
+                      style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
+                    >
+                      Play Extra Games to Earn More
+                    </h3>
+                    <div className="mx-auto mb-6 flex items-center justify-center h-[220px]">
                       <Image
                         src="/how_it_works/play.png"
                         alt="Play Extra Games to Earn More"
                         width={300}
-                        height={300}
-                        className="w-full max-w-[300px] h-auto"
+                        height={220}
+                        className="h-full w-auto max-w-full"
                         style={{ objectFit: "contain" }}
                       />
                     </div>
-                    <p className="text-gray-600" style={{ fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)", lineHeight: "1.6" }}>
-                      Play additional games and mini-games to earn extra points. Boost your rewards and unlock special bonuses.
+                    <p
+                      className="text-gray-600"
+                      style={{
+                        fontSize: "clamp(1.125rem, 2.25vw, 1.5rem)",
+                        lineHeight: "1.6",
+                      }}
+                    >
+                      Play additional games and mini-games to earn extra points.
+                      Boost your rewards and unlock special bonuses.
                     </p>
                   </div>
                 </div>
-
-
               </div>
             </section>
           </div>
@@ -459,9 +551,9 @@ function AffiliateColumn({
 
   return (
     <div
-      className={`relative flex flex-col items-center justify-start ${
-        isSecondRowSmall ? "-mt-[50%]" : ""
-      } ${isSecondRowLarge ? "lg:mt-[-30%] lg:ml-[5%]" : "lg:mt-0"}`}
+      className={`relative flex flex-col items-center justify-start mb-[30%] ${
+        isSecondRowSmall ? "mt-[10%]" : ""
+      } ${isSecondRowLarge ? "lg:mt-[20%] lg:ml-[5%]" : "lg:mt-[0%]"}`}
       style={{
         width: "clamp(250px, 30vw, 450px)",
         maxHeight: "60vh",
