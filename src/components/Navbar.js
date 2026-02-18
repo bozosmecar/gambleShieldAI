@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { getSupabaseClient } from '@/lib/supabaseClient';
 
@@ -9,10 +10,12 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, isAdmin } = useUserProfile();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     const supabase = getSupabaseClient();
     if (supabase) await supabase.auth.signOut();
+    setMobileMenuOpen(false);
     router.push('/');
     router.refresh();
   };
@@ -26,15 +29,17 @@ export default function Navbar() {
     ...(!user ? [{ href: '/register', label: 'Register' }, { href: '/login', label: 'Login' }] : []),
   ];
 
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
   return (
     <nav
       className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow-md z-[100]"
-      style={{ height: '70px' }}
+      style={{ minHeight: '70px' }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[70px] flex items-center justify-between">
         {/* Logo/Brand */}
         <div className="flex items-center">
-          <Link href="/">
+          <Link href="/" onClick={closeMobileMenu}>
             <h1
               className="font-bold text-green-600 cursor-pointer"
               style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
@@ -44,8 +49,8 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Navigation Links */}
-        <div className="flex items-center gap-6 sm:gap-8">
+        {/* Desktop: Navigation Links */}
+        <div className="hidden md:flex items-center gap-6 sm:gap-8">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -69,6 +74,68 @@ export default function Navbar() {
               onClick={handleLogout}
               className="font-medium text-gray-700 hover:text-green-600 transition-colors cursor-pointer"
               style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)' }}
+            >
+              Log out
+            </button>
+          )}
+        </div>
+
+        {/* Mobile: Hamburger button */}
+        <button
+          type="button"
+          className="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
+          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+        >
+          <span
+            className={`block w-6 h-0.5 bg-current transition-all duration-200 ${
+              mobileMenuOpen ? 'rotate-45 translate-y-1' : ''
+            }`}
+          />
+          <span
+            className={`block w-6 h-0.5 bg-current mt-1.5 transition-all duration-200 ${
+              mobileMenuOpen ? 'opacity-0' : ''
+            }`}
+          />
+          <span
+            className={`block w-6 h-0.5 bg-current mt-1.5 transition-all duration-200 ${
+              mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
+            }`}
+          />
+        </button>
+      </div>
+
+      {/* Mobile menu panel */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-200 ease-out ${
+          mobileMenuOpen ? 'max-h-[80vh] opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="border-t border-gray-200 bg-white/95 backdrop-blur-sm px-4 py-4 flex flex-col gap-2">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={closeMobileMenu}
+                className={`py-3 px-3 rounded-lg font-medium transition-colors ${
+                  isActive
+                    ? 'text-green-600 font-bold bg-green-50'
+                    : 'text-gray-700 hover:bg-gray-100 hover:text-green-600'
+                }`}
+                style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)' }}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+          {user && (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="py-3 px-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100 hover:text-green-600 transition-colors text-left"
+              style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)' }}
             >
               Log out
             </button>

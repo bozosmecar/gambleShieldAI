@@ -9,19 +9,56 @@ export default function Home() {
   const affiliateSectionRef = useRef(null);
   const affiliateRow1Ref = useRef(null);
   const affiliateRow2Ref = useRef(null);
+  const affiliateRow3Ref = useRef(null);
+  const affiliateRow4Ref = useRef(null);
   const mainRef = useRef(null);
   const vrataRef = useRef(null);
 
   const [backgroundOffset, setBackgroundOffset] = useState(0); // ostavljam ga, ali ga više ne koristimo za scroll
 
   useEffect(() => {
+    const rowRefs = [
+      affiliateRow1Ref,
+      affiliateRow2Ref,
+      affiliateRow3Ref,
+      affiliateRow4Ref,
+    ];
+
     const observer = new IntersectionObserver(
       (entries) => {
+        const is4Col = window.innerWidth >= 1024;
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
+          const visible = entry.isIntersecting;
+          const target = entry.target;
+
+          // About and affiliate section: single element
+          if (
+            target === aboutSectionRef.current ||
+            target === affiliateSectionRef.current
+          ) {
+            if (visible) target.classList.add("visible");
+            else target.classList.remove("visible");
+            return;
+          }
+
+          // Affiliate rows: which index is this?
+          const rowIndex = rowRefs.findIndex((r) => r.current === target);
+          if (rowIndex === -1) return;
+
+          if (is4Col) {
+            // 4 cols: row 0+1 fade together, row 2+3 fade together
+            const group = rowIndex < 2 ? [0, 1] : [2, 3];
+            group.forEach((i) => {
+              const el = rowRefs[i].current;
+              if (el) {
+                if (visible) el.classList.add("visible");
+                else el.classList.remove("visible");
+              }
+            });
           } else {
-            entry.target.classList.remove("visible");
+            // 2 cols: each row fades on its own
+            if (visible) target.classList.add("visible");
+            else target.classList.remove("visible");
           }
         });
       },
@@ -30,19 +67,16 @@ export default function Home() {
 
     const aboutRef = aboutSectionRef.current;
     const affiliateRef = affiliateSectionRef.current;
-    const row1Ref = affiliateRow1Ref.current;
-    const row2Ref = affiliateRow2Ref.current;
+    const rows = rowRefs.map((r) => r.current).filter(Boolean);
 
     if (aboutRef) observer.observe(aboutRef);
     if (affiliateRef) observer.observe(affiliateRef);
-    if (row1Ref) observer.observe(row1Ref);
-    if (row2Ref) observer.observe(row2Ref);
+    rows.forEach((el) => observer.observe(el));
 
     return () => {
       if (aboutRef) observer.unobserve(aboutRef);
       if (affiliateRef) observer.unobserve(affiliateRef);
-      if (row1Ref) observer.unobserve(row1Ref);
-      if (row2Ref) observer.unobserve(row2Ref);
+      rows.forEach((el) => observer.unobserve(el));
     };
   }, []);
 
@@ -54,11 +88,14 @@ export default function Home() {
       rafId = null;
       if (!aboutSectionRef.current || !mainRef.current) return;
 
+      // Same breakpoint as background (lg = 1024px): home4.png < lg, home.png >= lg
+      const isSmallScreen = window.innerWidth < 1024;
+      const threshold = -200;
+
       const aboutTop = aboutSectionRef.current.getBoundingClientRect().top;
-      const threshold = 0;
 
       let offset = 0;
-      if (aboutTop <= threshold) {
+      if (!isSmallScreen && aboutTop <= threshold) {
         const distanceScrolled = Math.abs(aboutTop - threshold);
         offset = -(distanceScrolled * 1);
       }
@@ -242,7 +279,7 @@ export default function Home() {
                 minHeight: "70vh",
                 overflow: "hidden",
                 position: "relative",
-                paddingTop: "clamp(80px, 10vw, 150px)",
+                paddingTop: "clamp(150px, 10vw, 150px)",
                 paddingBottom: "clamp(2rem, 5vw, 3rem)",
               }}
             >
@@ -256,76 +293,128 @@ export default function Home() {
                   justifyContent: "center",
                   paddingLeft: "clamp(1rem, 3vw, 2rem)",
                   paddingRight: "clamp(1rem, 3vw, 2rem)",
+                  marginLeft: "clamp(1rem, 3vw, 2rem)",
+                  marginRight: "clamp(1rem, 3vw, 2rem)",
                   zIndex: 10,
                   overflow: "visible",
                   gap: "clamp(1rem, 3vh, 2rem)",
                 }}
               >
-                {/* First row - fades in/out independently */}
-                <div
-                  ref={affiliateRow1Ref}
-                  className="relative w-full scroll-fade-in grid grid-cols-2 lg:grid-cols-4 place-items-center"
-                  style={{
-                    columnGap: "clamp(10rem, 18vw, 24rem)",
-                    overflow: "visible",
-                  }}
-                >
-                  {[
-                    { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
-                    { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
-                    { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
-                    {
-                      folder: "ljubicasta",
-                      suffix: "",
-                      prefix: "",
-                      maxFrame: 6,
-                    },
-                  ].map((flagConfig, idx) => (
-                    <AffiliateColumn
-                      key={idx}
-                      stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.png"
-                      stupWidth={1800}
-                      stupHeight={1200}
-                      index={idx}
-                      flagFolder={flagConfig.folder}
-                      flagSuffix={flagConfig.suffix}
-                      flagPrefix={flagConfig.prefix}
-                      maxFrame={flagConfig.maxFrame}
-                    />
-                  ))}
-                </div>
-                {/* Second row - fades in/out independently */}
-                <div
-                  ref={affiliateRow2Ref}
-                  className="relative w-full scroll-fade-in grid grid-cols-2 lg:grid-cols-4 place-items-center"
-                  style={{
-                    columnGap: "clamp(10rem, 18vw, 24rem)",
-                    overflow: "visible",
-                  }}
-                >
-                  {[
-                    { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
-                    { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
-                    { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
-                    {
-                      folder: "ljubicasta",
-                      suffix: "",
-                      prefix: "",
-                      maxFrame: 6,
-                    },
-                  ].map((flagConfig, idx) => (
-                    <AffiliateColumn
-                      key={idx + 4}
-                      stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.png"
-                      stupWidth={1800}
-                      stupHeight={1200}
-                      index={idx + 4}
-                      flagFolder={flagConfig.folder}
-                      flagSuffix={flagConfig.suffix}
-                      flagPrefix={flagConfig.prefix}
-                      maxFrame={flagConfig.maxFrame}
-                    />
-                  ))}
+                <div className="grid grid-cols-1 lg:grid-cols-2 w-full  lg:gap-[25vw] ">
+                  {/* Row 1: pillars 0,1 — 4-col: fades with row2; 2-col: fades alone */}
+                  <div
+                    ref={affiliateRow1Ref}
+                    className="relative w-full scroll-fade-in grid grid-cols-2 lg:grid-cols-4 place-items-center "
+                    style={{
+                      columnGap: "clamp(4rem, 24vw, 30rem)",
+                      overflow: "visible",
+                    }}
+                  >
+                    {[
+                      { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
+                      { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
+                    ].map((flagConfig, idx) => (
+                      <AffiliateColumn
+                        key={idx}
+                        stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.png"
+                        stupWidth={1800}
+                        stupHeight={1200}
+                        index={idx}
+                        flagFolder={flagConfig.folder}
+                        flagSuffix={flagConfig.suffix}
+                        flagPrefix={flagConfig.prefix}
+                        maxFrame={flagConfig.maxFrame}
+                      />
+                    ))}
+                  </div>
+                  {/* Row 2: pillars 2,3 — on small: push down with vh */}
+                  <div
+                    ref={affiliateRow2Ref}
+                    className="relative w-full scroll-fade-in grid grid-cols-2 lg:grid-cols-4 place-items-center mt-[6vh] lg:mt-0"
+                    style={{
+                      columnGap: "clamp(4rem, 24vw, 30rem)",
+                      overflow: "visible",
+                    }}
+                  >
+                    {[
+                      { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
+                      {
+                        folder: "ljubicasta",
+                        suffix: "",
+                        prefix: "",
+                        maxFrame: 6,
+                      },
+                    ].map((flagConfig, idx) => (
+                      <AffiliateColumn
+                        key={idx + 2}
+                        stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.png"
+                        stupWidth={1800}
+                        stupHeight={1200}
+                        index={idx + 2}
+                        flagFolder={flagConfig.folder}
+                        flagSuffix={flagConfig.suffix}
+                        flagPrefix={flagConfig.prefix}
+                        maxFrame={flagConfig.maxFrame}
+                      />
+                    ))}
+                  </div>
+                  {/* Row 3: pillars 4,5 — small: push down (vh); lg: pull up */}
+                  <div
+                    ref={affiliateRow3Ref}
+                    className="relative w-full scroll-fade-in grid grid-cols-2 lg:grid-cols-4 place-items-center mt-[6vh]  lg:-mt-[20vw]"
+                    style={{
+                      columnGap: "clamp(4rem, 24vw, 30rem)",
+                      overflow: "visible",
+                    }}
+                  >
+                    {[
+                      { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
+                      { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
+                    ].map((flagConfig, idx) => (
+                      <AffiliateColumn
+                        key={idx + 4}
+                        stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.png"
+                        stupWidth={1800}
+                        stupHeight={1200}
+                        index={idx + 4}
+                        flagFolder={flagConfig.folder}
+                        flagSuffix={flagConfig.suffix}
+                        flagPrefix={flagConfig.prefix}
+                        maxFrame={flagConfig.maxFrame}
+                      />
+                    ))}
+                  </div>
+                  {/* Row 4: pillars 6,7 — small: push down (vh); lg: pull up */}
+                  <div
+                    ref={affiliateRow4Ref}
+                    className="relative w-full scroll-fade-in grid grid-cols-2 lg:grid-cols-4 place-items-center mt-[6vh]  lg:-mt-[20vw]"
+                    style={{
+                      columnGap: "clamp(4rem, 24vw, 30rem)",
+                      overflow: "visible",
+                    }}
+                  >
+                    {[
+                      { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
+                      {
+                        folder: "ljubicasta",
+                        suffix: "",
+                        prefix: "",
+                        maxFrame: 6,
+                      },
+                    ].map((flagConfig, idx) => (
+                      <AffiliateColumn
+                        key={idx + 6}
+                        stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.png"
+                        stupWidth={1800}
+                        stupHeight={1200}
+                        index={idx + 6}
+                        flagFolder={flagConfig.folder}
+                        flagSuffix={flagConfig.suffix}
+                        flagPrefix={flagConfig.prefix}
+                        maxFrame={flagConfig.maxFrame}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -595,8 +684,8 @@ function AffiliateColumn({
   return (
     <div
       className={`relative flex flex-col items-center justify-start mb-[30%] ${
-        isSecondRowSmall ? "mt-[10%]" : ""
-      } ${isSecondRowLarge ? "lg:mt-[20%] lg:ml-[5%]" : "lg:mt-[0%]"}`}
+        isSecondRowSmall ? "mt-[-90%]" : ""
+      } ${isSecondRowLarge ? "lg:ml-[5%]" : "lg:mt-[0%]"}`}
       style={{
         width: "clamp(250px, 30vw, 450px)",
         maxHeight: "60vh",
@@ -604,6 +693,8 @@ function AffiliateColumn({
         overflow: "visible",
         zIndex: 1,
         isolation: "isolate",
+        marginLeft: "clamp(1rem, 3vw, 2.5rem)",
+        marginRight: "clamp(1rem, 3vw, 2.5rem)",
       }}
     >
       <Image
@@ -612,8 +703,8 @@ function AffiliateColumn({
         width={stupWidth}
         height={stupHeight}
         style={{
-          width: "120vh",
-          maxHeight: "140vh",
+          width: "120vw",
+          maxHeight: "140vw",
           objectFit: "contain",
           position: "relative",
           zIndex: 1,
@@ -632,7 +723,7 @@ function AffiliateColumn({
         <img
           src={`/3_Affiliate/${flagFolder}/${flagPrefix || ""}${currentFrame}${flagSuffix}.png`}
           alt="Flag"
-          style={{ width: "100%", height: "auto", display: "block" }}
+          style={{ width: "100vw", height: "auto", display: "block" }}
         />
 
         <div
@@ -715,8 +806,14 @@ function AffiliateColumn({
           alt="Casumo"
           width={280}
           height={168}
-          className="w-full max-w-[260px] h-auto"
-          style={{ objectFit: "contain", position: "relative", zIndex: 100 }}
+          className="h-auto w-full"
+          style={{
+            marginTop: "clamp(10px, 2vw, 20px)",
+            objectFit: "contain",
+            position: "relative",
+            zIndex: 100,
+            width: "clamp(160px, 20vw, 300px)",
+          }}
         />
       </div>
     </div>
