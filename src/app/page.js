@@ -442,27 +442,27 @@ export default function Home() {
                 >
                   {/* Watch Stream */}
                   <div
-                    className="text-center"
+                    className="text-center flex flex-col"
                     style={{
                       padding: "clamp(1.5rem, 3vw, 3rem)",
                       width: "20%",
                       minWidth: "200px",
                     }}
                   >
-                    <h3
-                      className="text-red-600 font-bold mb-4"
+                    <div
+                      className="text-red-600 font-bold mb-4 h-16 flex items-center justify-center shrink-0"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
-                      Watch Stream
-                    </h3>
-                    <div className="mx-auto mb-6 flex items-center justify-center h-[220px]">
+                      <h3 className="m-0 leading-tight text-center">Watch Stream</h3>
+                    </div>
+                    <div className="mx-auto mb-6 flex items-center justify-center w-full" style={{ height: 220 }}>
                       <Image
                         src="/how_it_works/watch.png"
                         alt="Watch Stream"
                         width={300}
                         height={220}
-                        className="h-full w-auto max-w-full"
-                        style={{ objectFit: "contain" }}
+                        className="max-w-full"
+                        style={{ height: 220, width: "auto", objectFit: "contain" }}
                       />
                     </div>
                     <p
@@ -479,27 +479,27 @@ export default function Home() {
 
                   {/* Upgrade Your Character */}
                   <div
-                    className="text-center"
+                    className="text-center flex flex-col"
                     style={{
                       padding: "clamp(1.5rem, 3vw, 3rem)",
                       width: "20%",
                       minWidth: "200px",
                     }}
                   >
-                    <h3
-                      className="text-red-600 font-bold mb-4"
+                    <div
+                      className="text-red-600 font-bold mb-4 h-16 flex items-center justify-center shrink-0"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
-                      Upgrade Your Character
-                    </h3>
-                    <div className="mx-auto mb-6 flex items-center justify-center h-[220px]">
+                      <h3 className="m-0 leading-tight text-center">Upgrade Your Character</h3>
+                    </div>
+                    <div className="mx-auto mb-6 flex items-center justify-center w-full" style={{ height: 220 }}>
                       <Image
                         src="/how_it_works/upgrade.png"
                         alt="Upgrade Your Character"
                         width={300}
                         height={220}
-                        className="h-full w-auto max-w-full"
-                        style={{ objectFit: "contain" }}
+                        className="max-w-full"
+                        style={{ height: 220, width: "auto", objectFit: "contain" }}
                       />
                     </div>
                     <p
@@ -516,27 +516,27 @@ export default function Home() {
 
                   {/* Vote Which Slot Will Be Played */}
                   <div
-                    className="text-center"
+                    className="text-center flex flex-col"
                     style={{
                       padding: "clamp(1.5rem, 3vw, 3rem)",
                       width: "20%",
                       minWidth: "200px",
                     }}
                   >
-                    <h3
-                      className="text-red-600 font-bold mb-4"
+                    <div
+                      className="text-red-600 font-bold mb-4 h-16 flex items-center justify-center shrink-0"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
-                      Vote Which Slot Will Be Played
-                    </h3>
-                    <div className="mx-auto mb-6 flex items-center justify-center h-[220px]">
+                      <h3 className="m-0 leading-tight text-center">Vote Which Slot Will Be Played</h3>
+                    </div>
+                    <div className="mx-auto mb-6 flex items-center justify-center w-full" style={{ height: 220 }}>
                       <Image
                         src="/how_it_works/vote.png"
                         alt="Vote Which Slot Will Be Played"
                         width={300}
                         height={220}
-                        className="h-full w-auto max-w-full"
-                        style={{ objectFit: "contain" }}
+                        className="max-w-full"
+                        style={{ height: 220, width: "auto", objectFit: "contain" }}
                       />
                     </div>
                     <p
@@ -554,27 +554,27 @@ export default function Home() {
 
                   {/* Play Extra Games to Earn More */}
                   <div
-                    className="text-center"
+                    className="text-center flex flex-col"
                     style={{
                       padding: "clamp(1.5rem, 3vw, 3rem)",
                       width: "20%",
                       minWidth: "200px",
                     }}
                   >
-                    <h3
-                      className="text-red-600 font-bold mb-4"
+                    <div
+                      className="text-red-600 font-bold mb-4 h-16 flex items-center justify-center shrink-0"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
-                      Play Extra Games to Earn More
-                    </h3>
-                    <div className="mx-auto mb-6 flex items-center justify-center h-[220px]">
+                      <h3 className="m-0 leading-tight text-center">Play Extra Games to Earn More</h3>
+                    </div>
+                    <div className="mx-auto mb-6 flex items-center justify-center w-full" style={{ height: 220 }}>
                       <Image
                         src="/how_it_works/play.png"
                         alt="Play Extra Games to Earn More"
                         width={300}
                         height={220}
-                        className="h-full w-auto max-w-full"
-                        style={{ objectFit: "contain" }}
+                        className="max-w-full"
+                        style={{ height: 220, width: "auto", objectFit: "contain" }}
                       />
                     </div>
                     <p
