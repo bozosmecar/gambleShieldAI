@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { getArticleById } from '@/lib/blogArticles';
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getArticleById } from "@/lib/blogArticles";
 
 export default function BlogPostPage() {
   const params = useParams();
@@ -22,7 +22,10 @@ export default function BlogPostPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white" style={{ paddingTop: '70px' }}>
+      <div
+        className="min-h-screen bg-gradient-to-b from-gray-50 to-white"
+        style={{ paddingTop: "70px" }}
+      >
         <div className="container mx-auto px-4 py-20 text-center">
           <p className="text-gray-600">Loading...</p>
         </div>
@@ -32,11 +35,21 @@ export default function BlogPostPage() {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white" style={{ paddingTop: '70px' }}>
+      <div
+        className="min-h-screen bg-gradient-to-b from-gray-50 to-white"
+        style={{ paddingTop: "70px" }}
+      >
         <div className="container mx-auto px-4 py-20 text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Post Not Found</h1>
-          <p className="text-gray-600 mb-8">Sorry, we couldn&apos;t find the blog post you&apos;re looking for.</p>
-          <Link href="/blog" className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all inline-block">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            Post Not Found
+          </h1>
+          <p className="text-gray-600 mb-8">
+            Sorry, we couldn&apos;t find the blog post you&apos;re looking for.
+          </p>
+          <Link
+            href="/blog"
+            className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all inline-block"
+          >
             Back to Blog
           </Link>
         </div>
@@ -45,22 +58,44 @@ export default function BlogPostPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white" style={{ paddingTop: '70px' }}>
+    <div
+      className="min-h-screen bg-gradient-to-b from-gray-50 to-white"
+      style={{ paddingTop: "70px" }}
+    >
       {/* Back Button */}
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         <Link
           href="/blog"
           className="inline-flex items-center text-gray-600 hover:text-orange-600 transition-colors font-medium"
         >
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="w-5 h-5 mr-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
           Back to Blog
         </Link>
       </div>
 
       {/* Article Header */}
-      <article className="container mx-auto px-4 max-w-4xl pb-20">
+      <article
+        className="container mx-auto px-4 w-[80vw] max-w-7xl pb-20"
+        style={{
+          padding: "min(10vw, 120px) min(17vw, 270px)",
+          backgroundImage: `url(/3_Affiliate/zlatna/5.png)`,
+          backgroundSize: "90% 100%",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <header className="mb-12">
           {/* Category Badge */}
           <div className="mb-4">
@@ -123,9 +158,14 @@ export default function BlogPostPage() {
 
         {/* Related Articles */}
         <div className="mt-16 pt-8 border-t border-gray-200">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">
+            Related Articles
+          </h3>
           <div className="text-gray-600">
-            <Link href="/blog" className="text-orange-600 hover:text-orange-700 font-medium">
+            <Link
+              href="/blog"
+              className="text-orange-600 hover:text-orange-700 font-medium"
+            >
               View all articles →
             </Link>
           </div>
@@ -136,7 +176,8 @@ export default function BlogPostPage() {
       <footer className="bg-gray-900 text-white py-12 mt-20">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-400">
-            © 2026 GambleShield. All rights reserved. | Promoting responsible gaming worldwide.
+            © 2026 GambleShield. All rights reserved. | Promoting responsible
+            gaming worldwide.
           </p>
         </div>
       </footer>

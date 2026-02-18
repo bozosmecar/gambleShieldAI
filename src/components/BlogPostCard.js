@@ -2,20 +2,22 @@
 
 import Link from "next/link";
 
-const CARD_BG_IMAGE = "/3_Affiliate/zlatna/5.png";
+const DEFAULT_CARD_BG = "/3_Affiliate/zlatna/5.png";
 
 export default function BlogPostCard({ post }) {
   if (!post) return null;
 
+  const cardBg = post.cardBackground || DEFAULT_CARD_BG;
+
   return (
     <Link
       href={`/blog/${post.id}`}
-      className="block h-full min-w-[450px] w-[18vw]"
+      className="block h-full min-w-[400px] lg:flex-[0_0_calc(33.333%-1.5rem)] lg:max-w-[450px]"
     >
       <article
         className="relative rounded-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300 cursor-pointer flex flex-col min-h-[420px] w-full "
         style={{
-          backgroundImage: `url(${CARD_BG_IMAGE})`,
+          backgroundImage: `url(${cardBg})`,
           backgroundSize: "90% 100%",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",

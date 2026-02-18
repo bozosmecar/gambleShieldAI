@@ -9,6 +9,14 @@ import {
   deleteArticle,
 } from "@/lib/blogArticles";
 
+const CARD_BACKGROUND_OPTIONS = [
+  { value: "/3_Affiliate/zlatna/5.png", label: "1 Gold (zlatna)" },
+  { value: "/3_Affiliate/crvena/5.png", label: "2 Red (crvena)" },
+  { value: "/3_Affiliate/plava/5.png", label: "3 Blue (plava)" },
+  { value: "/3_Affiliate/zelena/5.png", label: "4 Green (zelena)" },
+  { value: "/3_Affiliate/ljubicasta/5.png", label: "5 Purple (ljubicasta)" },
+];
+
 const emptyForm = {
   title: "",
   excerpt: "",
@@ -19,6 +27,7 @@ const emptyForm = {
   image: "",
   featured: false,
   content: "",
+  cardBackground: "/3_Affiliate/zlatna/5.png",
 };
 
 export default function AdminBlogPage() {
@@ -84,6 +93,7 @@ export default function AdminBlogPage() {
       image: article.image || "",
       featured: !!article.featured,
       content: article.content || "",
+      cardBackground: article.cardBackground || "/3_Affiliate/zlatna/5.png",
     });
     setError(null);
   };
@@ -551,6 +561,22 @@ export default function AdminBlogPage() {
                   >
                     Featured article
                   </label>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Card background (scroll background)
+                  </label>
+                  <select
+                    value={formData.cardBackground || "/3_Affiliate/zlatna/5.png"}
+                    onChange={(e) => updateForm("cardBackground", e.target.value)}
+                    className="w-full max-w-xs px-3 py-2 border border-gray-300 rounded-lg bg-white"
+                  >
+                    {CARD_BACKGROUND_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">

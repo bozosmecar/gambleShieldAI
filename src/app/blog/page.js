@@ -57,7 +57,15 @@ export default function BlogPage() {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 w-full py-12">
+      {/* Full-width wrapper so background extends into margins */}
+      <div
+        className="w-full py-12"
+        style={{
+          backgroundImage: "url(/blog/bg.png)",
+          backgroundRepeat: "repeat",
+        }}
+      >
+        <div className="container mx-auto px-4 w-full">
         {/* Featured Post */}
         {blogPosts.length > 0 && featuredPost && (
           <div className="mb-16">
@@ -175,6 +183,8 @@ export default function BlogPage() {
             </h3>
           </div>
         )}
+
+        </div>
       </div>
 
       {/* Footer */}

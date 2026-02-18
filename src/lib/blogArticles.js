@@ -14,6 +14,7 @@ function rowToArticle(row) {
     image: row.image || '',
     featured: !!row.featured,
     content: row.content || '',
+    cardBackground: row.card_background || '/3_Affiliate/zlatna/5.png',
   };
 }
 
@@ -29,6 +30,7 @@ function articleToRow(article) {
     image: article.image || '',
     featured: !!article.featured,
     content: article.content || '',
+    card_background: article.cardBackground || '/3_Affiliate/zlatna/5.png',
   };
 }
 

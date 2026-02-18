@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from "react";
 export default function Home() {
   const aboutSectionRef = useRef(null);
   const affiliateSectionRef = useRef(null);
+  const affiliateRow1Ref = useRef(null);
+  const affiliateRow2Ref = useRef(null);
   const mainRef = useRef(null);
   const vrataRef = useRef(null);
 
@@ -18,6 +20,8 @@ export default function Home() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
+          } else {
+            entry.target.classList.remove("visible");
           }
         });
       },
@@ -26,13 +30,19 @@ export default function Home() {
 
     const aboutRef = aboutSectionRef.current;
     const affiliateRef = affiliateSectionRef.current;
+    const row1Ref = affiliateRow1Ref.current;
+    const row2Ref = affiliateRow2Ref.current;
 
     if (aboutRef) observer.observe(aboutRef);
     if (affiliateRef) observer.observe(affiliateRef);
+    if (row1Ref) observer.observe(row1Ref);
+    if (row2Ref) observer.observe(row2Ref);
 
     return () => {
       if (aboutRef) observer.unobserve(aboutRef);
       if (affiliateRef) observer.unobserve(affiliateRef);
+      if (row1Ref) observer.unobserve(row1Ref);
+      if (row2Ref) observer.unobserve(row2Ref);
     };
   }, []);
 
@@ -101,15 +111,18 @@ export default function Home() {
             ref={vrataRef}
             className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
             style={{
-              left: "43.4%",
-              top: "17.3vw",
-              width: "clamp(9vw, 13vw, 17vw)",
+              left: "43.1%",
+              top: "17.4vw",
+              width: "clamp(9vw, 13.5vw, 17vw)",
               height: "auto",
               zIndex: 15,
               willChange: "transform",
             }}
           >
-            <Link href="/register" className="block w-full h-full cursor-pointer">
+            <Link
+              href="/register"
+              className="block w-full h-full cursor-pointer"
+            >
               <Image
                 src="/1_Home page/vrata.png"
                 alt="Vrata - Go to Register"
@@ -235,35 +248,29 @@ export default function Home() {
             >
               <div
                 ref={affiliateSectionRef}
-                className="relative w-full max-w-[1400px] mx-auto scroll-fade-in"
+                className="relative w-full max-w-[1400px] mx-auto"
                 style={{
                   display: "flex",
-                  alignItems: "flex-start",
+                  flexDirection: "column",
+                  alignItems: "center",
                   justifyContent: "center",
                   paddingLeft: "clamp(1rem, 3vw, 2rem)",
                   paddingRight: "clamp(1rem, 3vw, 2rem)",
                   zIndex: 10,
                   overflow: "visible",
+                  gap: "clamp(1rem, 3vh, 2rem)",
                 }}
               >
+                {/* First row - fades in/out independently */}
                 <div
-                  className="relative w-full grid grid-cols-2 lg:grid-cols-4 place-items-center grid-col-gap-14"
+                  ref={affiliateRow1Ref}
+                  className="relative w-full scroll-fade-in grid grid-cols-2 lg:grid-cols-4 place-items-center"
                   style={{
                     columnGap: "clamp(10rem, 18vw, 24rem)",
-                    rowGap: "clamp(1rem, 3vh, 2rem)",
                     overflow: "visible",
                   }}
                 >
                   {[
-                    { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
-                    { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
-                    { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
-                    {
-                      folder: "ljubicasta",
-                      suffix: "",
-                      prefix: "",
-                      maxFrame: 6,
-                    },
                     { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
                     { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
                     { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
@@ -280,6 +287,39 @@ export default function Home() {
                       stupWidth={1800}
                       stupHeight={1200}
                       index={idx}
+                      flagFolder={flagConfig.folder}
+                      flagSuffix={flagConfig.suffix}
+                      flagPrefix={flagConfig.prefix}
+                      maxFrame={flagConfig.maxFrame}
+                    />
+                  ))}
+                </div>
+                {/* Second row - fades in/out independently */}
+                <div
+                  ref={affiliateRow2Ref}
+                  className="relative w-full scroll-fade-in grid grid-cols-2 lg:grid-cols-4 place-items-center"
+                  style={{
+                    columnGap: "clamp(10rem, 18vw, 24rem)",
+                    overflow: "visible",
+                  }}
+                >
+                  {[
+                    { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
+                    { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
+                    { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
+                    {
+                      folder: "ljubicasta",
+                      suffix: "",
+                      prefix: "",
+                      maxFrame: 6,
+                    },
+                  ].map((flagConfig, idx) => (
+                    <AffiliateColumn
+                      key={idx + 4}
+                      stupImage="/3_Affiliate/stup_1567/stup_afili_1567px.png"
+                      stupWidth={1800}
+                      stupHeight={1200}
+                      index={idx + 4}
                       flagFolder={flagConfig.folder}
                       flagSuffix={flagConfig.suffix}
                       flagPrefix={flagConfig.prefix}
