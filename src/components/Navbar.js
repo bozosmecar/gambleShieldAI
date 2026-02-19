@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useUserProfile } from '@/hooks/useUserProfile';
@@ -33,13 +34,20 @@ export default function Navbar() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 bg-amber-500 backdrop-blur-md shadow-md z-[100]"
+      className="fixed top-0 left-0 right-0 bg-amber-500/20 backdrop-blur-md shadow-md z-[100]"
       style={{ minHeight: '70px' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[70px] flex items-center justify-between">
         {/* Logo/Brand */}
-        <div className="flex items-center">
-          <Link href="/" onClick={closeMobileMenu}>
+        <div className="flex items-center gap-2">
+          <Link href="/" onClick={closeMobileMenu} className="flex items-center gap-2">
+            <Image
+              src="/1_Home%20page/ShieldLogo.png"
+              alt=""
+              width={36}
+              height={36}
+              className="h-8 w-auto object-contain"
+            />
             <h1
               className="font-bold text-white cursor-pointer hover:text-white/90"
               style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
@@ -111,7 +119,7 @@ export default function Navbar() {
           mobileMenuOpen ? 'max-h-[80vh] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="border-t border-amber-600/30 bg-amber-500 backdrop-blur-sm px-4 py-4 flex flex-col gap-2">
+        <div className="border-t border-amber-600/30 bg-amber-500/20 backdrop-blur-sm px-4 py-4 flex flex-col gap-2">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
