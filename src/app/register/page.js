@@ -80,7 +80,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100" style={{ paddingTop: '70px' }}>
+    <div className="min-h-screen bg-[#FFF3C4]" style={{ paddingTop: '70px' }}>
       {/* Registration Form */}
       <main className="pt-24 pb-12 px-4">
         <div className="max-w-7xl mx-auto">
@@ -101,7 +101,7 @@ export default function Register() {
             {/* Center Form */}
             <div className="w-full max-w-md mx-auto lg:mx-0">
               <div className="bg-white rounded-2xl shadow-xl p-8">
-                <h1 className="text-3xl font-bold text-center text-green-600 mb-2">
+                <h1 className="text-3xl font-bold text-center text-amber-700 mb-2">
                   Create Account
                 </h1>
                 <p className="text-center text-gray-600 mb-8">
@@ -113,7 +113,7 @@ export default function Register() {
                     className={`mb-4 p-3 rounded-lg text-sm ${
                       message.type === "error"
                         ? "bg-red-50 text-red-700 border border-red-200"
-                        : "bg-green-50 text-green-700 border border-green-200"
+                        : "bg-amber-50 text-amber-800 border border-amber-200"
                     }`}
                   >
                     {message.text}
@@ -136,7 +136,7 @@ export default function Register() {
                       value={formData.username}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
                       placeholder="Enter your username"
                     />
                   </div>
@@ -156,7 +156,7 @@ export default function Register() {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
                       placeholder="Enter your email"
                     />
                   </div>
@@ -176,7 +176,7 @@ export default function Register() {
                       value={formData.password}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
                       placeholder="Create a password"
                     />
                   </div>
@@ -196,7 +196,7 @@ export default function Register() {
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
                       placeholder="Confirm your password"
                     />
                   </div>
@@ -205,7 +205,7 @@ export default function Register() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 px-6 bg-green-600 hover:bg-green-700 disabled:opacity-70 text-white font-bold rounded-lg shadow-lg transition duration-200 transform hover:scale-105 disabled:transform-none"
+                    className="w-full py-3 px-6 bg-amber-500 hover:bg-amber-600 disabled:opacity-70 text-white font-bold rounded-lg shadow-lg transition duration-200 transform hover:scale-105 disabled:transform-none"
                   >
                     {loading ? "Creating account…" : "Create Account"}
                   </button>
@@ -217,7 +217,7 @@ export default function Register() {
                     Already have an account?{" "}
                     <Link
                       href="/login"
-                      className="text-green-600 font-semibold hover:text-green-700 transition"
+                      className="text-amber-700 font-semibold hover:text-amber-600 transition"
                     >
                       Log In
                     </Link>

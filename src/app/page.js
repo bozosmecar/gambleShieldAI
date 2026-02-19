@@ -151,7 +151,7 @@ export default function Home() {
           {/* Vrata Image - syncs with background, clickable link to register */}
           <div
             ref={vrataRef}
-            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer max-lg:left-[28%] max-lg:w-[46vw]  max-lg:top-[62vw] lg:left-[43.1%] lg:top-[17.4vw] lg:w-[13.5vw]"
+            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer max-lg:left-[28%] max-lg:w-[46vw]  max-lg:top-[62vw] lg:left-[43.1%] lg:top-[18vw] lg:w-[13.5vw]"
             style={{
               height: "auto",
               zIndex: 15,
@@ -176,7 +176,7 @@ export default function Home() {
 
         {/* Wrapper for About and Affiliate sections with shared background */}
         <div
-          className="relative w-full scrool-fade-in overflow-hidden max-lg:-mt-[1000px] lg:-mt-[200px]"
+          className="relative w-full scrool-fade-in overflow-hidden max-lg:-mt-[850px] lg:-mt-[200px]"
           style={{
             position: "relative",
             zIndex: 30,
@@ -274,14 +274,33 @@ export default function Home() {
               </div>
             </section>
 
+            {/* Divide image between home and affiliate – no space, half over each background */}
             <div
-              className="mt-[30px] flex justify-around w-full bg-amber-500"
+              className="relative w-full pointer-events-none"
+              style={{ height: 0, overflow: "visible" }}
+              aria-hidden
+            >
+              <img
+                src="/1_Home page/divide.png"
+                alt=""
+                className="absolute left-0 w-full h-auto object-cover object-center min-h-[100px]"
+                style={{
+                  top: 0,
+                  transform: "translateY(-50%)",
+                  zIndex: 25,
+                }}
+              />
+            </div>
+
+            <div
+              className="mt-[30px] flex justify-around w-full bg-cover bg-center bg-no-repeat"
               style={{
                 minHeight: "70vh",
                 overflow: "hidden",
                 position: "relative",
                 paddingTop: "clamp(150px, 10vw, 150px)",
                 paddingBottom: "clamp(2rem, 5vw, 3rem)",
+                backgroundImage: "url(/3_Affiliate/testnebo.png)",
               }}
             >
               <div
@@ -296,6 +315,7 @@ export default function Home() {
                   paddingRight: "clamp(1rem, 3vw, 2rem)",
                   marginLeft: "clamp(1rem, 3vw, 2rem)",
                   marginRight: "clamp(1rem, 3vw, 2rem)",
+                  marginTop: "10vw",
                   zIndex: 10,
                   overflow: "visible",
                   gap: "clamp(1rem, 3vh, 2rem)",
