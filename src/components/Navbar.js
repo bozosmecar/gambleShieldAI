@@ -58,9 +58,9 @@ export default function Navbar() {
             <Image
               src="/1_Home%20page/ShieldLogo.png"
               alt=""
-              width={36}
-              height={36}
-              className="h-8 w-auto object-contain"
+              width={48}
+              height={48}
+              className="h-14 w-auto object-contain"
             />
             <h1
               className="font-bold text-white cursor-pointer hover:text-white/90"
