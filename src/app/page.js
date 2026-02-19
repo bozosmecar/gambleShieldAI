@@ -144,7 +144,6 @@ export default function Home() {
           overflow: "visible",
           position: "relative",
           zIndex: 20,
-          marginTop: "70px",
         }}
       >
         <div style={{ height: "120vh", position: "relative" }}>
