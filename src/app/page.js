@@ -176,7 +176,7 @@ export default function Home() {
 
         {/* Wrapper for About and Affiliate sections with shared background */}
         <div
-          className="relative w-full scrool-fade-in overflow-hidden max-lg:-mt-[850px] lg:-mt-[200px]"
+          className="relative w-full scrool-fade-in overflow-visible max-lg:-mt-[50px] lg:-mt-[200px]"
           style={{
             position: "relative",
             zIndex: 30,
@@ -281,7 +281,7 @@ export default function Home() {
               aria-hidden
             >
               <img
-                src="/1_Home page/divide.png"
+                src="/1_Home%20page/divide.png"
                 alt=""
                 className="absolute left-0 w-full h-auto object-cover object-center min-h-[100px]"
                 style={{
@@ -300,7 +300,7 @@ export default function Home() {
                 position: "relative",
                 paddingTop: "clamp(150px, 10vw, 150px)",
                 paddingBottom: "clamp(2rem, 5vw, 3rem)",
-                backgroundImage: "url(/3_Affiliate/testnebo.png)",
+                backgroundImage: "url(/3_Affiliate/testNebo.png)",
               }}
             >
               <div
