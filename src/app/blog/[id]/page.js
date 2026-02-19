@@ -59,7 +59,7 @@ export default function BlogPostPage() {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-b from-gray-50 to-white"
+      className="min-h-screen bg-gradient-to-b from-gray-50 to-white overflow-x-visible"
       style={{ paddingTop: "70px" }}
     >
       {/* Back Button */}
@@ -87,7 +87,7 @@ export default function BlogPostPage() {
 
       {/* Article Header */}
       <article
-        className=" mx-auto  w-[80vw]  pb-20"
+        className="mx-auto w-[100vw] max-lg:relative max-lg:left-1/2 max-lg:-translate-x-1/2 lg:w-[80vw] pb-20 lg:mt-[-100px]"
         style={{
           padding: " 150px min(17vw, 350px)",
           backgroundImage: `url(/blog/postbg.png)`,
@@ -96,7 +96,7 @@ export default function BlogPostPage() {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <header className="mb-12 ">
+        <header className="mb-20  mt-[10vw]">
           {/* Category Badge */}
           <div className="mb-4">
             <span className="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-sm font-semibold">
