@@ -104,8 +104,13 @@ export default function Home() {
       mainRef.current.style.backgroundPosition = `center ${offset}px`;
 
       // Sync vrata s background pozicijom - koristi isti offset kao background
+      // On phone (home4 bg): center with translateX(-50%), bigger and lower via CSS
       if (vrataRef.current) {
-        vrataRef.current.style.transform = `translateY(${offset}px)`;
+        if (isSmallScreen) {
+          vrataRef.current.style.transform = `translate(-50%, ${offset}px)`;
+        } else {
+          vrataRef.current.style.transform = `translateY(${offset}px)`;
+        }
       }
     };
 
@@ -146,11 +151,8 @@ export default function Home() {
           {/* Vrata Image - syncs with background, clickable link to register */}
           <div
             ref={vrataRef}
-            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer max-lg:left-[28%] max-lg:w-[46vw]  max-lg:top-[62vw] lg:left-[43.1%] lg:top-[17.4vw] lg:w-[13.5vw]"
             style={{
-              left: "43.1%",
-              top: "17.4vw",
-              width: "clamp(9vw, 13.5vw, 17vw)",
               height: "auto",
               zIndex: 15,
               willChange: "transform",
@@ -174,9 +176,8 @@ export default function Home() {
 
         {/* Wrapper for About and Affiliate sections with shared background */}
         <div
-          className="relative w-full scrool-fade-in overflow-hidden"
+          className="relative w-full scrool-fade-in overflow-hidden max-lg:-mt-[1000px] lg:-mt-[200px]"
           style={{
-            marginTop: "-200px",
             position: "relative",
             zIndex: 30,
             paddingTop: "",

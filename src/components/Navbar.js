@@ -33,7 +33,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md shadow-md z-[100]"
+      className="fixed top-0 left-0 right-0 bg-amber-500 backdrop-blur-md shadow-md z-[100]"
       style={{ minHeight: '70px' }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[70px] flex items-center justify-between">
@@ -41,7 +41,7 @@ export default function Navbar() {
         <div className="flex items-center">
           <Link href="/" onClick={closeMobileMenu}>
             <h1
-              className="font-bold text-green-600 cursor-pointer"
+              className="font-bold text-white cursor-pointer hover:text-white/90"
               style={{ fontSize: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
             >
               GambleShield
@@ -59,8 +59,8 @@ export default function Navbar() {
                 href={link.href}
                 className={`font-medium transition-colors ${
                   isActive
-                    ? 'text-green-600 font-bold border-b-2 border-green-600'
-                    : 'text-gray-700 hover:text-green-600'
+                    ? 'text-white font-bold border-b-2 border-white'
+                    : 'text-white/90 hover:text-white'
                 }`}
                 style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)' }}
               >
@@ -72,7 +72,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={handleLogout}
-              className="font-medium text-gray-700 hover:text-green-600 transition-colors cursor-pointer"
+              className="font-medium text-white hover:text-white/90 transition-colors cursor-pointer"
               style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)' }}
             >
               Log out
@@ -83,7 +83,7 @@ export default function Navbar() {
         {/* Mobile: Hamburger button */}
         <button
           type="button"
-          className="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-lg text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-lg text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
           aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           onClick={() => setMobileMenuOpen((prev) => !prev)}
         >
@@ -111,7 +111,7 @@ export default function Navbar() {
           mobileMenuOpen ? 'max-h-[80vh] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="border-t border-gray-200 bg-white/95 backdrop-blur-sm px-4 py-4 flex flex-col gap-2">
+        <div className="border-t border-amber-600/30 bg-amber-500 backdrop-blur-sm px-4 py-4 flex flex-col gap-2">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -121,8 +121,8 @@ export default function Navbar() {
                 onClick={closeMobileMenu}
                 className={`py-3 px-3 rounded-lg font-medium transition-colors ${
                   isActive
-                    ? 'text-green-600 font-bold bg-green-50'
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-green-600'
+                    ? 'text-white font-bold bg-white/20'
+                    : 'text-white hover:bg-white/20'
                 }`}
                 style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)' }}
               >
@@ -134,7 +134,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={handleLogout}
-              className="py-3 px-3 rounded-lg font-medium text-gray-700 hover:bg-gray-100 hover:text-green-600 transition-colors text-left"
+              className="py-3 px-3 rounded-lg font-medium text-white hover:bg-white/20 transition-colors text-left"
               style={{ fontSize: 'clamp(0.95rem, 2vw, 1.1rem)' }}
             >
               Log out

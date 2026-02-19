@@ -7,7 +7,9 @@ import Poll from "@/components/Poll";
 import { getPolls } from "@/lib/polls";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
-const KICK_CHANNEL = "brkk";
+// Change channel then hard-refresh (Ctrl+Shift+R) or restart dev server if embed doesn't update
+// After changing channel: hard-refresh (Ctrl+Shift+R) or restart dev server if embed does not update
+const KICK_CHANNEL = "cct_cs2";
 
 export default function Stream() {
   const { user } = useUserProfile();
@@ -111,7 +113,8 @@ export default function Stream() {
                 className="order-1 min-[1400px]:order-2 bg-black rounded-2xl overflow-hidden shadow-2xl aspect-video relative w-[83vw] max-[1399px]:mx-auto min-[1400px]:w-full min-[1400px]:min-w-[720px]"
               >
                 <iframe
-                  src={`https://player.kick.com/${KICK_CHANNEL}?autoplay=true`}
+                  key={`stream-${KICK_CHANNEL}`}
+                  src={`https://player.kick.com/${KICK_CHANNEL}?autoplay=true&_=${KICK_CHANNEL}`}
                   className="absolute inset-0 w-full h-full"
                   allowFullScreen
                   allow="autoplay; fullscreen"
@@ -134,7 +137,8 @@ export default function Stream() {
                   </a>
                 </div>
                 <iframe
-                  src={`https://kick.com/${KICK_CHANNEL}/chatroom`}
+                  key={`chat-${KICK_CHANNEL}`}
+                  src={`https://kick.com/${KICK_CHANNEL}/chatroom?_=${KICK_CHANNEL}`}
                   className="w-full flex-1 min-h-[320px]"
                   style={{ border: "none" }}
                   title="Kick chat"

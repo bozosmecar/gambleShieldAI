@@ -87,16 +87,16 @@ export default function BlogPostPage() {
 
       {/* Article Header */}
       <article
-        className="container mx-auto px-4 w-[80vw] max-w-7xl pb-20"
+        className=" mx-auto  w-[80vw]  pb-20"
         style={{
-          padding: " 150px min(17vw, 270px)",
+          padding: " 150px min(17vw, 350px)",
           backgroundImage: `url(/blog/postbg.png)`,
-          backgroundSize: "90% 100%",
+          backgroundSize: "100% 100%",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
       >
-        <header className="mb-12 mt-[100px]">
+        <header className="mb-12 ">
           {/* Category Badge */}
           <div className="mb-4">
             <span className="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-sm font-semibold">
