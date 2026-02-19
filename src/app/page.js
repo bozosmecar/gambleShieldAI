@@ -196,7 +196,7 @@ export default function Home() {
           <div className="relative z-2000">
             <section
               ref={aboutSectionRef}
-              className="relative w-full flex flex-col items-center justify-center  bg-[url('/2_About%20company/luk4.png')] bg-no-repeat bg-center bg-cover md:bg-contain"
+              className="relative w-full flex flex-col items-center justify-center bg-no-repeat bg-center bg-cover md:bg-[url('/2_About%20company/luk4.png')] md:bg-contain"
               style={{
                 minHeight: "90vh",
                 paddingTop: "clamp(100px, 15vh, 200px)",
@@ -220,7 +220,7 @@ export default function Home() {
                 }}
               >
                 <div
-                  className="bg-gray-200/40 backdrop-blur-sm rounded-2xl text-center p-6 flex flex-col"
+                  className="bg-gray-200/40 backdrop-blur-sm rounded-2xl text-center p-6 flex flex-col text-black"
                   style={{
                     minHeight: "250px",
                     width: "clamp(300px, 45%, 450px)",
@@ -246,7 +246,7 @@ export default function Home() {
                 </div>
 
                 <div
-                  className="bg-gray-200/40 backdrop-blur-sm rounded-2xl text-center p-6 flex flex-col"
+                  className="bg-gray-200/40 backdrop-blur-sm rounded-2xl text-center p-6 flex flex-col text-black"
                   style={{
                     minHeight: "250px",
                     width: "clamp(300px, 45%, 450px)",

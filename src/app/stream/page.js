@@ -7,7 +7,7 @@ import Poll from "@/components/Poll";
 import { getPolls } from "@/lib/polls";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
-const KICK_CHANNEL = "pgl";
+const KICK_CHANNEL = "brkk";
 
 export default function Stream() {
   const { user } = useUserProfile();
@@ -57,8 +57,7 @@ export default function Stream() {
           {/* Stream Header */}
 
           {/* Kick Stream + Chat */}
-          <div className="mb-8">
-            <div className="mt-[20%]"></div>
+          <div className="mb-8 mt-30">
             <div className="grid grid-cols-1 min-[1400px]:grid-cols-[340px_1fr_340px] gap-4 items-start">
               {/* Column 1: Poll - below stream when stacked */}
               <div
@@ -109,7 +108,7 @@ export default function Stream() {
               {/* Kick Stream Embed - first when stacked */}
               <div
                 ref={streamRef}
-                className="order-1 min-[1400px]:order-2 bg-black rounded-2xl overflow-hidden shadow-2xl aspect-video relative min-w-[720px] w-full"
+                className="order-1 min-[1400px]:order-2 bg-black rounded-2xl overflow-hidden shadow-2xl aspect-video relative w-[83vw] max-[1399px]:mx-auto min-[1400px]:w-full min-[1400px]:min-w-[720px]"
               >
                 <iframe
                   src={`https://player.kick.com/${KICK_CHANNEL}?autoplay=true`}
@@ -140,55 +139,6 @@ export default function Stream() {
                   style={{ border: "none" }}
                   title="Kick chat"
                 />
-              </div>
-            </div>
-          </div>
-          <div
-            className="grid grid-cols-[1fr_1fr_1fr] items-center max-w-[1000px] mx-auto"
-            style={{
-              backgroundImage: "url('/4_Login/lev1/kuca_1.png')",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              backgroundSize: "contain",
-              minHeight: "500px",
-              width: "100%",
-              minWidth: "1000px",
-            }}
-          >
-            <div className="flex items-center justify-center mt-[60%]">
-              <Image
-                src="/4_Login/lev1/lik.png"
-                alt="Kuca 1"
-                width={160}
-                height={160}
-              />
-            </div>
-            <div className="col-start-3 flex items-center justify-center  h-[200px] opacity-50  mr-[30%]         ">
-              <div className="flex flex-col items-start justify-center space-y-2 px-6 py-4 bg-black/85 rounded-xl shadow-2xl border-2 border-white/10 h-[180px] w-[380px]">
-                <span className="text-base font-extrabold text-gray-100 drop-shadow-lg">
-                  Username:{" "}
-                  <span className="font-mono text-white font-black">
-                    Guest123
-                  </span>
-                </span>
-                <span className="text-sm font-extrabold text-gray-100 drop-shadow-lg">
-                  Tier:{" "}
-                  <span className="font-black text-yellow-400 drop-shadow-md">
-                    Gold
-                  </span>
-                </span>
-                <span className="text-sm font-extrabold text-gray-100 drop-shadow-lg">
-                  Bodovi:{" "}
-                  <span className="font-black text-green-400 drop-shadow-md">
-                    8920
-                  </span>
-                </span>
-                <span className="text-sm font-extrabold text-gray-100 drop-shadow-lg">
-                  XP:{" "}
-                  <span className="font-black text-blue-400 drop-shadow-md">
-                    2350 / 5000
-                  </span>
-                </span>
               </div>
             </div>
           </div>
