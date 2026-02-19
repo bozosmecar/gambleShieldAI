@@ -339,7 +339,7 @@ export default function Home() {
                     {[
                       { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
                       {
-                        folder: "ljubicasta",
+                        folder: "zlatna",
                         suffix: "",
                         prefix: "",
                         maxFrame: 6,
@@ -453,16 +453,25 @@ export default function Home() {
                       className="text-red-600 font-bold mb-4 h-16 flex items-center justify-center shrink-0"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
-                      <h3 className="m-0 leading-tight text-center">Watch Stream</h3>
+                      <h3 className="m-0 leading-tight text-center">
+                        Watch Stream
+                      </h3>
                     </div>
-                    <div className="mx-auto mb-6 flex items-center justify-center w-full" style={{ height: 220 }}>
+                    <div
+                      className="mx-auto mb-6 flex items-center justify-center w-full"
+                      style={{ height: 220 }}
+                    >
                       <Image
                         src="/how_it_works/watch.png"
                         alt="Watch Stream"
                         width={300}
                         height={220}
                         className="max-w-full"
-                        style={{ height: 220, width: "auto", objectFit: "contain" }}
+                        style={{
+                          height: 220,
+                          width: "auto",
+                          objectFit: "contain",
+                        }}
                       />
                     </div>
                     <p
@@ -490,16 +499,25 @@ export default function Home() {
                       className="text-red-600 font-bold mb-4 h-16 flex items-center justify-center shrink-0"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
-                      <h3 className="m-0 leading-tight text-center">Upgrade Your Character</h3>
+                      <h3 className="m-0 leading-tight text-center">
+                        Upgrade Your Character
+                      </h3>
                     </div>
-                    <div className="mx-auto mb-6 flex items-center justify-center w-full" style={{ height: 220 }}>
+                    <div
+                      className="mx-auto mb-6 flex items-center justify-center w-full"
+                      style={{ height: 220 }}
+                    >
                       <Image
                         src="/how_it_works/upgrade.png"
                         alt="Upgrade Your Character"
                         width={300}
                         height={220}
                         className="max-w-full"
-                        style={{ height: 220, width: "auto", objectFit: "contain" }}
+                        style={{
+                          height: 220,
+                          width: "auto",
+                          objectFit: "contain",
+                        }}
                       />
                     </div>
                     <p
@@ -527,16 +545,25 @@ export default function Home() {
                       className="text-red-600 font-bold mb-4 h-16 flex items-center justify-center shrink-0"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
-                      <h3 className="m-0 leading-tight text-center">Vote Which Slot Will Be Played</h3>
+                      <h3 className="m-0 leading-tight text-center">
+                        Vote Which Slot Will Be Played
+                      </h3>
                     </div>
-                    <div className="mx-auto mb-6 flex items-center justify-center w-full" style={{ height: 220 }}>
+                    <div
+                      className="mx-auto mb-6 flex items-center justify-center w-full"
+                      style={{ height: 220 }}
+                    >
                       <Image
                         src="/how_it_works/vote.png"
                         alt="Vote Which Slot Will Be Played"
                         width={300}
                         height={220}
                         className="max-w-full"
-                        style={{ height: 220, width: "auto", objectFit: "contain" }}
+                        style={{
+                          height: 220,
+                          width: "auto",
+                          objectFit: "contain",
+                        }}
                       />
                     </div>
                     <p
@@ -565,16 +592,25 @@ export default function Home() {
                       className="text-red-600 font-bold mb-4 h-16 flex items-center justify-center shrink-0"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
-                      <h3 className="m-0 leading-tight text-center">Play Extra Games to Earn More</h3>
+                      <h3 className="m-0 leading-tight text-center">
+                        Play Extra Games to Earn More
+                      </h3>
                     </div>
-                    <div className="mx-auto mb-6 flex items-center justify-center w-full" style={{ height: 220 }}>
+                    <div
+                      className="mx-auto mb-6 flex items-center justify-center w-full"
+                      style={{ height: 220 }}
+                    >
                       <Image
                         src="/how_it_works/play.png"
                         alt="Play Extra Games to Earn More"
                         width={300}
                         height={220}
                         className="max-w-full"
-                        style={{ height: 220, width: "auto", objectFit: "contain" }}
+                        style={{
+                          height: 220,
+                          width: "auto",
+                          objectFit: "contain",
+                        }}
                       />
                     </div>
                     <p
