@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Orbitron } from "next/font/google";
 import { useEffect, useRef, useState } from "react";
+
+const orbitron = Orbitron({ subsets: ["latin"], weight: ["600", "700", "800"] });
 
 export default function Home() {
   const aboutSectionRef = useRef(null);
@@ -90,7 +93,7 @@ export default function Home() {
 
       // Same breakpoint as background (lg = 1024px): home4.png < lg, home.png >= lg
       const isSmallScreen = window.innerWidth < 1024;
-      const threshold = -200;
+      const threshold = window.innerHeight * 0.3; // 20vh – start when about section is 20vh from top
 
       const aboutTop = aboutSectionRef.current.getBoundingClientRect().top;
 
@@ -131,7 +134,10 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{ margin: 0, padding: 0, width: "100%", overflow: "hidden" }}>
+    <div
+      className={`${orbitron.className} font-extrabold`}
+      style={{ margin: 0, padding: 0, width: "100%", overflow: "hidden" }}
+    >
       <main
         ref={mainRef}
         className="block w-full bg-[url('/1_Home%20page/home4.png')] lg:bg-[url('/1_Home%20page/home.png')] bg-no-repeat bg-fixed"
@@ -149,10 +155,10 @@ export default function Home() {
           {/* Vrata Image - syncs with background, clickable link to register */}
           <div
             ref={vrataRef}
-            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer max-lg:left-[28%] max-lg:w-[46vw]  max-lg:top-[58vw] lg:left-[43%] lg:top-[18vw] lg:w-[13.6vw]"
+            className="hidden lg:block fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer lg:left-[43%] lg:top-[18vw] lg:w-[13.6vw]"
             style={{
               height: "auto",
-              zIndex: 15,
+              zIndex: 25,
               willChange: "transform",
             }}
           >
@@ -174,7 +180,7 @@ export default function Home() {
 
         {/* Wrapper for About and Affiliate sections with shared background */}
         <div
-          className="relative w-full scrool-fade-in overflow-visible max-lg:-mt-[1150px] lg:-mt-[650px]"
+          className="relative w-full scrool-fade-in overflow-visible max-lg:-mt-[1150px] lg:-mt-[0px]"
           style={{
             position: "relative",
             zIndex: 30,
@@ -192,19 +198,18 @@ export default function Home() {
             }}
           />
 
-          <div className="relative z-2000">
+          <div className="relative z-2000 max-lg:mt-[75vh]">
             <section
               ref={aboutSectionRef}
-              className="relative w-full flex flex-col items-center justify-center bg-no-repeat bg-center bg-cover md:bg-[url('/2_About%20company/luk4.png')] md:bg-contain"
+              className="relative w-full flex flex-col items-center justify-center bg-no-repeat bg-center md:bg-[url('/2_About%20company/luk4.png')] md:bg-[length:100%_auto] md:bg-top"
               style={{
-                minHeight: "90vh",
-                paddingTop: "clamp(100px, 15vh, 200px)",
+                minHeight: "10vh",
                 paddingBottom: "clamp(3rem, 8vw, 6rem)",
                 paddingLeft: "clamp(2rem, 5vw, 4rem)",
                 paddingRight: "clamp(2rem, 5vw, 4rem)",
                 overflow: "visible",
                 marginTop: "-300px",
-                backgroundPosition: "center center",
+                backgroundPosition: "center top",
                 overflow: "visible",
                 zIndex: 2000,
               }}
@@ -215,7 +220,7 @@ export default function Home() {
                   minHeight: "auto",
                   maxWidth: "1200px",
                   margin: "0 auto",
-                  marginTop: "clamp(80vh, 80%, 450px)",
+                  marginTop: "clamp(30vh, 40%, 450px)",
                 }}
               >
                 <div

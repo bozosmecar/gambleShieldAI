@@ -48,10 +48,7 @@ export default function Navbar() {
     : "fixed top-0 left-0 right-0 bg-white/0 backdrop-blur-md z-[100]";
 
   return (
-    <nav
-      className={navClassName}
-      style={{ minHeight: "70px" }}
-    >
+    <nav className={navClassName} style={{ minHeight: "70px" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[70px] flex items-center justify-between">
         {/* Logo/Brand */}
         <div className="flex items-center gap-2">
@@ -61,18 +58,33 @@ export default function Navbar() {
             className="flex items-center gap-2"
           >
             <Image
-              src="/1_Home%20page/ShieldLogo.png"
+              src="/1_Home%20page/ShieldLogo2.png"
               alt=""
               width={48}
               height={48}
               className="h-14 w-auto object-contain"
             />
-            <h1
-              className="font-bold text-black cursor-pointer hover:text-black/90"
-              style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-            >
-              GambleShield
-            </h1>
+            <Image
+              src="/1_Home%20page/ShieldLogo3.png"
+              alt=""
+              width={48}
+              height={48}
+              className="h-14 w-auto object-contain"
+            />
+            <Image
+              src="/1_Home%20page/ShieldLogo4.png"
+              alt=""
+              width={48}
+              height={48}
+              className="h-14 w-auto object-contain"
+            />
+            <Image
+              src="/1_Home%20page/ShieldLogo5.png"
+              alt=""
+              width={48}
+              height={48}
+              className="h-14 w-auto object-contain"
+            />
           </Link>
         </div>
 
