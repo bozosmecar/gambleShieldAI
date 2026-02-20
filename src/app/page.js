@@ -149,7 +149,7 @@ export default function Home() {
           {/* Vrata Image - syncs with background, clickable link to register */}
           <div
             ref={vrataRef}
-            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer max-lg:left-[28%] max-lg:w-[46vw]  max-lg:top-[58vw] lg:left-[41.92%] lg:top-[17.23vw] lg:w-[15.95vw]"
+            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer max-lg:left-[28%] max-lg:w-[46vw]  max-lg:top-[58vw] lg:left-[35.6%] lg:top-[2.2028vw] lg:w-[28.5vw]"
             style={{
               height: "auto",
               zIndex: 15,
