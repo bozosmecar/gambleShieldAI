@@ -42,9 +42,14 @@ export default function Navbar() {
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
+  const isBlog = pathname === "/blog" || pathname?.startsWith("/blog/");
+  const navClassName = isBlog
+    ? "fixed top-0 left-0 right-0 bg-transparent z-[100]"
+    : "fixed top-0 left-0 right-0 bg-white/0 backdrop-blur-md z-[100]";
+
   return (
     <nav
-      className="fixed top-0 left-0 right-0 bg-white/0 backdrop-blur-md z-[100]"
+      className={navClassName}
       style={{ minHeight: "70px" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[70px] flex items-center justify-between">
@@ -63,7 +68,7 @@ export default function Navbar() {
               className="h-14 w-auto object-contain"
             />
             <h1
-              className="font-bold text-white cursor-pointer hover:text-white/90"
+              className="font-bold text-black cursor-pointer hover:text-black/90"
               style={{ fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
             >
               GambleShield
@@ -81,8 +86,8 @@ export default function Navbar() {
                 href={link.href}
                 className={`font-medium transition-colors ${
                   isActive
-                    ? "text-white font-bold border-b-2 border-white"
-                    : "text-white/90 hover:text-white"
+                    ? "text-black font-bold border-b-2 border-black"
+                    : "text-black/90 hover:text-black"
                 }`}
                 style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}
               >
@@ -94,7 +99,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={handleLogout}
-              className="font-medium text-white hover:text-white/90 transition-colors cursor-pointer"
+              className="font-medium text-black hover:text-black/90 transition-colors cursor-pointer"
               style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}
             >
               Log out
@@ -105,7 +110,7 @@ export default function Navbar() {
         {/* Mobile: Hamburger button */}
         <button
           type="button"
-          className="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-lg text-white hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white"
+          className="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-lg text-black hover:bg-black/20 focus:outline-none focus:ring-2 focus:ring-black"
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           onClick={() => setMobileMenuOpen((prev) => !prev)}
         >
@@ -133,7 +138,7 @@ export default function Navbar() {
           mobileMenuOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="border-t border-white/20 bg-white/0 backdrop-blur-md px-4 py-4 flex flex-col gap-2">
+        <div className="border-t border-black/20 bg-black/0 backdrop-blur-md px-4 py-4 flex flex-col gap-2">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -143,8 +148,8 @@ export default function Navbar() {
                 onClick={closeMobileMenu}
                 className={`py-3 px-3 rounded-lg font-medium transition-colors ${
                   isActive
-                    ? "text-white font-bold bg-white/20"
-                    : "text-white hover:bg-white/20"
+                    ? "text-black font-bold bg-black/20"
+                    : "text-black hover:bg-black/20"
                 }`}
                 style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
               >
@@ -156,7 +161,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={handleLogout}
-              className="py-3 px-3 rounded-lg font-medium text-white hover:bg-white/20 transition-colors text-left"
+              className="py-3 px-3 rounded-lg font-medium text-black hover:bg-black/20 transition-colors text-left"
               style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
             >
               Log out

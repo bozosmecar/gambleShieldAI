@@ -24,7 +24,6 @@ export default function BlogPostPage() {
     return (
       <div
         className="min-h-screen bg-gradient-to-b from-gray-50 to-white"
-        style={{ paddingTop: "70px" }}
       >
         <div className="container mx-auto px-4 py-20 text-center">
           <p className="text-gray-600">Loading...</p>
@@ -37,7 +36,6 @@ export default function BlogPostPage() {
     return (
       <div
         className="min-h-screen bg-gradient-to-b from-gray-50 to-white"
-        style={{ paddingTop: "70px" }}
       >
         <div className="container mx-auto px-4 py-20 text-center">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">
@@ -60,7 +58,6 @@ export default function BlogPostPage() {
   return (
     <div
       className="min-h-screen bg-gradient-to-b from-gray-50 to-white overflow-x-visible"
-      style={{ paddingTop: "70px" }}
     >
       {/* Back Button */}
       <div className="container mx-auto px-4 py-6 max-w-4xl">

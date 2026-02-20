@@ -31,7 +31,6 @@ export default function BlogPage() {
     return (
       <div
         className="min-h-screen bg-gradient-to-b from-gray-50 to-white"
-        style={{ paddingTop: "70px" }}
       >
         <div className="container mx-auto px-4 py-20 text-center">
           <p className="text-gray-600">Loading...</p>
@@ -43,7 +42,6 @@ export default function BlogPage() {
   return (
     <div
       className="min-h-screen bg-gradient-to-b from-gray-50 to-white"
-      style={{ paddingTop: "70px" }}
     >
       {/* Header - affiliate-style background */}
       <header className="bg-amber-500 text-gray-900 py-20">

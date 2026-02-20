@@ -136,8 +136,7 @@ export default function Home() {
         ref={mainRef}
         className="block w-full bg-[url('/1_Home%20page/home4.png')] lg:bg-[url('/1_Home%20page/home.png')] bg-no-repeat bg-fixed"
         style={{
-          height: "auto",
-          backgroundSize: "100% auto",
+          backgroundSize: "cover",
           // ✅ inicijalno (scroll effect poslije preuzima)
           backgroundPosition: `center ${backgroundOffset}px`,
           display: "block",
@@ -150,7 +149,7 @@ export default function Home() {
           {/* Vrata Image - syncs with background, clickable link to register */}
           <div
             ref={vrataRef}
-            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer max-lg:left-[28%] max-lg:w-[46vw]  max-lg:top-[62vw] lg:left-[43.1%] lg:top-[18vw] lg:w-[13.5vw]"
+            className="fixed opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer max-lg:left-[28%] max-lg:w-[46vw]  max-lg:top-[58vw] lg:left-[41.92%] lg:top-[17.23vw] lg:w-[15.95vw]"
             style={{
               height: "auto",
               zIndex: 15,
@@ -175,7 +174,7 @@ export default function Home() {
 
         {/* Wrapper for About and Affiliate sections with shared background */}
         <div
-          className="relative w-full scrool-fade-in overflow-visible max-lg:-mt-[50px] lg:-mt-[200px]"
+          className="relative w-full scrool-fade-in overflow-visible max-lg:-mt-[1150px] lg:-mt-[650px]"
           style={{
             position: "relative",
             zIndex: 30,
