@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 
@@ -12,6 +12,16 @@ export default function Navbar() {
   const router = useRouter();
   const { user, isAdmin } = useUserProfile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  const isBlog = pathname === "/blog" || pathname?.startsWith("/blog/");
+
+  useEffect(() => {
+    if (!isBlog) return;
+    const handleScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isBlog]);
 
   const handleLogout = async () => {
     const supabase = getSupabaseClient();
@@ -42,9 +52,10 @@ export default function Navbar() {
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
-  const isBlog = pathname === "/blog" || pathname?.startsWith("/blog/");
   const navClassName = isBlog
-    ? "fixed top-0 left-0 right-0 bg-transparent z-[100]"
+    ? `fixed top-0 left-0 right-0 bg-transparent z-[100] transition-transform duration-300 ${
+        scrolled ? "-translate-y-full pointer-events-none" : "translate-y-0"
+      }`
     : "fixed top-0 left-0 right-0 bg-white/0 backdrop-blur-md z-[100]";
 
   return (

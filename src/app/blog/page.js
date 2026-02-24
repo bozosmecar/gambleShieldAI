@@ -1,16 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getArticles } from "@/lib/blogArticles";
 import BlogPostCard from "@/components/BlogPostCard";
 
 const POSTS_PER_PAGE = 9; // 3 rows × 3 columns
 
+/** Parse date string to timestamp for sorting (handles ISO, DD.MM.YYYY, etc.) */
+function parseDate(dateStr) {
+  if (!dateStr) return 0;
+  const d = new Date(dateStr);
+  return isNaN(d.getTime()) ? 0 : d.getTime();
+}
+
 export default function BlogPage() {
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filterCategory, setFilterCategory] = useState(""); // "" = all
 
   useEffect(() => {
     async function load() {
@@ -22,7 +30,32 @@ export default function BlogPage() {
   }, []);
 
   const featuredPost = blogPosts.find((p) => p.featured) || blogPosts[0];
-  const gridPosts = blogPosts.filter((p) => p.id !== featuredPost?.id);
+
+  const gridPosts = useMemo(() => {
+    let posts = blogPosts.filter((p) => p.id !== featuredPost?.id);
+
+    if (filterCategory) {
+      posts = posts.filter(
+        (p) => (p.category || "").toLowerCase() === filterCategory.toLowerCase()
+      );
+    }
+
+    posts = [...posts].sort((a, b) => parseDate(b.date) - parseDate(a.date));
+    return posts;
+  }, [blogPosts, featuredPost?.id, filterCategory]);
+
+  const categories = useMemo(() => {
+    const set = new Set();
+    blogPosts.forEach((p) => {
+      if (p.category?.trim()) set.add(p.category.trim());
+    });
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [blogPosts]);
+
+  const handleFilterChange = (value) => {
+    setFilterCategory(value);
+    setCurrentPage(1);
+  };
   const totalPages = Math.ceil(gridPosts.length / POSTS_PER_PAGE) || 1;
   const startIdx = (currentPage - 1) * POSTS_PER_PAGE;
   const paginatedPosts = gridPosts.slice(startIdx, startIdx + POSTS_PER_PAGE);
@@ -30,7 +63,8 @@ export default function BlogPage() {
   if (loading) {
     return (
       <div
-        className="min-h-screen bg-gradient-to-b from-gray-50 to-white"
+        className="min-h-screen"
+        style={{ backgroundImage: "url(/3_Affiliate/testNebo.png)", backgroundSize: "cover" }}
       >
         <div className="container mx-auto px-4 py-20 text-center">
           <p className="text-gray-600">Loading...</p>
@@ -41,33 +75,76 @@ export default function BlogPage() {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-b from-gray-50 to-white"
+      className="min-h-screen"
+      style={{ backgroundImage: "url(/3_Affiliate/testNebo.png)", backgroundSize: "cover" }}
     >
       {/* Header - affiliate-style background */}
-      <header className="bg-amber-500 text-gray-900 py-20">
+      <header className="bg-amber-500 py-20">
         <div className="container mx-auto px-4 w-full">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">
             GambleShield Blog
           </h1>
-          <p className="text-xl md:text-2xl text-amber-900/90">
+          <p className="text-xl md:text-2xl text-white/90">
             Insights, tips, and resources for responsible gaming
           </p>
         </div>
       </header>
 
-      {/* Full-width wrapper so background extends into margins */}
+      {/* Full-width wrapper - same background as affiliate (nebo) */}
       <div
         className="w-full py-12"
         style={{
-          backgroundImage: "url(/blog/bg.png)",
-          backgroundRepeat: "repeat",
+          backgroundImage: "url(/3_Affiliate/testNebo.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
-        <div className="container mx-auto px-4 w-full">
-        {/* Featured Post */}
-        {blogPosts.length > 0 && featuredPost && (
+        <div className="container mx-auto px-4 w-full text-white">
+        {/* Category filter - flags with name inside */}
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
+          <button
+            type="button"
+            onClick={() => handleFilterChange("")}
+            className={`relative rounded-lg transition-all overflow-hidden ${
+              !filterCategory ? "ring-2 ring-white ring-offset-2 ring-offset-transparent" : "opacity-70 hover:opacity-100"
+            }`}
+            title="Sve kategorije"
+          >
+            <img
+              src="/3_Affiliate/crvena/4.png"
+              alt="Sve"
+              className="h-12 w-auto object-contain block"
+            />
+            <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+              Sve
+            </span>
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => handleFilterChange(cat)}
+              className={`relative rounded-lg transition-all overflow-hidden ${
+                filterCategory === cat ? "ring-2 ring-white ring-offset-2 ring-offset-transparent" : "opacity-70 hover:opacity-100"
+              }`}
+              title={cat}
+            >
+              <img
+                src="/3_Affiliate/crvena/4.png"
+                alt={cat}
+                className="h-12 w-auto object-contain block"
+              />
+              <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                {cat}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Featured Post - show when no filter, or when featured matches filter */}
+        {blogPosts.length > 0 && featuredPost && (!filterCategory || (featuredPost.category || "").toLowerCase() === filterCategory.toLowerCase()) && (
           <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-6 text-gray-800">
+            <h2 className="text-3xl font-bold mb-6 text-white">
               Featured Article
             </h2>
             <Link href={`/blog/${featuredPost.id}`}>
@@ -92,8 +169,8 @@ export default function BlogPage() {
                       <span className="px-4 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold">
                         {featuredPost.category}
                       </span>
-                      <span className="text-gray-500 text-sm">
-                        {featuredPost.readTime}
+                      <span className="text-gray-600 text-sm">
+                        {featuredPost.date}
                       </span>
                     </div>
                     <h3 className="text-3xl font-bold mb-4 text-gray-800 hover:text-orange-600">
@@ -102,20 +179,7 @@ export default function BlogPage() {
                     <p className="text-gray-600 mb-6 text-lg leading-relaxed">
                       {featuredPost.excerpt}
                     </p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white font-bold">
-                          {featuredPost.author.charAt(0)}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-gray-800">
-                            {featuredPost.author}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            {featuredPost.date}
-                          </p>
-                        </div>
-                      </div>
+                    <div className="flex items-center justify-end">
                       <span className="px-6 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all font-semibold">
                         Read More
                       </span>
@@ -141,7 +205,7 @@ export default function BlogPage() {
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent font-medium"
+              className="px-4 py-2 rounded-lg border border-white/50 text-white hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent font-medium"
             >
               Previous
             </button>
@@ -154,7 +218,7 @@ export default function BlogPage() {
                     className={`w-10 h-10 rounded-lg font-medium transition-colors ${
                       currentPage === page
                         ? "bg-orange-500 text-white"
-                        : "border border-gray-300 text-gray-700 hover:bg-gray-100"
+                        : "border border-white/50 text-white hover:bg-white/20"
                     }`}
                   >
                     {page}
@@ -165,7 +229,7 @@ export default function BlogPage() {
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent font-medium"
+              className="px-4 py-2 rounded-lg border border-white/50 text-white hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent font-medium"
             >
               Next
             </button>
@@ -176,8 +240,10 @@ export default function BlogPage() {
         {gridPosts.length === 0 && (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">📝</div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">
-              More articles coming soon
+            <h3 className="text-2xl font-bold text-white mb-2">
+              {filterCategory
+                ? `Nema članaka u kategoriji "${filterCategory}"`
+                : "Još članaka uskoro"}
             </h3>
           </div>
         )}
