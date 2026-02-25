@@ -62,10 +62,66 @@ body {
 .scroll-fade-in {
   opacity: 0;
   transform: translateY(80px);
-  transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+  transition:
+    opacity 1.2s ease-out,
+    transform 1.2s ease-out;
 }
 
 .scroll-fade-in.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+@keyframes diceSpark {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(var(--sx), var(--sy)) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(calc(var(--sx) * 1.5), calc(var(--sy) * 1.5))
+      scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--sx) * 2), calc(var(--sy) * 2)) scale(0);
+  }
+}
+
+.dice-spark {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff700, #ffaa00);
+  box-shadow:
+    0 0 6px 2px rgba(255, 230, 0, 0.8),
+    0 0 12px 4px rgba(255, 170, 0, 0.4);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.group:hover .dice-spark {
+  animation: diceSpark 0.8s ease-out 2;
+}
+
+.stit-spark {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff700, #ffaa00);
+  box-shadow:
+    0 0 6px 2px rgba(255, 230, 0, 0.8),
+    0 0 12px 4px rgba(255, 170, 0, 0.4);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.group\/stit:hover .stit-spark {
+  animation: diceSpark 0.8s ease-out 2;
 }

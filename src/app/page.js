@@ -54,6 +54,7 @@ export default function Home() {
   const mainRef = useRef(null);
   const vrataRef = useRef(null);
   const diceRef = useRef(null);
+  const stitRubRef = useRef(null);
   const [diceImage, setDiceImage] = useState("/1_Home page/dices/dice5.png");
   const [diceRolling, setDiceRolling] = useState(false);
   const [dicePop, setDicePop] = useState(false);
@@ -188,6 +189,9 @@ export default function Home() {
       if (diceRef.current) {
         diceRef.current.style.transform = `translateY(${offset}px)`;
       }
+      if (stitRubRef.current) {
+        stitRubRef.current.style.transform = `translateY(${offset}px)`;
+      }
     };
 
     const handleScroll = () => {
@@ -283,21 +287,142 @@ export default function Home() {
 
           {/* Dice - bottom left, syncs with scroll like vrata */}
           <div
-            ref={diceRef}
-            className="hidden lg:block fixed lg:left-[83.7%] lg:top-[37.8vw] lg:w-[1.7vw] cursor-pointer"
+            className="hidden lg:block fixed lg:left-[83.7%] lg:top-[37.8vw] group peer cursor-pointer"
             style={{
-              height: "auto",
               zIndex: 25,
-              willChange: "transform",
+              width: "calc(1.7vw + 200px)",
+              height: "calc(1.7vw + 200px)",
+              transform: "translate(-100px, -100px)",
+              pointerEvents: "auto",
             }}
             onClick={rollDice}
           >
+            {[
+              { top: "0%", left: "20%", sx: "-8px", sy: "-12px", delay: "0s" },
+              {
+                top: "0%",
+                left: "50%",
+                sx: "4px",
+                sy: "-14px",
+                delay: "0.25s",
+              },
+              {
+                top: "0%",
+                left: "80%",
+                sx: "10px",
+                sy: "-10px",
+                delay: "0.5s",
+              },
+              {
+                top: "20%",
+                left: "100%",
+                sx: "14px",
+                sy: "-6px",
+                delay: "0.15s",
+              },
+              {
+                top: "50%",
+                left: "100%",
+                sx: "14px",
+                sy: "4px",
+                delay: "0.4s",
+              },
+              {
+                top: "80%",
+                left: "100%",
+                sx: "10px",
+                sy: "10px",
+                delay: "0.7s",
+              },
+              {
+                top: "100%",
+                left: "80%",
+                sx: "6px",
+                sy: "14px",
+                delay: "0.3s",
+              },
+              {
+                top: "100%",
+                left: "50%",
+                sx: "-2px",
+                sy: "14px",
+                delay: "0.55s",
+              },
+              {
+                top: "100%",
+                left: "20%",
+                sx: "-10px",
+                sy: "10px",
+                delay: "0.1s",
+              },
+              { top: "80%", left: "0%", sx: "-14px", sy: "6px", delay: "0.6s" },
+              {
+                top: "50%",
+                left: "0%",
+                sx: "-14px",
+                sy: "-2px",
+                delay: "0.35s",
+              },
+              {
+                top: "20%",
+                left: "0%",
+                sx: "-10px",
+                sy: "-10px",
+                delay: "0.45s",
+              },
+            ].map((s, i) => (
+              <span
+                key={i}
+                className="dice-spark"
+                style={{
+                  top: s.top,
+                  left: s.left,
+                  "--sx": s.sx,
+                  "--sy": s.sy,
+                  animationDelay: s.delay,
+                }}
+              />
+            ))}
+            <div
+              ref={diceRef}
+              style={{
+                position: "absolute",
+                top: "100px",
+                left: "100px",
+                width: "1.7vw",
+                height: "auto",
+                willChange: "transform",
+                zIndex: 2,
+              }}
+            >
+              <Image
+                src={diceImage}
+                alt="Dice - Click to roll"
+                width={300}
+                height={300}
+                className={`w-full h-auto transition-transform ${dicePop ? "scale-[2] duration-200" : "scale-100 duration-300"}`}
+                style={{ objectFit: "contain" }}
+              />
+            </div>
+          </div>
+
+          {/* StitRub - appears on dice hover, behind dice */}
+          <div
+            ref={stitRubRef}
+            className="hidden lg:block fixed lg:left-[80.2%] lg:top-[32.45vw] pointer-events-none transition-opacity duration-300 opacity-0 peer-hover:opacity-100"
+            style={{
+              width: "8.8vw",
+              height: "auto",
+              zIndex: 24,
+              willChange: "transform",
+            }}
+          >
             <Image
-              src={diceImage}
-              alt="Dice - Click to roll"
+              src="/1_Home page/stitRub.png"
+              alt="Shield Ruby"
               width={300}
               height={300}
-              className={`w-full h-auto transition-transform ${dicePop ? "scale-[2] duration-200" : "scale-100 duration-300 hover:scale-[2]"}`}
+              className="w-full h-auto"
               style={{ objectFit: "contain" }}
             />
           </div>

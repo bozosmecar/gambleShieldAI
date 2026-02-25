@@ -69,28 +69,7 @@ export default function Navbar() {
             className="flex items-center gap-2"
           >
             <Image
-              src="/1_Home%20page/ShieldLogo2.png"
-              alt=""
-              width={48}
-              height={48}
-              className="h-14 w-auto object-contain"
-            />
-            <Image
-              src="/1_Home%20page/ShieldLogo3.png"
-              alt=""
-              width={48}
-              height={48}
-              className="h-14 w-auto object-contain"
-            />
-            <Image
-              src="/1_Home%20page/ShieldLogo4.png"
-              alt=""
-              width={48}
-              height={48}
-              className="h-14 w-auto object-contain"
-            />
-            <Image
-              src="/1_Home%20page/ShieldLogo5.png"
+              src="/1_Home%20page/ShieldLogo.png"
               alt=""
               width={48}
               height={48}

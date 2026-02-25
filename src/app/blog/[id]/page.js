@@ -40,12 +40,6 @@ export default function BlogPostPage() {
           <p className="text-gray-600 mb-8">
             Sorry, we couldn&apos;t find the blog post you&apos;re looking for.
           </p>
-          <Link
-            href="/blog"
-            className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all inline-block"
-          >
-            Back to Blog
-          </Link>
         </div>
       </div>
     );
@@ -65,26 +59,7 @@ export default function BlogPostPage() {
           className=" w-[100vw] lg:w-[80vw] h-auto block"
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center container mx-auto px-4 py-6 max-w-4xl text-center">
-          <Link
-            href="/blog"
-            className="absolute top-4 left-4 inline-flex items-center text-white hover:text-orange-300 transition-colors font-medium"
-          >
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            Back to Blog
-          </Link>
-          <span className="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-sm font-semibold mb-4">
+          <span className="px-4 py-10 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-sm font-semibold mb-4">
             {post.category}
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">

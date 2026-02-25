@@ -30,7 +30,7 @@ export default function BlogPage() {
   }, []);
 
   const visiblePosts = blogPosts.filter(
-    (p) => (p.category || "").toLowerCase() !== "casino"
+    (p) => (p.category || "").toLowerCase() !== "casino",
   );
 
   const gridPosts = useMemo(() => {
@@ -47,13 +47,12 @@ export default function BlogPage() {
     return posts;
   }, [visiblePosts, filterCategory]);
 
-  const categories = useMemo(() => {
-    const set = new Set();
-    visiblePosts.forEach((p) => {
-      if (p.category?.trim()) set.add(p.category.trim());
-    });
-    return Array.from(set).sort((a, b) => a.localeCompare(b));
-  }, [visiblePosts]);
+  const categories = [
+    { name: "Best casinos", flag: "crvena" },
+    { name: "Education", flag: "zelena" },
+    { name: "Tips", flag: "plava" },
+    { name: "GambleShield", flag: "ljubicasta" },
+  ];
 
   const handleFilterChange = (value) => {
     setFilterCategory(value);
@@ -80,13 +79,7 @@ export default function BlogPage() {
   }
 
   return (
-    <div
-      className="min-h-screen"
-      style={{
-        backgroundImage: "url(/3_Affiliate/testNebo.png)",
-        backgroundSize: "cover",
-      }}
-    >
+    <div className="min-h-screen">
       {/* Header - affiliate-style background */}
       <header className="bg-amber-500 py-20">
         <div className="container mx-auto px-4 w-full">
@@ -127,28 +120,28 @@ export default function BlogPage() {
                 className="h-12 w-auto object-contain block"
               />
               <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                Sve
+                All
               </span>
             </button>
             {categories.map((cat) => (
               <button
-                key={cat}
+                key={cat.name}
                 type="button"
-                onClick={() => handleFilterChange(cat)}
+                onClick={() => handleFilterChange(cat.name)}
                 className={`relative rounded-lg transition-all overflow-hidden ${
-                  filterCategory === cat
+                  filterCategory === cat.name
                     ? "ring-2 ring-white ring-offset-2 ring-offset-transparent"
                     : "opacity-70 hover:opacity-100"
                 }`}
-                title={cat}
+                title={cat.name}
               >
                 <img
-                  src="/3_Affiliate/crvena/4.png"
-                  alt={cat}
+                  src={`/3_Affiliate/${cat.flag}/4.png`}
+                  alt={cat.name}
                   className="h-12 w-auto object-contain block"
                 />
                 <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                  {cat}
+                  {cat.name}
                 </span>
               </button>
             ))}
@@ -216,7 +209,7 @@ export default function BlogPage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 mt-20">
+      <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-400">
             © 2026 GambleShield. All rights reserved. | Promoting responsible
