@@ -52,7 +52,7 @@ export default function Stream() {
     <>
       {/* Main Content */}
       <main
-        className="min-h-screen bg-[url('/stream_background.png')] bg-no-repeat bg-center bg-cover"
+        className="min-h-screen bg-[url('/stream_background.png')] bg-no-repeat bg-center bg-cover relative"
         style={{ paddingTop: "70px" }}
       >
         <div className="w-[90vw] mx-auto px-4 sm:px-6 lg:px-8 py-12  items-center ">
