@@ -53,6 +53,39 @@ export default function Home() {
   const affiliateRow4Ref = useRef(null);
   const mainRef = useRef(null);
   const vrataRef = useRef(null);
+  const diceRef = useRef(null);
+  const [diceImage, setDiceImage] = useState("/1_Home page/dices/dice5.png");
+  const [diceRolling, setDiceRolling] = useState(false);
+  const [dicePop, setDicePop] = useState(false);
+
+  const rollDice = () => {
+    if (diceRolling) return;
+    setDiceRolling(true);
+    setDicePop(false);
+
+    const allDice = [1, 2, 3, 4, 5, 6];
+    const picks = [];
+    for (let i = 0; i < 15; i++) {
+      picks.push(allDice[Math.floor(Math.random() * 6)]);
+    }
+
+    let i = 0;
+    const showNext = () => {
+      if (i >= 15) {
+        setDicePop(true);
+        setTimeout(() => {
+          setDicePop(false);
+          setDiceRolling(false);
+        }, 400);
+        return;
+      }
+      setDiceImage(`/1_Home page/dices/dice${picks[i]}.png`);
+      i++;
+      const delay = i <= 12 ? 100 : 500;
+      setTimeout(showNext, delay);
+    };
+    showNext();
+  };
 
   const [backgroundOffset, setBackgroundOffset] = useState(0); // ostavljam ga, ali ga više ne koristimo za scroll
 
@@ -152,6 +185,9 @@ export default function Home() {
           vrataRef.current.style.transform = `translateY(${offset}px)`;
         }
       }
+      if (diceRef.current) {
+        diceRef.current.style.transform = `translateY(${offset}px)`;
+      }
     };
 
     const handleScroll = () => {
@@ -182,7 +218,9 @@ export default function Home() {
         padding: 0,
         width: "100%",
         overflow: "hidden",
-        ...(isCormorant ? { WebkitTextStroke: "0.5px currentColor", letterSpacing: "0.02em" } : {}),
+        ...(isCormorant
+          ? { WebkitTextStroke: "0.5px currentColor", letterSpacing: "0.02em" }
+          : {}),
       }}
     >
       {/* Font picker */}
@@ -241,6 +279,27 @@ export default function Home() {
                 style={{ objectFit: "contain" }}
               />
             </Link>
+          </div>
+
+          {/* Dice - bottom left, syncs with scroll like vrata */}
+          <div
+            ref={diceRef}
+            className="hidden lg:block fixed lg:left-[83.7%] lg:top-[37.8vw] lg:w-[1.7vw] cursor-pointer"
+            style={{
+              height: "auto",
+              zIndex: 25,
+              willChange: "transform",
+            }}
+            onClick={rollDice}
+          >
+            <Image
+              src={diceImage}
+              alt="Dice - Click to roll"
+              width={300}
+              height={300}
+              className={`w-full h-auto transition-transform ${dicePop ? "scale-[2] duration-200" : "scale-100 duration-300 hover:scale-[2]"}`}
+              style={{ objectFit: "contain" }}
+            />
           </div>
         </div>
 
@@ -399,8 +458,20 @@ export default function Home() {
                     }}
                   >
                     {[
-                      { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
-                      { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
+                      {
+                        folder: "crvena",
+                        suffix: "",
+                        prefix: "",
+                        maxFrame: 6,
+                        blogPostId: 1,
+                      },
+                      {
+                        folder: "plava",
+                        suffix: "",
+                        prefix: "",
+                        maxFrame: 6,
+                        blogPostId: null,
+                      },
                     ].map((flagConfig, idx) => (
                       <AffiliateColumn
                         key={idx}
@@ -412,6 +483,7 @@ export default function Home() {
                         flagSuffix={flagConfig.suffix}
                         flagPrefix={flagConfig.prefix}
                         maxFrame={flagConfig.maxFrame}
+                        blogPostId={flagConfig.blogPostId}
                       />
                     ))}
                   </div>
@@ -425,12 +497,19 @@ export default function Home() {
                     }}
                   >
                     {[
-                      { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
+                      {
+                        folder: "zelena",
+                        suffix: "",
+                        prefix: "",
+                        maxFrame: 6,
+                        blogPostId: null,
+                      },
                       {
                         folder: "zlatna",
                         suffix: "",
                         prefix: "",
                         maxFrame: 6,
+                        blogPostId: null,
                       },
                     ].map((flagConfig, idx) => (
                       <AffiliateColumn
@@ -443,6 +522,7 @@ export default function Home() {
                         flagSuffix={flagConfig.suffix}
                         flagPrefix={flagConfig.prefix}
                         maxFrame={flagConfig.maxFrame}
+                        blogPostId={flagConfig.blogPostId}
                       />
                     ))}
                   </div>
@@ -456,8 +536,20 @@ export default function Home() {
                     }}
                   >
                     {[
-                      { folder: "crvena", suffix: "", prefix: "", maxFrame: 6 },
-                      { folder: "plava", suffix: "", prefix: "", maxFrame: 6 },
+                      {
+                        folder: "crvena",
+                        suffix: "",
+                        prefix: "",
+                        maxFrame: 6,
+                        blogPostId: null,
+                      },
+                      {
+                        folder: "plava",
+                        suffix: "",
+                        prefix: "",
+                        maxFrame: 6,
+                        blogPostId: null,
+                      },
                     ].map((flagConfig, idx) => (
                       <AffiliateColumn
                         key={idx + 4}
@@ -469,6 +561,7 @@ export default function Home() {
                         flagSuffix={flagConfig.suffix}
                         flagPrefix={flagConfig.prefix}
                         maxFrame={flagConfig.maxFrame}
+                        blogPostId={flagConfig.blogPostId}
                       />
                     ))}
                   </div>
@@ -482,12 +575,19 @@ export default function Home() {
                     }}
                   >
                     {[
-                      { folder: "zelena", suffix: "", prefix: "", maxFrame: 6 },
+                      {
+                        folder: "zelena",
+                        suffix: "",
+                        prefix: "",
+                        maxFrame: 6,
+                        blogPostId: null,
+                      },
                       {
                         folder: "ljubicasta",
                         suffix: "",
                         prefix: "",
                         maxFrame: 6,
+                        blogPostId: null,
                       },
                     ].map((flagConfig, idx) => (
                       <AffiliateColumn
@@ -500,6 +600,7 @@ export default function Home() {
                         flagSuffix={flagConfig.suffix}
                         flagPrefix={flagConfig.prefix}
                         maxFrame={flagConfig.maxFrame}
+                        blogPostId={flagConfig.blogPostId}
                       />
                     ))}
                   </div>
@@ -732,6 +833,7 @@ function AffiliateColumn({
   flagSuffix = "",
   flagPrefix = "",
   maxFrame = 6,
+  blogPostId = null,
 }) {
   const [currentFrame, setCurrentFrame] = useState(4);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -912,6 +1014,13 @@ function AffiliateColumn({
               >
                 Verified • Secure • Responsible
               </p>
+              <Link
+                href={blogPostId ? `/blog/${blogPostId}` : "/blog"}
+                className="pointer-events-auto mt-3 px-4 py-1.5 bg-white/20 hover:bg-white/40 text-white rounded-full text-xs font-semibold transition-colors"
+                style={{ textShadow: "1px 1px 3px rgba(0,0,0,0.7)" }}
+              >
+                Click to view more →
+              </Link>
             </div>
           )}
         </div>

@@ -29,28 +29,31 @@ export default function BlogPage() {
     load();
   }, []);
 
-  const featuredPost = blogPosts.find((p) => p.featured) || blogPosts[0];
+  const visiblePosts = blogPosts.filter(
+    (p) => (p.category || "").toLowerCase() !== "casino"
+  );
 
   const gridPosts = useMemo(() => {
-    let posts = blogPosts.filter((p) => p.id !== featuredPost?.id);
+    let posts = [...visiblePosts];
 
     if (filterCategory) {
       posts = posts.filter(
-        (p) => (p.category || "").toLowerCase() === filterCategory.toLowerCase()
+        (p) =>
+          (p.category || "").toLowerCase() === filterCategory.toLowerCase(),
       );
     }
 
-    posts = [...posts].sort((a, b) => parseDate(b.date) - parseDate(a.date));
+    posts.sort((a, b) => parseDate(b.date) - parseDate(a.date));
     return posts;
-  }, [blogPosts, featuredPost?.id, filterCategory]);
+  }, [visiblePosts, filterCategory]);
 
   const categories = useMemo(() => {
     const set = new Set();
-    blogPosts.forEach((p) => {
+    visiblePosts.forEach((p) => {
       if (p.category?.trim()) set.add(p.category.trim());
     });
     return Array.from(set).sort((a, b) => a.localeCompare(b));
-  }, [blogPosts]);
+  }, [visiblePosts]);
 
   const handleFilterChange = (value) => {
     setFilterCategory(value);
@@ -64,7 +67,10 @@ export default function BlogPage() {
     return (
       <div
         className="min-h-screen"
-        style={{ backgroundImage: "url(/3_Affiliate/testNebo.png)", backgroundSize: "cover" }}
+        style={{
+          backgroundImage: "url(/3_Affiliate/testNebo.png)",
+          backgroundSize: "cover",
+        }}
       >
         <div className="container mx-auto px-4 py-20 text-center">
           <p className="text-gray-600">Loading...</p>
@@ -76,7 +82,10 @@ export default function BlogPage() {
   return (
     <div
       className="min-h-screen"
-      style={{ backgroundImage: "url(/3_Affiliate/testNebo.png)", backgroundSize: "cover" }}
+      style={{
+        backgroundImage: "url(/3_Affiliate/testNebo.png)",
+        backgroundSize: "cover",
+      }}
     >
       {/* Header - affiliate-style background */}
       <header className="bg-amber-500 py-20">
@@ -100,154 +109,109 @@ export default function BlogPage() {
         }}
       >
         <div className="container mx-auto px-4 w-full text-white">
-        {/* Category filter - flags with name inside */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
-          <button
-            type="button"
-            onClick={() => handleFilterChange("")}
-            className={`relative rounded-lg transition-all overflow-hidden ${
-              !filterCategory ? "ring-2 ring-white ring-offset-2 ring-offset-transparent" : "opacity-70 hover:opacity-100"
-            }`}
-            title="Sve kategorije"
-          >
-            <img
-              src="/3_Affiliate/crvena/4.png"
-              alt="Sve"
-              className="h-12 w-auto object-contain block"
-            />
-            <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-              Sve
-            </span>
-          </button>
-          {categories.map((cat) => (
+          {/* Category filter - flags with name inside */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-10">
             <button
-              key={cat}
               type="button"
-              onClick={() => handleFilterChange(cat)}
+              onClick={() => handleFilterChange("")}
               className={`relative rounded-lg transition-all overflow-hidden ${
-                filterCategory === cat ? "ring-2 ring-white ring-offset-2 ring-offset-transparent" : "opacity-70 hover:opacity-100"
+                !filterCategory
+                  ? "ring-2 ring-white ring-offset-2 ring-offset-transparent"
+                  : "opacity-70 hover:opacity-100"
               }`}
-              title={cat}
+              title="Sve kategorije"
             >
               <img
                 src="/3_Affiliate/crvena/4.png"
-                alt={cat}
+                alt="Sve"
                 className="h-12 w-auto object-contain block"
               />
               <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                {cat}
+                Sve
               </span>
             </button>
-          ))}
-        </div>
-
-        {/* Featured Post - show when no filter, or when featured matches filter */}
-        {blogPosts.length > 0 && featuredPost && (!filterCategory || (featuredPost.category || "").toLowerCase() === filterCategory.toLowerCase()) && (
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-6 text-white">
-              Featured Article
-            </h2>
-            <Link href={`/blog/${featuredPost.id}`}>
-              <div className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
-                <div className="grid md:grid-cols-2 gap-0">
-                  <div className="relative h-64 md:h-full bg-gradient-to-br from-orange-400 via-red-400 to-orange-500 overflow-hidden">
-                    {featuredPost.image ? (
-                      <img
-                        src={featuredPost.image}
-                        alt={featuredPost.title}
-                        className="absolute inset-0 w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center text-white text-2xl font-bold">
-                        Featured Image
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-8 md:p-12 flex flex-col justify-center">
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="px-4 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold">
-                        {featuredPost.category}
-                      </span>
-                      <span className="text-gray-600 text-sm">
-                        {featuredPost.date}
-                      </span>
-                    </div>
-                    <h3 className="text-3xl font-bold mb-4 text-gray-800 hover:text-orange-600">
-                      {featuredPost.title}
-                    </h3>
-                    <p className="text-gray-600 mb-6 text-lg leading-relaxed">
-                      {featuredPost.excerpt}
-                    </p>
-                    <div className="flex items-center justify-end">
-                      <span className="px-6 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all font-semibold">
-                        Read More
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          </div>
-        )}
-
-        {/* Blog Grid - flex wrap, cards wrap naturally by min-width */}
-        <div className="flex flex-wrap justify-center gap-8 gap-y-14">
-          {paginatedPosts.length > 0 &&
-            paginatedPosts.map((post) => (
-              <BlogPostCard key={post.id} post={post} />
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => handleFilterChange(cat)}
+                className={`relative rounded-lg transition-all overflow-hidden ${
+                  filterCategory === cat
+                    ? "ring-2 ring-white ring-offset-2 ring-offset-transparent"
+                    : "opacity-70 hover:opacity-100"
+                }`}
+                title={cat}
+              >
+                <img
+                  src="/3_Affiliate/crvena/4.png"
+                  alt={cat}
+                  className="h-12 w-auto object-contain block"
+                />
+                <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                  {cat}
+                </span>
+              </button>
             ))}
-        </div>
+          </div>
 
-        {/* Pagination */}
-        {gridPosts.length > POSTS_PER_PAGE && (
-          <div className="mt-12 flex items-center justify-center gap-2">
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-2 rounded-lg border border-white/50 text-white hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent font-medium"
-            >
-              Previous
-            </button>
-            <div className="flex items-center gap-1">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`w-10 h-10 rounded-lg font-medium transition-colors ${
-                      currentPage === page
-                        ? "bg-orange-500 text-white"
-                        : "border border-white/50 text-white hover:bg-white/20"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ),
-              )}
+          {/* Blog Grid - flex wrap, cards wrap naturally by min-width */}
+          <div className="flex flex-wrap justify-center gap-8 gap-y-14">
+            {paginatedPosts.length > 0 &&
+              paginatedPosts.map((post) => (
+                <BlogPostCard key={post.id} post={post} />
+              ))}
+          </div>
+
+          {/* Pagination */}
+          {gridPosts.length > POSTS_PER_PAGE && (
+            <div className="mt-12 flex items-center justify-center gap-2">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="px-4 py-2 rounded-lg border border-white/50 text-white hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent font-medium"
+              >
+                Previous
+              </button>
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+                        currentPage === page
+                          ? "bg-orange-500 text-white"
+                          : "border border-white/50 text-white hover:bg-white/20"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ),
+                )}
+              </div>
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 rounded-lg border border-white/50 text-white hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent font-medium"
+              >
+                Next
+              </button>
             </div>
-            <button
-              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 rounded-lg border border-white/50 text-white hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent font-medium"
-            >
-              Next
-            </button>
-          </div>
-        )}
+          )}
 
-        {/* Empty State */}
-        {gridPosts.length === 0 && (
-          <div className="text-center py-20">
-            <div className="text-6xl mb-4">📝</div>
-            <h3 className="text-2xl font-bold text-white mb-2">
-              {filterCategory
-                ? `Nema članaka u kategoriji "${filterCategory}"`
-                : "Još članaka uskoro"}
-            </h3>
-          </div>
-        )}
-
+          {/* Empty State */}
+          {gridPosts.length === 0 && (
+            <div className="text-center py-20">
+              <div className="text-6xl mb-4">📝</div>
+              <h3 className="text-2xl font-bold text-white mb-2">
+                {filterCategory
+                  ? `Nema članaka u kategoriji "${filterCategory}"`
+                  : "Još članaka uskoro"}
+              </h3>
+            </div>
+          )}
         </div>
       </div>
 
