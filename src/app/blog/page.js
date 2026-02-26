@@ -79,7 +79,7 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen normal-case">
       {/* Header - affiliate-style background */}
       <header className="bg-amber-500 py-20">
         <div className="container mx-auto px-4 w-full"></div>

@@ -47,96 +47,69 @@ export default function BlogPostPage() {
 
   return (
     <div
-      className="grid gap-0 overflow-x-visible mt-25"
-      style={{ gridTemplateRows: "auto auto auto" }}
+      className="min-h-screen normal-case mt-25"
+      style={{
+        backgroundImage: "url(/blog/backgroundPost.png)",
+        backgroundSize: "cover",
+        backgroundPosition: "center top",
+        backgroundRepeat: "no-repeat",
+      }}
     >
-      {/* Row 1: red-top.png - iznad teksta, container height fits full image */}
-      <div className="w-full relative flex justify-center">
-        <img
-          src="/blog/red-top.png"
-          alt=""
-          aria-hidden
-          className=" w-[100vw] lg:w-[80vw] h-auto block"
-        />
-        <div className="absolute inset-0 flex flex-col items-center justify-center container mx-auto px-4 py-6 max-w-4xl text-center">
-          <span className="px-4 py-10 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-sm font-semibold mb-4">
+      <div className="w-full flex flex-col items-center py-16 px-4">
+        <div className="text-center mb-12 w-[90vw] lg:w-[60vw]">
+          <span className="px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-sm font-semibold">
             {post.category}
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 mt-6 leading-tight">
             {post.title}
           </h1>
           <span className="text-white/90 text-sm">{post.date}</span>
         </div>
-      </div>
 
-      {/* Row 2: red-mid.png - preko čega je tekst */}
-      <div
-        className="bg-center relative w-[100vw] lg:w-[80vw] mx-auto"
-        style={{
-          backgroundImage: "url(/blog/red-mid.png)",
-          backgroundSize: "100% 100%",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <article className=" mx-auto w-[90vw] max-lg:relative  lg:w-[75vw] pb-20 pt-8 lg:pt-12">
-          <div className="px-4 mx-auto w-[60vw] lg:w-[45vw]">
-            {/* Featured Image */}
-            <div className="relative h-96 bg-gradient-to-br from-orange-400 via-red-400 to-orange-500 rounded-2xl mb-12 overflow-hidden">
-              {post.image ? (
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="absolute inset-0 w-full h-full object-cover rounded-2xl"
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <div className="absolute inset-0 flex items-center justify-center text-white text-3xl font-bold">
-                  Featured Image
-                </div>
-              )}
-            </div>
-
-            {/* Article Content - all text white */}
-            <div
-              className="prose prose-lg max-w-none prose-invert
-                prose-headings:!text-white prose-headings:font-bold
-                prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
-                prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-                prose-p:!text-white prose-p:leading-relaxed prose-p:mb-6
-                prose-ul:my-6 prose-ul:space-y-2
-                prose-li:!text-white
-                prose-strong:!text-white prose-strong:font-semibold
-                [&_p]:!text-white [&_h1]:!text-white [&_h2]:!text-white [&_h3]:!text-white
-                [&_li]:!text-white [&_span]:!text-white [&_a]:!text-orange-300 [&_a:hover]:!text-orange-200"
-              dangerouslySetInnerHTML={{ __html: post.content }}
-            />
-
-            {/* Related Articles */}
-            <div className="mt-16 pt-8 border-t border-white/30">
-              <h3 className="text-2xl font-bold text-white mb-6">
-                Related Articles
-              </h3>
-              <div>
-                <Link
-                  href="/blog"
-                  className="text-orange-400 hover:text-orange-300 font-medium"
-                >
-                  View all articles →
-                </Link>
+        <div className="px-4 w-[90vw] lg:w-[60vw]">
+          <div className="relative h-96 bg-gradient-to-br from-orange-400 via-red-400 to-orange-500 rounded-2xl mb-12 overflow-hidden">
+            {post.image ? (
+              <img
+                src={post.image}
+                alt={post.title}
+                className="absolute inset-0 w-full h-full object-cover rounded-2xl"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center text-white text-3xl font-bold">
+                Featured Image
               </div>
+            )}
+          </div>
+
+          <div
+            className="prose prose-lg max-w-none prose-invert
+              prose-headings:!text-white prose-headings:font-bold
+              prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
+              prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
+              prose-p:!text-white prose-p:leading-relaxed prose-p:mb-6
+              prose-ul:my-6 prose-ul:space-y-2
+              prose-li:!text-white
+              prose-strong:!text-white prose-strong:font-semibold
+              [&_p]:!text-white [&_h1]:!text-white [&_h2]:!text-white [&_h3]:!text-white
+              [&_li]:!text-white [&_span]:!text-white [&_a]:!text-orange-300 [&_a:hover]:!text-orange-200"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+
+          <div className="mt-16 pt-8 border-t border-white/30">
+            <h3 className="text-2xl font-bold text-white mb-6">
+              Related Articles
+            </h3>
+            <div>
+              <Link
+                href="/blog"
+                className="text-orange-400 hover:text-orange-300 font-medium"
+              >
+                View all articles →
+              </Link>
             </div>
           </div>
-        </article>
-      </div>
-
-      {/* Row 3: red-bottom.png - ispod, container height fits full image */}
-      <div className="relative flex justify-center w-[100vw] lg:w-[80vw] mx-auto mb-15">
-        <img
-          src="/blog/red-bottom.png"
-          alt=""
-          aria-hidden
-          className="w-full  h-auto block"
-        />
+        </div>
       </div>
     </div>
   );

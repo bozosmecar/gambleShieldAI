@@ -86,9 +86,9 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`font-medium transition-colors ${
+                className={`font-bold transition-colors ${
                   isActive
-                    ? "text-black font-bold border-b-2 border-black"
+                    ? "text-black border-b-2 border-black"
                     : "text-black/90 hover:text-black"
                 }`}
                 style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}
@@ -101,7 +101,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={handleLogout}
-              className="font-medium text-black hover:text-black/90 transition-colors cursor-pointer"
+              className="font-bold text-black hover:text-black/90 transition-colors cursor-pointer"
               style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}
             >
               Log out
@@ -148,7 +148,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={closeMobileMenu}
-                className={`py-3 px-3 rounded-lg font-medium transition-colors ${
+                className={`py-3 px-3 rounded-lg font-bold transition-colors ${
                   isActive
                     ? "text-black font-bold bg-black/20"
                     : "text-black hover:bg-black/20"
@@ -163,7 +163,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={handleLogout}
-              className="py-3 px-3 rounded-lg font-medium text-black hover:bg-black/20 transition-colors text-left"
+              className="py-3 px-3 rounded-lg font-bold text-black hover:bg-black/20 transition-colors text-left"
               style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
             >
               Log out
