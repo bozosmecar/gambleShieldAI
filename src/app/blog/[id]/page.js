@@ -53,6 +53,7 @@ export default function BlogPostPage() {
         backgroundSize: "cover",
         backgroundPosition: "center top",
         backgroundRepeat: "no-repeat",
+        backgroundColor: "#8B7355",
       }}
     >
       <div className="w-full flex flex-col items-center py-16 px-4">
@@ -67,7 +68,7 @@ export default function BlogPostPage() {
         </div>
 
         <div className="px-4 w-[90vw] lg:w-[60vw]">
-          <div className="relative h-96 bg-gradient-to-br from-orange-400 via-red-400 to-orange-500 rounded-2xl mb-12 overflow-hidden">
+          <div className="relative h-96 rounded-2xl mb-12 overflow-hidden">
             {post.image ? (
               <img
                 src={post.image}

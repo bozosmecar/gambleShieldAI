@@ -513,7 +513,14 @@ export default function Home() {
                         suffix: "",
                         prefix: "",
                         maxFrame: 6,
-                        blogPostId: 1,
+                        blogPostId: null,
+                        name: "Powerup Casino",
+                        openedText: [
+                          "WELCOME BONUS UP TO $3000!",
+                          "1st Deposit: 150% up to $1000 + Spins!",
+                          "6000+ Slots • Full Crypto Support • Fast Payouts",
+                          "Licensed & Fair (Anjouan/Curaçao)",
+                        ],
                       },
                       {
                         folder: "plava",
@@ -521,6 +528,14 @@ export default function Home() {
                         prefix: "",
                         maxFrame: 6,
                         blogPostId: null,
+                        name: "Tonybet",
+                        openedText: [
+                          "WELCOME BONUS UP TO 300 + 150 spins",
+                          "1st Deposit: 100% up to 150$",
+                          "Licensed & Fair (Estonia)",
+                          "Great sportsbook with welcome bonus",
+                          "Partial Crypto support and Fast payouts",
+                        ],
                       },
                     ].map((flagConfig, idx) => (
                       <AffiliateColumn
@@ -534,6 +549,8 @@ export default function Home() {
                         flagPrefix={flagConfig.prefix}
                         maxFrame={flagConfig.maxFrame}
                         blogPostId={flagConfig.blogPostId}
+                        name={flagConfig.name}
+                        openedText={flagConfig.openedText}
                       />
                     ))}
                   </div>
@@ -553,6 +570,13 @@ export default function Home() {
                         prefix: "",
                         maxFrame: 6,
                         blogPostId: null,
+                        name: "Mr Green Casino",
+                        openedText: [
+                          "Welcome bonus 200% up to 100$",
+                          "Only Classic deposit methods",
+                          "Licensed & Fair (Malta)",
+                          "More than 1500+ slots and live casino",
+                        ],
                       },
                       {
                         folder: "zlatna",
@@ -560,6 +584,14 @@ export default function Home() {
                         prefix: "",
                         maxFrame: 6,
                         blogPostId: null,
+                        name: "Casino Action",
+                        openedText: [
+                          "Receive up to 1250$ in welcome bonus",
+                          "Great loyalty program",
+                          "Lots of slots options and live tables",
+                          "Licensed & Fair",
+                          "Only classic deposit method",
+                        ],
                       },
                     ].map((flagConfig, idx) => (
                       <AffiliateColumn
@@ -573,6 +605,8 @@ export default function Home() {
                         flagPrefix={flagConfig.prefix}
                         maxFrame={flagConfig.maxFrame}
                         blogPostId={flagConfig.blogPostId}
+                        name={flagConfig.name}
+                        openedText={flagConfig.openedText}
                       />
                     ))}
                   </div>
@@ -592,6 +626,15 @@ export default function Home() {
                         prefix: "",
                         maxFrame: 6,
                         blogPostId: null,
+                        name: "mBit Casino",
+                        openedText: [
+                          "3 welcome bonuses!",
+                          "1st 175% up to 1BTC",
+                          "For crypto fans only",
+                          "More than 2000+ slots, instant play and live casino",
+                          "Fast payout",
+                          "Licensed & Fair (Curaçao)",
+                        ],
                       },
                       {
                         folder: "plava",
@@ -599,6 +642,13 @@ export default function Home() {
                         prefix: "",
                         maxFrame: 6,
                         blogPostId: null,
+                        name: "Casumo",
+                        openedText: [
+                          "Welcome bonus 100% up to 300",
+                          "Licensed & Fair (Malta, UK etc)",
+                          "Lots of slots and good chat support",
+                          "Only classic deposit method",
+                        ],
                       },
                     ].map((flagConfig, idx) => (
                       <AffiliateColumn
@@ -612,6 +662,8 @@ export default function Home() {
                         flagPrefix={flagConfig.prefix}
                         maxFrame={flagConfig.maxFrame}
                         blogPostId={flagConfig.blogPostId}
+                        name={flagConfig.name}
+                        openedText={flagConfig.openedText}
                       />
                     ))}
                   </div>
@@ -631,6 +683,8 @@ export default function Home() {
                         prefix: "",
                         maxFrame: 6,
                         blogPostId: null,
+                        name: "Coming Soon",
+                        openedText: ["Stay tuned for more partners!"],
                       },
                       {
                         folder: "ljubicasta",
@@ -638,6 +692,8 @@ export default function Home() {
                         prefix: "",
                         maxFrame: 6,
                         blogPostId: null,
+                        name: "Coming Soon",
+                        openedText: ["Stay tuned for more partners!"],
                       },
                     ].map((flagConfig, idx) => (
                       <AffiliateColumn
@@ -651,6 +707,8 @@ export default function Home() {
                         flagPrefix={flagConfig.prefix}
                         maxFrame={flagConfig.maxFrame}
                         blogPostId={flagConfig.blogPostId}
+                        name={flagConfig.name}
+                        openedText={flagConfig.openedText}
                       />
                     ))}
                   </div>
@@ -883,6 +941,8 @@ function AffiliateColumn({
   flagPrefix = "",
   maxFrame = 6,
   blogPostId = null,
+  name = "Affiliate Partner",
+  openedText = [],
 }) {
   const [currentFrame, setCurrentFrame] = useState(4);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -1012,13 +1072,13 @@ function AffiliateColumn({
           {currentFrame === 4 && (
             <div className="text-center mt-[-00%] text-white">
               <h3
-                className="font-bold "
+                className="font-bold"
                 style={{
                   fontSize: "clamp(0.8rem, 1.5vw, 1.2rem)",
                   textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
                 }}
               >
-                Affiliate Partner
+                {name}
               </h3>
               <p
                 style={{
@@ -1034,38 +1094,32 @@ function AffiliateColumn({
           {currentFrame === maxFrame && (
             <div className="text-center text-white flex flex-col items-center justify-center">
               <h3
-                className="font-bold mb-3"
+                className="font-bold mb-2"
                 style={{
-                  fontSize: "clamp(1rem, 2vw, 1.2rem)",
+                  fontSize: "clamp(0.9rem, 1.8vw, 1.2rem)",
                   textShadow: "2px 2px 4px rgba(0,0,0,0.7)",
                 }}
               >
-                Premium Partnership
+                {name}
               </h3>
-              <p
-                className="mb-2"
-                style={{
-                  width: "80%",
-                  textAlign: "center",
-                  fontSize: "clamp(0.7rem, 1.2vw, 1rem)",
-                  textShadow: "1px 1px 3px rgba(0,0,0,0.7)",
-                  lineHeight: "1.4",
-                }}
-              >
-                Join our network of trusted gambling platforms
-              </p>
-              <p
-                style={{
-                  fontSize: "clamp(0.65rem, 1.1vw, 0.9rem)",
-                  textShadow: "1px 1px 3px rgba(0,0,0,0.7)",
-                  opacity: 0.9,
-                }}
-              >
-                Verified • Secure • Responsible
-              </p>
+              {openedText.map((line, i) => (
+                <p
+                  key={i}
+                  style={{
+                    width: "90%",
+                    textAlign: "center",
+                    fontSize: "clamp(0.5rem, 0.9vw, 0.8rem)",
+                    textShadow: "1px 1px 3px rgba(0,0,0,0.7)",
+                    lineHeight: "1.3",
+                    marginBottom: "2px",
+                  }}
+                >
+                  {line}
+                </p>
+              ))}
               <Link
                 href={blogPostId ? `/blog/${blogPostId}` : "/blog"}
-                className="pointer-events-auto mt-3 px-4 py-1.5 bg-white/20 hover:bg-white/40 text-white rounded-full text-xs font-semibold transition-colors"
+                className="pointer-events-auto mt-2 px-4 py-1 bg-white/20 hover:bg-white/40 text-white rounded-full text-xs font-semibold transition-colors"
                 style={{ textShadow: "1px 1px 3px rgba(0,0,0,0.7)" }}
               >
                 Click to view more →

@@ -59,21 +59,21 @@ export default function Navbar() {
     : "fixed top-0 left-0 right-0 bg-white/0 backdrop-blur-md z-[100]";
 
   return (
-    <nav className={navClassName} style={{ minHeight: "70px" }}>
-      <div className="w-full px-4 sm:px-6 lg:px-8 h-[130px] flex items-center justify-around">
+    <nav className={navClassName} style={{ height: "70px" }}>
+      <div className="w-full px-4 sm:px-6 lg:px-2 h-full flex items-center justify-around">
         {/* Logo/Brand */}
-        <div className="flex items-center gap-2 mr-40">
+        <div className="flex align-left gap-2 h-full">
           <Link
             href="/"
             onClick={closeMobileMenu}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 h-full"
           >
             <Image
               src="/1_Home%20page/ShieldLogo.png"
               alt=""
               width={48}
               height={48}
-              className="h-36 w-auto object-contain"
+              className="h-full w-auto object-contain"
             />
           </Link>
         </div>
