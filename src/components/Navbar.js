@@ -60,7 +60,7 @@ export default function Navbar() {
 
   return (
     <nav className={navClassName} style={{ minHeight: "70px" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[70px] flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[130px] flex items-center justify-between">
         {/* Logo/Brand */}
         <div className="flex items-center gap-2">
           <Link
@@ -73,7 +73,7 @@ export default function Navbar() {
               alt=""
               width={48}
               height={48}
-              className="h-14 w-auto object-contain"
+              className="h-36 w-auto object-contain"
             />
           </Link>
         </div>

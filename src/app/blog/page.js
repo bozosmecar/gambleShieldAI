@@ -67,7 +67,7 @@ export default function BlogPage() {
       <div
         className="min-h-screen"
         style={{
-          backgroundImage: "url(/3_Affiliate/testNebo.png)",
+          backgroundImage: "url(blog/background.png)",
           backgroundSize: "cover",
         }}
       >
@@ -82,21 +82,14 @@ export default function BlogPage() {
     <div className="min-h-screen">
       {/* Header - affiliate-style background */}
       <header className="bg-amber-500 py-20">
-        <div className="container mx-auto px-4 w-full">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-white">
-            GambleShield Blog
-          </h1>
-          <p className="text-xl md:text-2xl text-white/90">
-            Insights, tips, and resources for responsible gaming
-          </p>
-        </div>
+        <div className="container mx-auto px-4 w-full"></div>
       </header>
 
       {/* Full-width wrapper - same background as affiliate (nebo) */}
       <div
-        className="w-full py-12"
+        className="w-full py-12 min-h-screen"
         style={{
-          backgroundImage: "url(/3_Affiliate/testNebo.png)",
+          backgroundImage: "url(blog/background.png)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

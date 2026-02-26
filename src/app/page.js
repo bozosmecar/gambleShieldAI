@@ -2,49 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Cinzel_Decorative,
-  Cormorant_Garamond,
-  Libre_Baskerville,
-} from "next/font/google";
 import { useEffect, useRef, useState } from "react";
 
-const cinzelDecorative = Cinzel_Decorative({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-const cormorantGaramond = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["700"],
-});
-const libreBaskerville = Libre_Baskerville({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
-
-const FONT_OPTIONS = [
-  {
-    id: "cinzel",
-    name: "Cinzel Decorative",
-    font: cinzelDecorative,
-    label: "Elegant serif",
-  },
-  {
-    id: "palatino",
-    name: "Libre Baskerville",
-    font: libreBaskerville,
-    label: "Roman serif",
-  },
-  {
-    id: "cormorant",
-    name: "Cormorant Garamond",
-    font: cormorantGaramond,
-    label: "Classic serif",
-  },
-];
-
 export default function Home() {
-  const [selectedFont, setSelectedFont] = useState("cinzel");
   const aboutSectionRef = useRef(null);
   const affiliateSectionRef = useRef(null);
   const affiliateRow1Ref = useRef(null);
@@ -210,42 +170,7 @@ export default function Home() {
     };
   }, []);
 
-  const currentFont =
-    FONT_OPTIONS.find((f) => f.id === selectedFont) || FONT_OPTIONS[0];
-  const isCormorant = selectedFont === "cormorant";
-
   return (
-    <div
-      className={`${currentFont.font.className} ${isCormorant ? "font-bold text-[1.5rem] uppercase" : "font-semibold"}`}
-      style={{
-        margin: 0,
-        padding: 0,
-        width: "100%",
-        overflow: "hidden",
-        ...(isCormorant
-          ? { WebkitTextStroke: "0.5px currentColor", letterSpacing: "0.02em" }
-          : {}),
-      }}
-    >
-      {/* Font picker */}
-      <div className="fixed top-20 right-4 z-[100] flex flex-col gap-2 bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg border border-gray-200">
-        <span className="text-xs font-medium text-gray-600 px-2">Font</span>
-        {FONT_OPTIONS.map((opt) => (
-          <button
-            key={opt.id}
-            type="button"
-            onClick={() => setSelectedFont(opt.id)}
-            className={`px-3 py-1.5 rounded text-sm text-left transition-colors ${
-              selectedFont === opt.id
-                ? "bg-orange-500 text-white"
-                : "hover:bg-gray-100 text-gray-700"
-            }`}
-            title={opt.label}
-          >
-            {opt.name}
-          </button>
-        ))}
-      </div>
       <main
         ref={mainRef}
         className="block w-full bg-[url('/1_Home%20page/home4.png')] lg:bg-[url('/1_Home%20page/home.png')] bg-no-repeat bg-fixed"
@@ -944,7 +869,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-    </div>
   );
 }
 
