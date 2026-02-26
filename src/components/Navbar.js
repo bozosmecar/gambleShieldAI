@@ -60,9 +60,9 @@ export default function Navbar() {
 
   return (
     <nav className={navClassName} style={{ minHeight: "70px" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[130px] flex items-center justify-between">
+      <div className="w-full px-4 sm:px-6 lg:px-8 h-[130px] flex items-center justify-around">
         {/* Logo/Brand */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mr-40">
           <Link
             href="/"
             onClick={closeMobileMenu}
