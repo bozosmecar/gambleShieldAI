@@ -28,13 +28,17 @@ export default function Home() {
 
     const allDice = [1, 2, 3, 4, 5, 6];
     const picks = [];
+    let last = -1;
     for (let i = 0; i < 15; i++) {
-      picks.push(allDice[Math.floor(Math.random() * 6)]);
+      let next;
+      do { next = allDice[Math.floor(Math.random() * 6)]; } while (next === last);
+      picks.push(next);
+      last = next;
     }
 
     let i = 0;
     const showNext = () => {
-      if (i >= 15) {
+      if (i >= picks.length) {
         setDicePop(true);
         setTimeout(() => {
           setDicePop(false);
@@ -216,7 +220,7 @@ export default function Home() {
         <div
           ref={scrollGuyRef}
           className="hidden lg:block fixed left-4 bottom-[2vw] cursor-pointer"
-          style={{ zIndex: 25, width: "8vw", willChange: "transform" }}
+          style={{ zIndex: 25, width: "10vw", willChange: "transform" }}
           onMouseEnter={() => setScrollGuyHover(true)}
           onMouseLeave={() => setScrollGuyHover(false)}
         >
@@ -229,7 +233,7 @@ export default function Home() {
             alt="Scroll Guy"
             width={200}
             height={200}
-            className="h-full h-auto transition-transform duration-200"
+            className="w-full h-auto transition-transform duration-200"
             style={{ objectFit: "contain" }}
           />
         </div>
@@ -1104,6 +1108,18 @@ function AffiliateColumn({
               >
                 {name}
               </h3>
+              {openedText.length > 0 && (
+                <p
+                  style={{
+                    fontSize: "clamp(0.5rem, 0.85vw, 0.75rem)",
+                    textShadow: "1px 1px 3px rgba(0,0,0,0.7)",
+                    marginBottom: "4px",
+                    lineHeight: "1.3",
+                  }}
+                >
+                  {openedText[0]}
+                </p>
+              )}
               <p
                 style={{
                   fontSize: "clamp(0.6rem, 1vw, 0.9rem)",
