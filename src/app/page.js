@@ -545,10 +545,13 @@ export default function Home() {
                       maxFrame: 6,
                       blogPostId: null,
                       name: "Powerup Casino",
+                      logo: "/3_Affiliate/logos/powerup.png",
                       openedText: [
-                        "WELCOME BONUS UP TO $3000!",
-                        "1st Deposit: 150% up to $1000 + Spins!",
-                        "6000+ Slots • Full Crypto Support • Fast Payouts",
+                        "WELCOME BONUS UP TO 3000$",
+                        "1st Deposit: 150% up to $1000",
+                        "6000+ Slots",
+                        "Full Crypto Support",
+                        "Fast Payouts",
                         "Licensed & Fair (Anjouan/Curaçao)",
                       ],
                     },
@@ -559,12 +562,14 @@ export default function Home() {
                       maxFrame: 6,
                       blogPostId: null,
                       name: "Tonybet",
+                      logo: "/3_Affiliate/logos/tonybet.png",
                       openedText: [
-                        "WELCOME BONUS UP TO 300 + 150 spins",
+                        "WELCOME BONUS UP TO 300$",
                         "1st Deposit: 100% up to 150$",
                         "Licensed & Fair (Estonia)",
-                        "Great sportsbook with welcome bonus",
-                        "Partial Crypto support and Fast payouts",
+                        "Great sportsbook",
+                        "Partial Crypto support",
+                        "Fast payouts",
                       ],
                     },
                   ].map((flagConfig, idx) => (
@@ -581,6 +586,7 @@ export default function Home() {
                       blogPostId={flagConfig.blogPostId}
                       name={flagConfig.name}
                       openedText={flagConfig.openedText}
+                      logo={flagConfig.logo}
                     />
                   ))}
                 </div>
@@ -601,11 +607,12 @@ export default function Home() {
                       maxFrame: 6,
                       blogPostId: null,
                       name: "Mr Green Casino",
+                      logo: "/3_Affiliate/logos/spinline.png",
                       openedText: [
-                        "Welcome bonus 200% up to 100$",
+                        "WELCOME BONUS up to 100$",
                         "Only Classic deposit methods",
                         "Licensed & Fair (Malta)",
-                        "More than 1500+ slots and live casino",
+                        "More than 1500+ slots",
                       ],
                     },
                     {
@@ -615,8 +622,9 @@ export default function Home() {
                       maxFrame: 6,
                       blogPostId: null,
                       name: "Casino Action",
+                      logo: "/3_Affiliate/logos/action.png",
                       openedText: [
-                        "Receive up to 1250$ in welcome bonus",
+                        "WELCOME BONUS UP TO 1250$",
                         "Great loyalty program",
                         "Lots of slots options and live tables",
                         "Licensed & Fair",
@@ -637,6 +645,7 @@ export default function Home() {
                       blogPostId={flagConfig.blogPostId}
                       name={flagConfig.name}
                       openedText={flagConfig.openedText}
+                      logo={flagConfig.logo}
                     />
                   ))}
                 </div>
@@ -657,11 +666,13 @@ export default function Home() {
                       maxFrame: 6,
                       blogPostId: null,
                       name: "mBit Casino",
+                      logo: "/3_Affiliate/logos/mBIT.png",
                       openedText: [
-                        "3 welcome bonuses!",
+                        "WELCOME BONUS UP TO 3 BTC",
+                        "3 welcome bonuses",
                         "1st 175% up to 1BTC",
                         "For crypto fans only",
-                        "More than 2000+ slots, instant play and live casino",
+                        "More than 2000+ slots",
                         "Fast payout",
                         "Licensed & Fair (Curaçao)",
                       ],
@@ -673,11 +684,13 @@ export default function Home() {
                       maxFrame: 6,
                       blogPostId: 18,
                       name: "Casumo",
+                      logo: "/3_Affiliate/logos/JET_casino.png",
                       openedText: [
-                        "Welcome bonus 100% up to 300",
-                        "Licensed & Fair (Malta, UK etc)",
-                        "Lots of slots and good chat support",
+                        "WELCOME BONUS UP TO 300$",
+                        "Licensed & Fair (Malta, UK)",
+                        "Good and fast chat support",
                         "Only classic deposit method",
+                        "Reliable payouts",
                       ],
                     },
                   ].map((flagConfig, idx) => (
@@ -694,6 +707,7 @@ export default function Home() {
                       blogPostId={flagConfig.blogPostId}
                       name={flagConfig.name}
                       openedText={flagConfig.openedText}
+                      logo={flagConfig.logo}
                     />
                   ))}
                 </div>
@@ -739,6 +753,7 @@ export default function Home() {
                       blogPostId={flagConfig.blogPostId}
                       name={flagConfig.name}
                       openedText={flagConfig.openedText}
+                      logo={flagConfig.logo}
                     />
                   ))}
                 </div>
@@ -973,6 +988,7 @@ function AffiliateColumn({
   blogPostId = null,
   name = "Affiliate Partner",
   openedText = [],
+  logo = null,
 }) {
   const [currentFrame, setCurrentFrame] = useState(4);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -1171,29 +1187,31 @@ function AffiliateColumn({
         </div>
       </div>
 
-      <div
-        className="absolute left-0 right-0 flex justify-center px-1"
-        style={{
-          top: "-15%",
-          zIndex: 100,
-          pointerEvents: "none",
-        }}
-      >
-        <Image
-          src="/affiliate_casumo_dublinbet_ninecasino/casumo/casumo.png"
-          alt="Casumo"
-          width={280}
-          height={168}
-          className="h-auto w-full"
+      {logo && (
+        <div
+          className="absolute left-0 right-0 flex justify-center px-1"
           style={{
-            marginTop: "clamp(10px, 2vw, 20px)",
-            objectFit: "contain",
-            position: "relative",
+            top: "-15%",
             zIndex: 100,
-            width: "clamp(160px, 20vw, 300px)",
+            pointerEvents: "none",
           }}
-        />
-      </div>
+        >
+          <Image
+            src={logo}
+            alt={name}
+            width={280}
+            height={168}
+            className="h-auto w-full"
+            style={{
+              marginTop: "clamp(10px, 2vw, 20px)",
+              objectFit: "contain",
+              position: "relative",
+              zIndex: 100,
+              width: "clamp(160px, 20vw, 300px)",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }
