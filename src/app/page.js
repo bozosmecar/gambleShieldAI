@@ -31,7 +31,9 @@ export default function Home() {
     let last = -1;
     for (let i = 0; i < 15; i++) {
       let next;
-      do { next = allDice[Math.floor(Math.random() * 6)]; } while (next === last);
+      do {
+        next = allDice[Math.floor(Math.random() * 6)];
+      } while (next === last);
       picks.push(next);
       last = next;
     }
@@ -607,7 +609,7 @@ export default function Home() {
                       maxFrame: 6,
                       blogPostId: null,
                       name: "Mr Green Casino",
-                      logo: "/3_Affiliate/logos/spinline.png",
+                      logo: "/3_Affiliate/logos/mrgreen.png",
                       openedText: [
                         "WELCOME BONUS up to 100$",
                         "Only Classic deposit methods",
@@ -660,7 +662,7 @@ export default function Home() {
                 >
                   {[
                     {
-                      folder: "crvena",
+                      folder: "zelena",
                       suffix: "",
                       prefix: "",
                       maxFrame: 6,
@@ -684,7 +686,7 @@ export default function Home() {
                       maxFrame: 6,
                       blogPostId: 18,
                       name: "Casumo",
-                      logo: "/3_Affiliate/logos/JET_casino.png",
+                      logo: "/3_Affiliate/logos/casumo.png",
                       openedText: [
                         "WELCOME BONUS UP TO 300$",
                         "Licensed & Fair (Malta, UK)",
@@ -736,8 +738,16 @@ export default function Home() {
                       prefix: "",
                       maxFrame: 6,
                       blogPostId: null,
-                      name: "Coming Soon",
-                      openedText: ["Stay tuned for more partners!"],
+                      name: "Spinline",
+                      logo: "/3_Affiliate/logos/spinline.png",
+                      openedText: [
+                        "WELCOME PACKAGE UP TO 1,800€",
+                        "+ 800 Free Spins",
+                        "Huge welcome offer across deposits",
+                        "Wide selection of slots & live casino",
+                        "Fast and secure payouts",
+                        "Licensed & Fair",
+                      ],
                     },
                   ].map((flagConfig, idx) => (
                     <AffiliateColumn
