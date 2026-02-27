@@ -6,7 +6,11 @@ import { useEffect, useState } from "react";
 import { getArticleById } from "@/lib/blogArticles";
 
 const SCROLL_COLOR_MAP = {
-  "/3_Affiliate/crvena/5.png": { folder: "red", prefix: "red", botSuffix: "bottom" },
+  "/3_Affiliate/crvena/5.png": {
+    folder: "red",
+    prefix: "red",
+    botSuffix: "bottom",
+  },
   "/3_Affiliate/plava/5.png": { folder: "blue", prefix: "blue" },
   "/3_Affiliate/zelena/5.png": { folder: "green", prefix: "green" },
   "/3_Affiliate/zlatna/5.png": { folder: "gold", prefix: "gold" },
@@ -14,7 +18,9 @@ const SCROLL_COLOR_MAP = {
 };
 
 function getScrollImages(cardBackground) {
-  const color = SCROLL_COLOR_MAP[cardBackground] || SCROLL_COLOR_MAP["/3_Affiliate/zlatna/5.png"];
+  const color =
+    SCROLL_COLOR_MAP[cardBackground] ||
+    SCROLL_COLOR_MAP["/3_Affiliate/zlatna/5.png"];
   const bot = color.botSuffix || "bot";
   return {
     top: `/blog/${color.folder}/${color.prefix}-top.png`,
@@ -67,7 +73,7 @@ export default function BlogPostPage() {
 
   return (
     <div
-      className="min-h-screen normal-case mt-25"
+      className="min-h-screen normal-case mt-25 text-white"
       style={{
         backgroundImage: "url(/blog/backgroundPost.png)",
         backgroundSize: "cover",
@@ -130,8 +136,9 @@ export default function BlogPostPage() {
                   prose-ul:my-6 prose-ul:space-y-2
                   prose-li:!text-white
                   prose-strong:!text-white prose-strong:font-semibold
-                  [&_p]:!text-white [&_h1]:!text-white [&_h2]:!text-white [&_h3]:!text-white
-                  [&_li]:!text-white [&_span]:!text-white [&_a]:!text-orange-300 [&_a:hover]:!text-orange-200"
+                  prose-em:!text-white prose-blockquote:!text-white
+                  prose-td:!text-white prose-th:!text-white
+                  [&_*]:!text-white [&_a]:!text-orange-300 [&_a:hover]:!text-orange-200"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
 

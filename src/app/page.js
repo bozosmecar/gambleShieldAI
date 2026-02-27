@@ -224,18 +224,20 @@ export default function Home() {
           onMouseEnter={() => setScrollGuyHover(true)}
           onMouseLeave={() => setScrollGuyHover(false)}
         >
-          <Image
-            src={
-              scrollGuyHover
-                ? "/1_Home page/openscrollguy.png"
-                : "/1_Home page/scrollguy.png"
-            }
-            alt="Scroll Guy"
-            width={200}
-            height={200}
-            className="w-full h-auto transition-transform duration-200"
-            style={{ objectFit: "contain" }}
-          />
+          <Link href="/blog" className="block w-full h-full">
+            <Image
+              src={
+                scrollGuyHover
+                  ? "/1_Home page/openscrollguy.png"
+                  : "/1_Home page/scrollguy.png"
+              }
+              alt="Scroll Guy - Go to Blog"
+              width={200}
+              height={200}
+              className="w-full h-auto transition-transform duration-200"
+              style={{ objectFit: "contain" }}
+            />
+          </Link>
         </div>
 
         {/* Dice - bottom left, syncs with scroll like vrata */}
