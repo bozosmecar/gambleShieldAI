@@ -29,16 +29,16 @@ export default function BlogPostCard({ post }) {
               {post.category}
             </span>
           </div>
-          <div className="relative h-32 rounded-lg overflow-hidden mb-3 shrink-0">
+          <div className="rounded-lg overflow-hidden mb-3 shrink-0">
             {post.image ? (
               <img
                 src={post.image}
                 alt={post.title}
-                className="w-full h-full object-cover"
+                className="w-full h-auto rounded-lg"
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-orange-400/80 to-red-500/80 flex items-center justify-center text-white text-sm font-bold">
+              <div className="w-full h-32 bg-gradient-to-br from-orange-400/80 to-red-500/80 flex items-center justify-center text-white text-sm font-bold rounded-lg">
                 Article Image
               </div>
             )}

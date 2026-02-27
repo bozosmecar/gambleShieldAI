@@ -15,6 +15,8 @@ export default function Home() {
   const vrataRef = useRef(null);
   const diceRef = useRef(null);
   const stitRubRef = useRef(null);
+  const scrollGuyRef = useRef(null);
+  const [scrollGuyHover, setScrollGuyHover] = useState(false);
   const [diceImage, setDiceImage] = useState("/1_Home page/dices/dice5.png");
   const [diceRolling, setDiceRolling] = useState(false);
   const [dicePop, setDicePop] = useState(false);
@@ -152,6 +154,9 @@ export default function Home() {
       if (stitRubRef.current) {
         stitRubRef.current.style.transform = `translateY(${offset}px)`;
       }
+      if (scrollGuyRef.current) {
+        scrollGuyRef.current.style.transform = `translateY(${offset}px)`;
+      }
     };
 
     const handleScroll = () => {
@@ -205,6 +210,28 @@ export default function Home() {
               style={{ objectFit: "contain" }}
             />
           </Link>
+        </div>
+
+        {/* Scroll Guy - bottom left corner */}
+        <div
+          ref={scrollGuyRef}
+          className="hidden lg:block fixed left-4 bottom-[2vw] cursor-pointer"
+          style={{ zIndex: 25, width: "8vw", willChange: "transform" }}
+          onMouseEnter={() => setScrollGuyHover(true)}
+          onMouseLeave={() => setScrollGuyHover(false)}
+        >
+          <Image
+            src={
+              scrollGuyHover
+                ? "/1_Home page/openscrollguy.png"
+                : "/1_Home page/scrollguy.png"
+            }
+            alt="Scroll Guy"
+            width={200}
+            height={200}
+            className="h-full h-auto transition-transform duration-200"
+            style={{ objectFit: "contain" }}
+          />
         </div>
 
         {/* Dice - bottom left, syncs with scroll like vrata */}
