@@ -149,7 +149,7 @@ export default function BlogPostPage() {
                   <div className="mb-12">
                     <img
                       src={post.image}
-                      alt={post.title}
+                      alt={post.imageAlt || post.title}
                       className="w-full h-auto rounded-2xl"
                       referrerPolicy="no-referrer"
                     />

@@ -3,15 +3,17 @@
 import { useState, useEffect } from "react";
 
 export default function AgeVerification() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return !localStorage.getItem("ageVerified");
+  });
 
   useEffect(() => {
-    const verified = localStorage.getItem("ageVerified");
-    if (!verified) {
-      setVisible(true);
-      document.body.style.overflow = "hidden";
-    }
-  }, []);
+    document.body.style.overflow = visible ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [visible]);
 
   function handleConfirm() {
     localStorage.setItem("ageVerified", "true");

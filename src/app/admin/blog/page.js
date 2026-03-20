@@ -25,6 +25,8 @@ const emptyForm = {
   date: "",
   readTime: "",
   image: "",
+  imageAlt: "",
+  imageName: "",
   featured: false,
   content: "",
   cardBackground: "/3_Affiliate/zlatna/5.png",
@@ -91,6 +93,8 @@ export default function AdminBlogPage() {
       date: article.date,
       readTime: article.readTime,
       image: article.image || "",
+      imageAlt: article.imageAlt || "",
+      imageName: article.imageName || "",
       featured: !!article.featured,
       content: article.content || "",
       cardBackground: article.cardBackground || "/3_Affiliate/zlatna/5.png",
@@ -536,7 +540,7 @@ export default function AdminBlogPage() {
                       <div className="w-24 h-24 rounded-lg overflow-hidden border border-gray-200 shrink-0">
                         <img
                           src={formData.image}
-                          alt="Preview"
+                          alt={formData.imageAlt || "Preview"}
                           className="w-full h-full object-cover"
                           referrerPolicy="no-referrer"
                           onError={(e) => {
@@ -546,6 +550,30 @@ export default function AdminBlogPage() {
                       </div>
                     )}
                   </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Image name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.imageName}
+                    onChange={(e) => updateForm("imageName", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    placeholder="e.g. casino-review-banner"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Image alt text
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.imageAlt}
+                    onChange={(e) => updateForm("imageAlt", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    placeholder="e.g. Casino review banner showing logo"
+                  />
                 </div>
                 <div className="flex items-center gap-2">
                   <input

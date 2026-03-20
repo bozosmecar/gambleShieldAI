@@ -33,7 +33,7 @@ export default function BlogPostCard({ post }) {
             {post.image ? (
               <img
                 src={post.image}
-                alt={post.title}
+                alt={post.imageAlt || post.title}
                 className="w-full h-auto rounded-lg"
                 referrerPolicy="no-referrer"
               />
