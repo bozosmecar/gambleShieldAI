@@ -34,6 +34,13 @@ export default function BlogPostPage() {
   const postId = params.id;
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [navBarHidden, setNavBarHidden] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setNavBarHidden(window.scrollY > 60);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     async function load() {
@@ -73,65 +80,87 @@ export default function BlogPostPage() {
 
   return (
     <div
-      className="min-h-screen normal-case mt-25 text-white"
-      style={{
-        backgroundImage: "url(/blog/backgroundPost.png)",
-        backgroundSize: "cover",
-        backgroundPosition: "center top",
-        backgroundRepeat: "no-repeat",
-        backgroundColor: "#8B7355",
-      }}
+      className="min-h-screen normal-case text-white"
+      style={{ backgroundColor: "#f59e0b" }}
     >
       <div
-        className="grid gap-0 overflow-x-visible"
-        style={{ gridTemplateRows: "auto auto auto" }}
+        className="pt-25"
+        style={{
+          backgroundImage: "url(/blog/backgroundPost.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+          backgroundRepeat: "no-repeat",
+          backgroundColor: "#8B7355",
+        }}
       >
-        {/* Row 1: top */}
-        <div className="w-full relative flex justify-center">
-          <img
-            src={scroll.top}
-            alt=""
-            aria-hidden
-            className="w-[100vw] lg:w-[80vw] h-auto block"
-          />
-          <div className="lg:top-[200px] top-0 absolute inset-0 flex flex-col items-center justify-center container mx-auto px-4 py-6 max-w-4xl text-center">
-            <span className="px-4 py-10 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-sm font-semibold mb-4">
-              {post.category}
-            </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-              {post.title}
-            </h1>
-            <span className="text-white/90 text-sm">{post.date}</span>
-          </div>
-        </div>
-
-        {/* Row 2: mid */}
         <div
-          className="bg-center relative w-[100vw] lg:w-[80vw] mx-auto"
+          className={`fixed top-0 left-0 right-0 z-[98] transition-transform duration-300 ${
+            navBarHidden ? "-translate-y-full" : "translate-y-0"
+          }`}
           style={{
-            backgroundImage: `url(${scroll.mid})`,
-            backgroundSize: "100% 100%",
-            backgroundRepeat: "no-repeat",
+            height: "100px",
+            background: "#f59e0b",
+            pointerEvents: "none",
           }}
+        />
+        <div
+          className="grid gap-0 overflow-x-visible"
+          style={{ gridTemplateRows: "auto auto auto" }}
         >
-          <article className="mx-auto w-[90vw] max-lg:relative lg:w-[75vw] pb-20 pt-8 lg:pt-12">
-            <div className="px-4 mx-auto w-[60vw] lg:w-[45vw]">
-              {post.image && (
-                <div className="mb-12">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-auto rounded-2xl"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-              )}
+          {/* Row 1: top */}
+          <div className="w-full relative flex justify-center z-10">
+            <img
+              src={scroll.top}
+              alt=""
+              aria-hidden
+              className="w-[100vw] lg:w-[80vw] h-auto block"
+            />
+            <div
+              className="absolute inset-0 flex flex-col items-center justify-center mx-auto px-4 sm:px-8 md:px-16 py-4 w-[95%] sm:w-[85%] md:w-[70%] lg:w-[55%] xl:w-[50%] text-center"
+              style={{ top: "clamp(0px, 10vw, 100px)" }}
+            >
+              <h1
+                className="font-bold text-white mb-2 sm:mb-4 leading-tight"
+                style={{ fontSize: "clamp(0.9rem, 2.8vw, 3.5rem)" }}
+              >
+                {post.title}
+              </h1>
+              <span
+                className="text-white/90"
+                style={{ fontSize: "clamp(0.5rem, 0.9vw, 0.9rem)" }}
+              >
+                {post.date}
+              </span>
+            </div>
+          </div>
 
-              <div
-                className="prose prose-lg max-w-none prose-invert
+          {/* Row 2: mid */}
+          <div
+            className="bg-center relative w-[100vw] lg:w-[80vw] mx-auto"
+            style={{
+              backgroundImage: `url(${scroll.mid})`,
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <article className="mx-auto pb-20 pt-8 lg:pt-12" style={{ width: "clamp(280px, 65%, 900px)" }}>
+              <div className="px-4 sm:px-6 md:px-10 mx-auto w-full">
+                {post.image && (
+                  <div className="mb-12">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="w-full h-auto rounded-2xl"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                )}
+
+                <div
+                  className="prose max-w-none prose-invert
                   prose-headings:!text-white prose-headings:font-bold
-                  prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
-                  prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
+                  prose-h2:mt-12 prose-h2:mb-6
+                  prose-h3:mt-8 prose-h3:mb-4
                   prose-p:!text-white prose-p:leading-relaxed prose-p:mb-6
                   prose-ul:my-6 prose-ul:space-y-2
                   prose-li:!text-white
@@ -139,34 +168,39 @@ export default function BlogPostPage() {
                   prose-em:!text-white prose-blockquote:!text-white
                   prose-td:!text-white prose-th:!text-white
                   [&_*]:!text-white [&_a]:!text-orange-300 [&_a:hover]:!text-orange-200"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
+                  style={{ fontSize: "clamp(0.8rem, 1.5vw, 1.1rem)" }}
+                  dangerouslySetInnerHTML={{ __html: post.content }}
+                />
 
-              <div className="mt-16 pt-8 border-t border-white/30">
-                <h3 className="text-2xl font-bold text-white mb-6">
-                  Related Articles
-                </h3>
-                <div>
-                  <Link
-                    href="/blog"
-                    className="text-orange-400 hover:text-orange-300 font-medium"
+                <div className="mt-16 pt-8 border-t border-white/30">
+                  <h3
+                    className="font-bold text-white mb-6"
+                    style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
                   >
-                    View all articles →
-                  </Link>
+                    Related Articles
+                  </h3>
+                  <div>
+                    <Link
+                      href="/blog"
+                      className="text-orange-400 hover:text-orange-300 font-medium"
+                    >
+                      View all articles →
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          </article>
-        </div>
+            </article>
+          </div>
 
-        {/* Row 3: bottom */}
-        <div className="relative flex justify-center w-[100vw] lg:w-[80vw] mx-auto mb-15">
-          <img
-            src={scroll.bottom}
-            alt=""
-            aria-hidden
-            className="w-full h-auto block"
-          />
+          {/* Row 3: bottom */}
+          <div className="relative flex justify-center w-[100vw] lg:w-[80vw] mx-auto mb-15">
+            <img
+              src={scroll.bottom}
+              alt=""
+              aria-hidden
+              className="w-full h-auto block"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -1088,19 +1088,21 @@ function AffiliateColumn({
         marginRight: "clamp(1rem, 3vw, 2.5rem)",
       }}
     >
-      <Image
-        src={stupImage}
-        alt="Affiliate Column"
-        width={stupWidth}
-        height={stupHeight}
-        style={{
-          width: "120vw",
-          maxHeight: "140vw",
-          objectFit: "contain",
-          position: "relative",
-          zIndex: 1,
-        }}
-      />
+      <div className="stup-fade-mobile relative" style={{ zIndex: 1 }}>
+        <Image
+          src={stupImage}
+          alt="Affiliate Column"
+          width={stupWidth}
+          height={stupHeight}
+          style={{
+            width: "120vw",
+            maxHeight: "140vw",
+            objectFit: "contain",
+            position: "relative",
+            zIndex: 1,
+          }}
+        />
+      </div>
 
       <div
         className="absolute left-1/2 transform -translate-x-1/2 cursor-pointer"

@@ -4,6 +4,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { FontProvider } from "@/context/FontContext";
 import FontWrapper from "@/components/FontWrapper";
+import AgeVerification from "@/components/AgeVerification";
+import CookieConsent from "@/components/CookieConsent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +29,8 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <AgeVerification />
+        <CookieConsent />
         <FontProvider>
           <FontWrapper>
             <Navbar />
