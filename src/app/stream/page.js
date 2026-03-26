@@ -57,6 +57,12 @@ export default function Stream() {
       >
         <div className="w-[90vw] mx-auto px-4 sm:px-6 lg:px-8 py-12  items-center ">
           {/* Stream Header */}
+          <h1 className="text-white text-center font-bold mb-2" style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)", textShadow: "0 2px 8px rgba(0,0,0,0.7)" }}>
+            Live Casino Gambling Stream on GambleShield
+          </h1>
+          <p className="text-gray-300 text-center mb-6" style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}>
+            Watch real money slots, bonus hunts &amp; casino strategies – streamed live by experienced players
+          </p>
 
           {/* Kick Stream + Chat */}
           <div className="mb-8 mt-30">

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getPolls, createPoll } from "@/lib/polls";
+import { getPolls, createPoll, deletePoll } from "@/lib/polls";
 
 export default function AdminPollsPage() {
   const [question, setQuestion] = useState("");
@@ -11,6 +11,8 @@ export default function AdminPollsPage() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
   const [polls, setPolls] = useState([]);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -19,6 +21,18 @@ export default function AdminPollsPage() {
     }
     load();
   }, []);
+
+  const handleDeletePoll = async (id) => {
+    setDeleting(true);
+    const ok = await deletePoll(id);
+    setDeleting(false);
+    setConfirmDeleteId(null);
+    if (ok) {
+      setPolls((prev) => prev.filter((p) => p.id !== id));
+    } else {
+      setMessage({ type: "error", text: "Failed to delete poll." });
+    }
+  };
 
   const addOption = () => setOptions((prev) => [...prev, ""]);
   const removeOption = (i) => setOptions((prev) => prev.filter((_, j) => j !== i));
@@ -135,11 +149,43 @@ export default function AdminPollsPage() {
           ) : (
             <ul className="divide-y divide-gray-100">
               {polls.map((p) => (
-                <li key={p.id} className="p-4">
-                  <p className="font-medium text-gray-900">{p.question}</p>
-                  <p className="text-sm text-gray-500">
-                    Ends {new Date(p.resolves_at).toLocaleString()} · {new Date(p.resolves_at) > new Date() ? "Active" : "Ended"}
-                  </p>
+                <li key={p.id} className="p-4 flex items-start justify-between gap-4">
+                  <div className="min-w-0">
+                    <p className="font-medium text-gray-900">{p.question}</p>
+                    <p className="text-sm text-gray-500">
+                      Ends {new Date(p.resolves_at).toLocaleString()} ·{" "}
+                      <span className={new Date(p.resolves_at) > new Date() ? "text-green-600 font-medium" : "text-gray-400"}>
+                        {new Date(p.resolves_at) > new Date() ? "Active" : "Ended"}
+                      </span>
+                    </p>
+                  </div>
+
+                  {confirmDeleteId === p.id ? (
+                    <span className="inline-flex items-center gap-2 shrink-0">
+                      <span className="text-sm text-gray-600">Sure?</span>
+                      <button
+                        onClick={() => handleDeletePoll(p.id)}
+                        disabled={deleting}
+                        className="px-2 py-0.5 bg-red-600 text-white text-sm rounded hover:bg-red-700 font-medium disabled:opacity-50"
+                      >
+                        {deleting ? "…" : "Yes"}
+                      </button>
+                      <button
+                        onClick={() => setConfirmDeleteId(null)}
+                        disabled={deleting}
+                        className="px-2 py-0.5 border border-gray-300 text-gray-600 text-sm rounded hover:bg-gray-100 font-medium disabled:opacity-50"
+                      >
+                        No
+                      </button>
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => setConfirmDeleteId(p.id)}
+                      className="shrink-0 text-red-500 hover:text-red-700 text-sm font-medium"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>

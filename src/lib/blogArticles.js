@@ -5,12 +5,11 @@ function rowToArticle(row) {
   if (!row) return null;
   return {
     id: row.id,
+    slug: row.slug || '',
     title: row.title,
     excerpt: row.excerpt || '',
     category: row.category || '',
-    author: row.author || '',
     date: row.date || '',
-    readTime: row.read_time || '',
     image: row.image || '',
     imageAlt: row.image_alt || '',
     imageName: row.image_name || '',
@@ -24,11 +23,10 @@ function rowToArticle(row) {
 function articleToRow(article) {
   return {
     title: article.title,
+    slug: article.slug ? article.slug.trim() : null,
     excerpt: article.excerpt || '',
     category: article.category || '',
-    author: article.author || '',
     date: article.date || '',
-    read_time: article.readTime || '',
     image: article.image || '',
     image_alt: article.imageAlt || '',
     image_name: article.imageName || '',
@@ -88,8 +86,45 @@ export async function getArticleById(id) {
 }
 
 /**
+ * Fetch a single article by slug.
+ * Falls back to numeric ID lookup so old /blog/18 URLs still work.
+ * @param {string} slugOrId
+ * @returns {Promise<Object|null>}
+ */
+export async function getArticleBySlug(slugOrId) {
+  const supabase = getSupabaseClient();
+  if (!supabase) return null;
+
+  try {
+    // Try slug match first
+    const { data: bySlug } = await supabase
+      .from('blog_articles')
+      .select('*')
+      .eq('slug', slugOrId)
+      .maybeSingle();
+
+    if (bySlug) return rowToArticle(bySlug);
+
+    // Fall back to numeric ID (so old /blog/18 URLs keep working)
+    const numericId = Number(slugOrId);
+    if (!Number.isInteger(numericId) || numericId <= 0) return null;
+
+    const { data: byId } = await supabase
+      .from('blog_articles')
+      .select('*')
+      .eq('id', numericId)
+      .maybeSingle();
+
+    return byId ? rowToArticle(byId) : null;
+  } catch (err) {
+    console.error('getArticleBySlug error:', err);
+    return null;
+  }
+}
+
+/**
  * Create a new article.
- * @param {Object} article - { title, excerpt, category, author, date, readTime, image, featured, content }
+ * @param {Object} article - { title, slug, excerpt, category, date, image, featured, content }
  * @returns {Promise<Object|null>} Created article with id, or null on error
  */
 export async function createArticle(article) {

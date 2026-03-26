@@ -11,7 +11,7 @@ export default function BlogPostCard({ post }) {
 
   return (
     <Link
-      href={`/blog/${post.id}`}
+      href={`/blog/${post.slug || post.id}`}
       className="block min-w-[400px] lg:flex-[0_0_calc(33.333%-1.5rem)] lg:max-w-[450px]"
     >
       <article

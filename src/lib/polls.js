@@ -109,6 +109,27 @@ export async function createPoll(question, optionTexts, durationMinutes) {
 }
 
 /**
+ * Delete a poll and all its options/votes (admin only).
+ * @param {string} pollId
+ * @returns {Promise<boolean>}
+ */
+export async function deletePoll(pollId) {
+  const supabase = getSupabaseClient();
+  if (!supabase || !pollId) return false;
+
+  // Delete votes first (FK constraint), then options, then poll
+  await supabase.from("poll_votes").delete().eq("poll_id", pollId);
+  await supabase.from("poll_options").delete().eq("poll_id", pollId);
+  const { error } = await supabase.from("polls").delete().eq("id", pollId);
+
+  if (error) {
+    console.error("deletePoll error:", error);
+    return false;
+  }
+  return true;
+}
+
+/**
  * Cast a vote (logged-in user only). One vote per user per poll.
  * @param {string} pollId
  * @param {string} optionId

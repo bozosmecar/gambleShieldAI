@@ -1,9 +1,8 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getArticleById } from "@/lib/blogArticles";
+import DOMPurify from "dompurify";
 
 const SCROLL_COLOR_MAP = {
   "/3_Affiliate/crvena/5.png": {
@@ -29,11 +28,7 @@ function getScrollImages(cardBackground) {
   };
 }
 
-export default function BlogPostPage() {
-  const params = useParams();
-  const postId = params.id;
-  const [post, setPost] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function BlogPostContent({ post }) {
   const [navBarHidden, setNavBarHidden] = useState(false);
 
   useEffect(() => {
@@ -42,41 +37,8 @@ export default function BlogPostPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    async function load() {
-      const article = await getArticleById(postId);
-      setPost(article);
-      setLoading(false);
-    }
-    load();
-  }, [postId]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4 py-20 text-center">
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!post) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4 py-20 text-center">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            Post Not Found
-          </h1>
-          <p className="text-gray-600 mb-8">
-            Sorry, we couldn&apos;t find the blog post you&apos;re looking for.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   const scroll = getScrollImages(post.cardBackground);
+  const safeContent = DOMPurify.sanitize(post.content || "");
 
   return (
     <div
@@ -169,7 +131,7 @@ export default function BlogPostPage() {
                   prose-td:!text-white prose-th:!text-white
                   [&_*]:!text-white [&_a]:!text-orange-300 [&_a:hover]:!text-orange-200"
                   style={{ fontSize: "clamp(0.8rem, 1.5vw, 1.1rem)" }}
-                  dangerouslySetInnerHTML={{ __html: post.content }}
+                  dangerouslySetInnerHTML={{ __html: safeContent }}
                 />
 
                 <div className="mt-16 pt-8 border-t border-white/30">
@@ -184,7 +146,7 @@ export default function BlogPostPage() {
                       href="/blog"
                       className="text-orange-400 hover:text-orange-300 font-medium"
                     >
-                      View all articles →
+                      View all articles &rarr;
                     </Link>
                   </div>
                 </div>

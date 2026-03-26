@@ -8,6 +8,8 @@ import {
   updateArticle,
   deleteArticle,
 } from "@/lib/blogArticles";
+import { getSupabaseClient } from "@/lib/supabaseClient";
+import DOMPurify from "dompurify";
 
 const CARD_BACKGROUND_OPTIONS = [
   { value: "/3_Affiliate/zlatna/5.png", label: "1 Gold (zlatna)" },
@@ -19,11 +21,10 @@ const CARD_BACKGROUND_OPTIONS = [
 
 const emptyForm = {
   title: "",
+  slug: "",
   excerpt: "",
   category: "",
-  author: "",
   date: "",
-  readTime: "",
   image: "",
   imageAlt: "",
   imageName: "",
@@ -44,6 +45,7 @@ export default function AdminBlogPage() {
   const [page, setPage] = useState(1);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadingContentImage, setUploadingContentImage] = useState(false);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const contentTextareaRef = useRef(null);
   const contentCursorRef = useRef({ start: 0, end: 0 });
 
@@ -55,8 +57,7 @@ export default function AdminBlogPage() {
     return (
       (a.title || "").toLowerCase().includes(q) ||
       (a.excerpt || "").toLowerCase().includes(q) ||
-      (a.category || "").toLowerCase().includes(q) ||
-      (a.author || "").toLowerCase().includes(q)
+      (a.category || "").toLowerCase().includes(q)
     );
   });
 
@@ -87,11 +88,10 @@ export default function AdminBlogPage() {
     setEditingId(article.id);
     setFormData({
       title: article.title,
+      slug: article.slug || "",
       excerpt: article.excerpt,
       category: article.category,
-      author: article.author,
       date: article.date,
-      readTime: article.readTime,
       image: article.image || "",
       imageAlt: article.imageAlt || "",
       imageName: article.imageName || "",
@@ -144,8 +144,8 @@ export default function AdminBlogPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm("Delete this article? This cannot be undone.")) return;
     const ok = await deleteArticle(id);
+    setConfirmDeleteId(null);
     if (ok) {
       setArticlesState((prev) => prev.filter((a) => a.id !== id));
       if (editingId === id) handleCancel();
@@ -183,16 +183,25 @@ export default function AdminBlogPage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const getAuthToken = async () => {
+    const supabase = getSupabaseClient();
+    if (!supabase) return null;
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.access_token ?? null;
+  };
+
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadingImage(true);
     setError(null);
     try {
+      const token = await getAuthToken();
       const formData = new FormData();
       formData.append("file", file);
       const res = await fetch("/api/upload-blog-image", {
         method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: formData,
       });
       const data = await res.json();
@@ -213,10 +222,12 @@ export default function AdminBlogPage() {
     setUploadingContentImage(true);
     setError(null);
     try {
+      const token = await getAuthToken();
       const fd = new FormData();
       fd.append("file", file);
       const res = await fetch("/api/upload-blog-image", {
         method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: fd,
       });
       const data = await res.json();
@@ -282,7 +293,7 @@ export default function AdminBlogPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by title, excerpt, category, or author..."
+            placeholder="Search by title, excerpt or category..."
             className="w-[60vw] px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
           />
         </div>
@@ -297,9 +308,6 @@ export default function AdminBlogPage() {
                 </th>
                 <th className="text-left py-3 px-4 font-semibold text-gray-700">
                   Category
-                </th>
-                <th className="text-left py-3 px-4 font-semibold text-gray-700">
-                  Author
                 </th>
                 <th className="text-left py-3 px-4 font-semibold text-gray-700">
                   Date
@@ -338,9 +346,6 @@ export default function AdminBlogPage() {
                     <td className="py-3 px-4 text-gray-600">
                       {article.category}
                     </td>
-                    <td className="py-3 px-4 text-gray-600">
-                      {article.author}
-                    </td>
                     <td className="py-3 px-4 text-gray-600">{article.date}</td>
                     <td className="py-3 px-4 text-center">
                       {article.featured ? (
@@ -360,18 +365,38 @@ export default function AdminBlogPage() {
                       )}
                     </td>
                     <td className="py-3 px-4 text-right">
-                      <button
-                        onClick={() => handleEdit(article)}
-                        className="mr-2 text-green-600 hover:text-green-700 font-medium"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(article.id)}
-                        className="text-red-600 hover:text-red-700 font-medium"
-                      >
-                        Delete
-                      </button>
+                      {confirmDeleteId === article.id ? (
+                        <span className="inline-flex items-center gap-2">
+                          <span className="text-sm text-gray-600">Sure?</span>
+                          <button
+                            onClick={() => handleDelete(article.id)}
+                            className="px-2 py-0.5 bg-red-600 text-white text-sm rounded hover:bg-red-700 font-medium"
+                          >
+                            Yes
+                          </button>
+                          <button
+                            onClick={() => setConfirmDeleteId(null)}
+                            className="px-2 py-0.5 border border-gray-300 text-gray-600 text-sm rounded hover:bg-gray-100 font-medium"
+                          >
+                            No
+                          </button>
+                        </span>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => handleEdit(article)}
+                            className="mr-2 text-green-600 hover:text-green-700 font-medium"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => setConfirmDeleteId(article.id)}
+                            className="text-red-600 hover:text-red-700 font-medium"
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ))
@@ -443,6 +468,40 @@ export default function AdminBlogPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
+                    URL Slug{" "}
+                    <span className="font-normal text-gray-400">(adresa članka)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.slug}
+                    onChange={(e) =>
+                      updateForm(
+                        "slug",
+                        e.target.value
+                          .toLowerCase()
+                          .replace(/\s+/g, "-")
+                          .replace(/[^a-z0-9-]/g, ""),
+                      )
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg font-mono"
+                    placeholder="casumo-casino-review-2026"
+                  />
+                  {formData.slug && (
+                    <p className="mt-1 text-xs text-gray-500">
+                      URL:{" "}
+                      <span className="font-mono text-green-700">
+                        /blog/{formData.slug}
+                      </span>
+                    </p>
+                  )}
+                  {!formData.slug && (
+                    <p className="mt-1 text-xs text-gray-400">
+                      Ostavi prazno → koristit će se numerički ID (npr. /blog/19)
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Excerpt
                   </label>
                   <textarea
@@ -458,52 +517,49 @@ export default function AdminBlogPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Category
                     </label>
-                    <input
-                      type="text"
-                      value={formData.category}
-                      onChange={(e) => updateForm("category", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                      placeholder="e.g. Education"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Author
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.author}
-                      onChange={(e) => updateForm("author", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                      placeholder="Author name"
-                    />
+                    <select
+                      value={
+                        formData.category === "Best Casinos" ||
+                        formData.category === "Tips and Education"
+                          ? formData.category
+                          : "__other__"
+                      }
+                      onChange={(e) => {
+                        if (e.target.value !== "__other__") {
+                          updateForm("category", e.target.value);
+                        } else {
+                          updateForm("category", "");
+                        }
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white"
+                    >
+                      <option value="Best Casinos">Best Casinos</option>
+                      <option value="Tips and Education">Tips and Education</option>
+                      <option value="__other__">Other (upiši ručno)</option>
+                    </select>
+                    {formData.category !== "Best Casinos" &&
+                      formData.category !== "Tips and Education" && (
+                        <input
+                          type="text"
+                          value={formData.category}
+                          onChange={(e) => updateForm("category", e.target.value)}
+                          className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg"
+                          placeholder="Upiši kategoriju (npr. Safety)"
+                        />
+                      )}
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Date
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.date}
-                      onChange={(e) => updateForm("date", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                      placeholder="e.g. February 10, 2026"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Read time
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.readTime}
-                      onChange={(e) => updateForm("readTime", e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                      placeholder="e.g. 5 min read"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Date
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.date}
+                    onChange={(e) => updateForm("date", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    placeholder="e.g. February 10, 2026"
+                  />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -757,37 +813,9 @@ export default function AdminBlogPage() {
                           </h1>
                         )}
 
-                        {/* Author Info */}
-                        {(formData.author ||
-                          formData.date ||
-                          formData.readTime) && (
-                          <div className="flex items-center gap-4 flex-wrap">
-                            <div className="flex items-center gap-3">
-                              {formData.author && (
-                                <>
-                                  <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                                    {formData.author.charAt(0)}
-                                  </div>
-                                  <div>
-                                    <p className="font-semibold text-gray-900 text-sm">
-                                      {formData.author}
-                                    </p>
-                                    <div className="flex items-center gap-2 text-xs text-gray-600">
-                                      {formData.date && (
-                                        <span>{formData.date}</span>
-                                      )}
-                                      {formData.date && formData.readTime && (
-                                        <span>•</span>
-                                      )}
-                                      {formData.readTime && (
-                                        <span>{formData.readTime}</span>
-                                      )}
-                                    </div>
-                                  </div>
-                                </>
-                              )}
-                            </div>
-                          </div>
+                        {/* Date */}
+                        {formData.date && (
+                          <p className="text-sm text-gray-500">{formData.date}</p>
                         )}
                       </header>
 
@@ -817,9 +845,10 @@ export default function AdminBlogPage() {
                           prose-li:text-gray-700
                           prose-strong:text-gray-900 prose-strong:font-semibold"
                         dangerouslySetInnerHTML={{
-                          __html:
+                          __html: DOMPurify.sanitize(
                             formData.content ||
-                            '<p class="text-gray-400">Content preview will appear here...</p>',
+                            '<p class="text-gray-400">Content preview will appear here...</p>'
+                          ),
                         }}
                       />
                     </article>

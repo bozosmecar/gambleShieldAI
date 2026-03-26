@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { getArticles } from "@/lib/blogArticles";
 import BlogPostCard from "@/components/BlogPostCard";
-import { isOtherCategory } from "@/lib/categoryUtils";
+import { isTipsEducation } from "@/lib/categoryUtils";
 import BlogPostCardSkeleton from "@/components/BlogPostCardSkeleton";
 
 const POSTS_PER_PAGE = 12;
@@ -14,7 +14,7 @@ function parseDate(dateStr) {
   return isNaN(d.getTime()) ? 0 : d.getTime();
 }
 
-export default function BlogPage() {
+export default function TipsAndEducationPage() {
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,7 +30,7 @@ export default function BlogPage() {
 
   const gridPosts = useMemo(() => {
     return [...blogPosts]
-      .filter((p) => isOtherCategory(p.category))
+      .filter((p) => isTipsEducation(p.category))
       .sort((a, b) => parseDate(b.date) - parseDate(a.date));
   }, [blogPosts]);
 
@@ -41,10 +41,10 @@ export default function BlogPage() {
   if (loading) {
     return (
       <div className="min-h-screen normal-case">
-        <header className="bg-amber-500 py-20">
+        <header className="bg-green-700 py-20">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl font-bold text-white">Blog</h1>
-            <p className="text-white/80 mt-2 text-lg">News, guides &amp; insights from GambleShield</p>
+            <h1 className="text-4xl font-bold text-white">Tips &amp; Education</h1>
+            <p className="text-white/80 mt-2 text-lg">Gambling guides, strategies &amp; responsible gaming tips</p>
           </div>
         </header>
         <div
@@ -65,17 +65,19 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen normal-case">
-      <header className="bg-amber-500 py-20">
+      <header className="bg-green-700 py-20">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-white">Blog</h1>
-          <p className="text-white/80 mt-2 text-lg">News, guides & insights from GambleShield</p>
+          <h1 className="text-4xl font-bold text-white">Tips &amp; Education</h1>
+          <p className="text-white/80 mt-2 text-lg">
+            Gambling guides, strategies &amp; responsible gaming tips
+          </p>
         </div>
       </header>
 
       <div
         className="w-full py-12 min-h-screen"
         style={{
-          backgroundImage: "url(blog/background.png)",
+          backgroundImage: "url(/blog/background.png)",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -103,7 +105,7 @@ export default function BlogPage() {
                     onClick={() => setCurrentPage(page)}
                     className={`w-10 h-10 rounded-lg font-medium transition-colors ${
                       currentPage === page
-                        ? "bg-orange-500 text-white"
+                        ? "bg-green-600 text-white"
                         : "border border-white/50 text-white hover:bg-white/20"
                     }`}
                   >
@@ -123,8 +125,8 @@ export default function BlogPage() {
 
           {gridPosts.length === 0 && (
             <div className="text-center py-20">
-              <div className="text-6xl mb-4">📝</div>
-              <h3 className="text-2xl font-bold text-white mb-2">Još članaka uskoro</h3>
+              <div className="text-6xl mb-4">📚</div>
+              <h3 className="text-2xl font-bold text-white mb-2">Articles coming soon</h3>
             </div>
           )}
         </div>

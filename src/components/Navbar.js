@@ -14,7 +14,11 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const isBlog = pathname === "/blog" || pathname?.startsWith("/blog/");
+  const isBlog =
+    pathname === "/blog" ||
+    pathname === "/blog/best-casinos" ||
+    pathname === "/blog/tips-and-education" ||
+    pathname?.startsWith("/blog/");
 
   useEffect(() => {
     if (!isBlog) return;
@@ -35,13 +39,10 @@ export default function Navbar() {
     { href: "/", label: "Home" },
     ...(user ? [{ href: "/profile", label: "Profile" }] : []),
     { href: "/stream", label: "Stream" },
+    { href: "/blog/best-casinos", label: "Best Casinos" },
+    { href: "/blog/tips-and-education", label: "Tips & Education" },
     { href: "/blog", label: "Blog" },
-    ...(isAdmin
-      ? [
-          { href: "/admin/blog", label: "Admin" },
-          { href: "/admin/polls", label: "Polls" },
-        ]
-      : []),
+    ...(isAdmin ? [{ href: "/admin/blog", label: "Admin" }] : []),
     ...(!user
       ? [
           { href: "/register", label: "Register" },
@@ -71,8 +72,9 @@ export default function Navbar() {
             <Image
               src="/1_Home%20page/ShieldLogo.png"
               alt=""
-              width={48}
-              height={48}
+              width={140}
+              height={140}
+              quality={100}
               className="h-full w-auto object-contain"
             />
           </Link>
@@ -81,7 +83,11 @@ export default function Navbar() {
         {/* Desktop: Navigation Links */}
         <div className="hidden md:flex items-center gap-6 sm:gap-8">
           {navLinks.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive =
+              pathname === link.href ||
+              (link.href !== "/" &&
+                link.href !== "/blog" &&
+                pathname?.startsWith(link.href + "/"));
             return (
               <Link
                 key={link.href}
@@ -142,7 +148,11 @@ export default function Navbar() {
       >
         <div className="border-t border-black/20 bg-black/0 backdrop-blur-md px-4 py-4 flex flex-col gap-2">
           {navLinks.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive =
+              pathname === link.href ||
+              (link.href !== "/" &&
+                link.href !== "/blog" &&
+                pathname?.startsWith(link.href + "/"));
             return (
               <Link
                 key={link.href}
