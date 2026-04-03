@@ -388,6 +388,7 @@ export default function HomeClient() {
             style={{ objectFit: "contain" }}
           />
         </div>
+
       </div>
 
       {/* Wrapper for About and Affiliate sections with shared background */}
@@ -446,7 +447,7 @@ export default function HomeClient() {
                   className="font-bold mb-6"
                   style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}
                 >
-                  Our Vision
+                  GambleShield Vision
                 </h1>
                 <p
                   className="leading-relaxed"
@@ -473,7 +474,7 @@ export default function HomeClient() {
                   className="font-bold mb-6"
                   style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}
                 >
-                  Our Mission
+                  GambleShield Mission
                 </h1>
                 <p
                   className="leading-relaxed"
@@ -491,6 +492,43 @@ export default function HomeClient() {
               </div>
             </div>
           </section>
+
+          {/* CTA – Browse safe recommended casinos, Step 1/2/3 */}
+          <div className="w-full flex flex-col items-center gap-5 px-4 py-10" style={{ position: "relative", zIndex: 30 }}>
+            <p
+              className="font-bold text-white drop-shadow-lg tracking-wide text-center"
+              style={{ fontSize: "clamp(1rem, 2vw, 1.4rem)", textShadow: "0 2px 12px rgba(0,0,0,0.7)" }}
+            >
+              Browse our safe recommended online casinos
+            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
+              {[
+                { step: "01", label: "Find a verified casino" },
+                { step: "02", label: "Claim your exclusive bonus" },
+                { step: "03", label: "Play safe & smart" },
+              ].map(({ step, label }) => (
+                <Link
+                  key={step}
+                  href="/blog/best-casinos"
+                  className="flex items-center gap-3 px-5 py-3 rounded-xl backdrop-blur-md bg-black/30 border border-white/20 text-white hover:bg-black/50 hover:scale-105 transition-all duration-200"
+                  style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.4)" }}
+                >
+                  <span
+                    className="font-black text-orange-400 shrink-0"
+                    style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
+                  >
+                    {step}
+                  </span>
+                  <span
+                    className="font-semibold"
+                    style={{ fontSize: "clamp(0.8rem, 1.3vw, 0.95rem)" }}
+                  >
+                    {label}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
 
           {/* Divide image between home and affiliate – no space, half over each background */}
           <div
@@ -1174,7 +1212,11 @@ export default function HomeClient() {
                   },
                   {
                     q: "What should I do if I think I have a gambling problem?",
-                    a: "Seek help immediately. Contact GamCare (gamcare.org.uk), BeGambleAware (begambleaware.org), or Gamblers Anonymous. Most licensed casinos also offer self-exclusion and deposit limit tools."
+                    a: <>Seek help immediately. Contact{" "}
+                      <a href="https://www.gamcare.org.uk" target="_blank" rel="noopener noreferrer" className="text-red-600 underline hover:text-red-800 font-semibold">GamCare</a>,{" "}
+                      <a href="https://www.begambleaware.org" target="_blank" rel="noopener noreferrer" className="text-red-600 underline hover:text-red-800 font-semibold">BeGambleAware</a>, or{" "}
+                      <a href="https://www.gamblersanonymous.org" target="_blank" rel="noopener noreferrer" className="text-red-600 underline hover:text-red-800 font-semibold">Gamblers Anonymous</a>.{" "}
+                      Most licensed casinos also offer self-exclusion and deposit limit tools.</>
                   },
                 ].map(({ q, a }, i) => (
                   <FAQItem key={i} question={q} answer={a} />
