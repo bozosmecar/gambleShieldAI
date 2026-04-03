@@ -388,7 +388,6 @@ export default function HomeClient() {
             style={{ objectFit: "contain" }}
           />
         </div>
-
       </div>
 
       {/* Wrapper for About and Affiliate sections with shared background */}
@@ -414,8 +413,9 @@ export default function HomeClient() {
         <div className="relative z-2000 max-lg:mt-[75vh]">
           <section
             ref={aboutSectionRef}
+            id="home-about"
             aria-label="About GambleShield - Our Vision and Mission"
-            className="relative w-full flex flex-col items-center justify-center bg-no-repeat bg-center md:bg-[url('/2_About%20company/luk4.png')] md:bg-size-[100%_auto] md:bg-top"
+            className="relative w-full flex flex-col items-center justify-center bg-no-repeat bg-center md:bg-[url('/2_About%20company/luk4.png')] md:bg-size-[100%_auto] md:bg-top scroll-mt-[120px]"
             style={{
               minHeight: "10vh",
               paddingBottom: "clamp(3rem, 8vw, 6rem)",
@@ -428,6 +428,54 @@ export default function HomeClient() {
               zIndex: 2000,
             }}
           >
+            {/* Visually hidden H1 for SEO crawlers — visual version is the SVG below */}
+            <h1 className="sr-only">
+              GambleShield: The Best Safe Online Casino Recommendations
+            </h1>
+
+            {/* H1 text curved along the arch — SVG textPath follows luk4.png inner arc */}
+            <svg
+              viewBox="0 0 1000 430"
+              className="hidden md:block absolute top-0 left-0 w-full pointer-events-none"
+              style={{ zIndex: 15, overflow: "visible" }}
+              aria-hidden="true"
+            >
+              <defs>
+                {/* r=1100 → sagitta≈104, peak y≈75 (arch crown), endpoints y=179 */}
+                <path id="archCurve" d="M 33,190 A 1100,1100 0 0,1 967,190" />
+                <filter
+                  id="archTextShadow"
+                  x="-2%"
+                  y="-30%"
+                  width="104%"
+                  height="160%"
+                >
+                  <feDropShadow
+                    dx="0"
+                    dy="1"
+                    stdDeviation="2.5"
+                    floodColor="#ffffff"
+                    floodOpacity="0.7"
+                  />
+                </filter>
+              </defs>
+              <text
+                fill="#b2041d"
+                fontSize="25"
+                fontWeight="bold"
+                letterSpacing="2"
+                filter="url(#archTextShadow)"
+              >
+                <textPath
+                  href="#archCurve"
+                  startOffset="50%"
+                  textAnchor="middle"
+                >
+                  GambleShield: The Best Safe Online Casino Recommendations
+                </textPath>
+              </text>
+            </svg>
+
             <div
               className="relative flex flex-col md:flex-row items-stretch justify-center gap-4 md:gap-10 z-20 w-full px-4"
               style={{
@@ -494,10 +542,16 @@ export default function HomeClient() {
           </section>
 
           {/* CTA – Browse safe recommended casinos, Step 1/2/3 */}
-          <div className="w-full flex flex-col items-center gap-5 px-4 py-10" style={{ position: "relative", zIndex: 30 }}>
+          <div
+            className="w-full flex flex-col items-center gap-5 px-4 py-10"
+            style={{ position: "relative", zIndex: 30 }}
+          >
             <p
               className="font-bold text-white drop-shadow-lg tracking-wide text-center"
-              style={{ fontSize: "clamp(1rem, 2vw, 1.4rem)", textShadow: "0 2px 12px rgba(0,0,0,0.7)" }}
+              style={{
+                fontSize: "clamp(1rem, 2vw, 1.4rem)",
+                textShadow: "0 2px 12px rgba(0,0,0,0.7)",
+              }}
             >
               Browse our safe recommended online casinos
             </p>
@@ -549,7 +603,8 @@ export default function HomeClient() {
           </div>
 
           <div
-            className="mt-[30px] flex justify-around w-full bg-cover bg-center bg-no-repeat"
+            id="home-casinos"
+            className="mt-[30px] flex justify-around w-full bg-cover bg-center bg-no-repeat scroll-mt-[120px]"
             style={{
               minHeight: "70vh",
               overflow: "hidden",
@@ -582,7 +637,11 @@ export default function HomeClient() {
                 <a
                   href="/profile"
                   className="inline-block px-7 py-3 rounded-full font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl"
-                  style={{ background: "linear-gradient(135deg, #fb923c, #f97316)", fontSize: "clamp(0.9rem, 1.4vw, 1rem)", boxShadow: "0 4px 20px rgba(249,115,22,0.4)" }}
+                  style={{
+                    background: "linear-gradient(135deg, #fb923c, #f97316)",
+                    fontSize: "clamp(0.9rem, 1.4vw, 1rem)",
+                    boxShadow: "0 4px 20px rgba(249,115,22,0.4)",
+                  }}
                 >
                   Check Out Our Upgraded User Experience →
                 </a>
@@ -855,11 +914,16 @@ export default function HomeClient() {
           {/* CTA below affiliate section */}
           <div
             className="relative w-full flex flex-col items-center gap-4 py-14 px-4"
-            style={{ background: "linear-gradient(180deg, #7dd3fc 0%, #38bdf8 100%)" }}
+            style={{
+              background: "linear-gradient(180deg, #7dd3fc 0%, #38bdf8 100%)",
+            }}
           >
             <h3
               className="font-bold text-center text-sky-950"
-              style={{ fontSize: "clamp(1.3rem, 2.5vw, 2rem)", textShadow: "0 1px 4px rgba(255,255,255,0.4)" }}
+              style={{
+                fontSize: "clamp(1.3rem, 2.5vw, 2rem)",
+                textShadow: "0 1px 4px rgba(255,255,255,0.4)",
+              }}
             >
               Our pleasure is your gambling leisure
             </h3>
@@ -867,13 +931,18 @@ export default function HomeClient() {
               className="text-sky-900 text-center max-w-xl"
               style={{ fontSize: "clamp(0.875rem, 1.4vw, 1rem)" }}
             >
-              Join GambleShield and get access to safe casino links, expert reviews, live streams and exclusive bonuses — all in one place.
+              Join GambleShield and get access to safe casino links, expert
+              reviews, live streams and exclusive bonuses — all in one place.
             </p>
             <div className="flex flex-wrap gap-4 justify-center mt-2">
               <a
                 href="/register"
                 className="inline-block px-8 py-3 rounded-full font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                style={{ background: "linear-gradient(135deg, #fb923c, #f97316)", fontSize: "clamp(0.9rem, 1.4vw, 1rem)", boxShadow: "0 4px 16px rgba(249,115,22,0.35)" }}
+                style={{
+                  background: "linear-gradient(135deg, #fb923c, #f97316)",
+                  fontSize: "clamp(0.9rem, 1.4vw, 1rem)",
+                  boxShadow: "0 4px 16px rgba(249,115,22,0.35)",
+                }}
               >
                 Create Your Account
               </a>
@@ -889,8 +958,9 @@ export default function HomeClient() {
 
           {/* How It Works Section */}
           <section
+            id="how-it-works"
             aria-label="How Gamble Shield Works - Watch, Vote, Play and Upgrade"
-            className="relative w-full bg-[#FFF3C4] py-16 px-4"
+            className="relative w-full bg-[#FFF3C4] py-16 px-4 scroll-mt-[120px]"
             style={{
               minHeight: "80vh",
               paddingTop: "clamp(4rem, 8vw, 6rem)",
@@ -899,11 +969,17 @@ export default function HomeClient() {
           >
             <div className="w-full">
               <h2
+                className="text-center font-bold mb-3 text-red-700"
+                style={{ fontSize: "clamp(1.35rem, 2.8vw, 1.85rem)" }}
+              >
+                Interactive gaming experience
+              </h2>
+              <h3
                 className="text-center font-bold mb-12 text-red-600"
                 style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
               >
                 How It Works
-              </h2>
+              </h3>
 
               <div
                 className="flex flex-wrap gap-8 mb-12 w-full"
@@ -919,7 +995,12 @@ export default function HomeClient() {
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
-                    <span className="text-red-400 font-bold uppercase tracking-widest mb-1" style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}>Step 1</span>
+                    <span
+                      className="text-red-400 font-bold uppercase tracking-widest mb-1"
+                      style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
+                    >
+                      Step 1
+                    </span>
                     <div
                       className="text-red-600 font-bold h-16 flex items-center justify-center"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
@@ -969,7 +1050,12 @@ export default function HomeClient() {
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
-                    <span className="text-red-400 font-bold uppercase tracking-widest mb-1" style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}>Step 2</span>
+                    <span
+                      className="text-red-400 font-bold uppercase tracking-widest mb-1"
+                      style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
+                    >
+                      Step 2
+                    </span>
                     <div
                       className="text-red-600 font-bold h-16 flex items-center justify-center"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
@@ -1017,7 +1103,12 @@ export default function HomeClient() {
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
-                    <span className="text-red-400 font-bold uppercase tracking-widest mb-1" style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}>Step 3</span>
+                    <span
+                      className="text-red-400 font-bold uppercase tracking-widest mb-1"
+                      style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
+                    >
+                      Step 3
+                    </span>
                     <div
                       className="text-red-600 font-bold h-16 flex items-center justify-center"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
@@ -1051,8 +1142,8 @@ export default function HomeClient() {
                       lineHeight: "1.6",
                     }}
                   >
-                    Use your GambleShield points to vote on which slot game
-                    will be played next on the stream. Influence the stream and
+                    Use your GambleShield points to vote on which slot game will
+                    be played next on the stream. Influence the stream and
                     interact with streamers in real-time.
                   </p>
                 </div>
@@ -1067,7 +1158,12 @@ export default function HomeClient() {
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
-                    <span className="text-red-400 font-bold uppercase tracking-widest mb-1" style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}>Step 4</span>
+                    <span
+                      className="text-red-400 font-bold uppercase tracking-widest mb-1"
+                      style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
+                    >
+                      Step 4
+                    </span>
                     <div
                       className="text-red-600 font-bold h-16 flex items-center justify-center"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
@@ -1111,17 +1207,28 @@ export default function HomeClient() {
 
           {/* CTA before FAQ */}
           <div className="w-full bg-[#FFF3C4] flex flex-col items-center gap-4 pt-16 px-4">
-            <h3 className="font-bold text-gray-800 text-center" style={{ fontSize: "clamp(1.3rem, 2.5vw, 2rem)" }}>
+            <h3
+              className="font-bold text-gray-800 text-center"
+              style={{ fontSize: "clamp(1.3rem, 2.5vw, 2rem)" }}
+            >
               Ready to play smarter?
             </h3>
-            <p className="text-gray-600 text-center max-w-xl" style={{ fontSize: "clamp(0.875rem, 1.4vw, 1rem)" }}>
-              Join GambleShield, earn points on our 24/7 stream, and access the best verified casinos — all for free.
+            <p
+              className="text-gray-600 text-center max-w-xl"
+              style={{ fontSize: "clamp(0.875rem, 1.4vw, 1rem)" }}
+            >
+              Join GambleShield, earn points on our 24/7 stream, and access the
+              best verified casinos — all for free.
             </p>
             <div className="flex flex-wrap gap-4 justify-center mt-2">
               <a
                 href="/register"
                 className="inline-block px-8 py-3 rounded-full font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                style={{ background: "linear-gradient(135deg, #fb923c, #f97316)", fontSize: "clamp(0.9rem, 1.4vw, 1rem)", boxShadow: "0 4px 16px rgba(249,115,22,0.35)" }}
+                style={{
+                  background: "linear-gradient(135deg, #fb923c, #f97316)",
+                  fontSize: "clamp(0.9rem, 1.4vw, 1rem)",
+                  boxShadow: "0 4px 16px rgba(249,115,22,0.35)",
+                }}
               >
                 Create Free Account
               </a>
@@ -1136,7 +1243,11 @@ export default function HomeClient() {
           </div>
 
           {/* FAQ Section */}
-          <section className="w-full bg-[#FFF3C4] px-4 pb-20" style={{ paddingTop: "clamp(3rem, 6vw, 5rem)" }}>
+          <section
+            id="faq"
+            className="w-full bg-[#FFF3C4] px-4 pb-20 scroll-mt-[120px]"
+            style={{ paddingTop: "clamp(3rem, 6vw, 5rem)" }}
+          >
             <div className="max-w-4xl mx-auto">
               <h2
                 className="text-center font-bold mb-12 text-red-600"
@@ -1148,75 +1259,103 @@ export default function HomeClient() {
                 {[
                   {
                     q: "What is GambleShield?",
-                    a: "GambleShield is an independent gambling review platform built by experienced players. We provide in-depth casino analysis, transparent affiliate links, 24/7 live streaming, and a unique RPG-based user experience. For players, by players."
+                    a: "GambleShield is an independent gambling review platform built by experienced players. We provide in-depth casino analysis, transparent affiliate links, 24/7 live streaming, and a unique RPG-based user experience. For players, by players.",
                   },
                   {
                     q: "Is GambleShield free to use?",
-                    a: "Yes — creating an account, watching streams, earning points, and accessing all casino reviews is completely free."
+                    a: "Yes — creating an account, watching streams, earning points, and accessing all casino reviews is completely free.",
                   },
                   {
                     q: "Is GambleShield affiliated with any casinos?",
-                    a: "Yes, we maintain transparent affiliate partnerships with vetted casinos including Powerup Casino, Tonybet, Mr Green, Casino Action, mBit Casino, Casumo and Spinline. We earn a commission when players register through our links, but this never influences our reviews."
+                    a: "Yes, we maintain transparent affiliate partnerships with vetted casinos including Powerup Casino, Tonybet, Mr Green, Casino Action, mBit Casino, Casumo and Spinline. We earn a commission when players register through our links, but this never influences our reviews.",
                   },
                   {
                     q: "How is GambleShield different from other casino review sites?",
-                    a: "We combine 24/7 live casino streaming, an RPG character progression system, real hands-on gameplay testing, and transparent reviews — built by people who actually gamble, not just write about it."
+                    a: "We combine 24/7 live casino streaming, an RPG character progression system, real hands-on gameplay testing, and transparent reviews — built by people who actually gamble, not just write about it.",
                   },
                   {
                     q: "Where can I watch the GambleShield live stream?",
-                    a: "Visit the Stream page on GambleShield. We stream 24/7 on Kick with live casino gameplay, slot reviews, and real-time community interaction."
+                    a: "Visit the Stream page on GambleShield. We stream 24/7 on Kick with live casino gameplay, slot reviews, and real-time community interaction.",
                   },
                   {
                     q: "Can I suggest which slot gets played on stream?",
-                    a: "Yes. Registered users can use their GambleShield points to vote on which slot gets played next. Visit the Stream page to participate in active polls."
+                    a: "Yes. Registered users can use their GambleShield points to vote on which slot gets played next. Visit the Stream page to participate in active polls.",
                   },
                   {
                     q: "How do I create a GambleShield account?",
-                    a: "Click Register in the navigation bar. All you need is an email and password — it takes under a minute and is completely free."
+                    a: "Click Register in the navigation bar. All you need is an email and password — it takes under a minute and is completely free.",
                   },
                   {
                     q: "How do I earn GambleShield points?",
-                    a: "Earn points by watching the live stream, voting on polls, and playing mini-games on the platform."
+                    a: "Earn points by watching the live stream, voting on polls, and playing mini-games on the platform.",
                   },
                   {
                     q: "What can I do with my points?",
-                    a: "Use points to vote on which slot gets played on stream and level up your GambleShield avatar to unlock exclusive features and rewards."
+                    a: "Use points to vote on which slot gets played on stream and level up your GambleShield avatar to unlock exclusive features and rewards.",
                   },
                   {
                     q: "How does the character/avatar upgrade system work?",
-                    a: "Your GambleShield avatar levels up as you accumulate experience through platform activity — streaming, voting, and mini-games. Higher levels unlock exclusive features and rewards."
+                    a: "Your GambleShield avatar levels up as you accumulate experience through platform activity — streaming, voting, and mini-games. Higher levels unlock exclusive features and rewards.",
                   },
                   {
                     q: "What are the different character levels?",
-                    a: "Progress through four tiers: Bronze → Silver → Gold → Diamond. Each tier unlocks better rewards and exclusive features."
+                    a: "Progress through four tiers: Bronze → Silver → Gold → Diamond. Each tier unlocks better rewards and exclusive features.",
                   },
                   {
                     q: "How do you choose which casinos to recommend?",
-                    a: "Through hands-on testing, mathematical analysis, and thorough due diligence — we verify licensing, bonus terms, payout speeds, and player complaint history. We never recommend unlicensed or illegitimate casinos."
+                    a: "Through hands-on testing, mathematical analysis, and thorough due diligence — we verify licensing, bonus terms, payout speeds, and player complaint history. We never recommend unlicensed or illegitimate casinos.",
                   },
                   {
                     q: "Are the casino links on GambleShield safe?",
-                    a: "Yes. Every casino we list is verified for valid licensing (Curaçao, MGA, UKGC, Estonia), fair terms, and reliable payouts. We test bonuses ourselves and openly discuss any fine print."
+                    a: "Yes. Every casino we list is verified for valid licensing (Curaçao, MGA, UKGC, Estonia), fair terms, and reliable payouts. We test bonuses ourselves and openly discuss any fine print.",
                   },
                   {
                     q: "Do I get exclusive bonuses through GambleShield links?",
-                    a: "Yes — our affiliate partnerships often include exclusive welcome bonuses not available when visiting casinos directly."
+                    a: "Yes — our affiliate partnerships often include exclusive welcome bonuses not available when visiting casinos directly.",
                   },
                   {
-                    q: "What does \"Licensed & Fair\" mean on a casino listing?",
-                    a: "It means we've confirmed the casino holds a valid gambling license and operates under regulated fair-play standards with certified Random Number Generators (RNGs)."
+                    q: 'What does "Licensed & Fair" mean on a casino listing?',
+                    a: "It means we've confirmed the casino holds a valid gambling license and operates under regulated fair-play standards with certified Random Number Generators (RNGs).",
                   },
                   {
                     q: "Does GambleShield promote responsible gambling?",
-                    a: "Absolutely. We educate players about bonus terms, RTP, and gambling risks — and openly discuss losses from our own experience. We want you to gamble smarter, not more."
+                    a: "Absolutely. We educate players about bonus terms, RTP, and gambling risks — and openly discuss losses from our own experience. We want you to gamble smarter, not more.",
                   },
                   {
                     q: "What should I do if I think I have a gambling problem?",
-                    a: <>Seek help immediately. Contact{" "}
-                      <a href="https://www.gamcare.org.uk" target="_blank" rel="noopener noreferrer" className="text-red-600 underline hover:text-red-800 font-semibold">GamCare</a>,{" "}
-                      <a href="https://www.begambleaware.org" target="_blank" rel="noopener noreferrer" className="text-red-600 underline hover:text-red-800 font-semibold">BeGambleAware</a>, or{" "}
-                      <a href="https://www.gamblersanonymous.org" target="_blank" rel="noopener noreferrer" className="text-red-600 underline hover:text-red-800 font-semibold">Gamblers Anonymous</a>.{" "}
-                      Most licensed casinos also offer self-exclusion and deposit limit tools.</>
+                    a: (
+                      <>
+                        Seek help immediately. Contact{" "}
+                        <a
+                          href="https://www.gamcare.org.uk"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-red-600 underline hover:text-red-800 font-semibold"
+                        >
+                          GamCare
+                        </a>
+                        ,{" "}
+                        <a
+                          href="https://www.begambleaware.org"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-red-600 underline hover:text-red-800 font-semibold"
+                        >
+                          BeGambleAware
+                        </a>
+                        , or{" "}
+                        <a
+                          href="https://www.gamblersanonymous.org"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-red-600 underline hover:text-red-800 font-semibold"
+                        >
+                          Gamblers Anonymous
+                        </a>
+                        . Most licensed casinos also offer self-exclusion and
+                        deposit limit tools.
+                      </>
+                    ),
                   },
                 ].map(({ q, a }, i) => (
                   <FAQItem key={i} question={q} answer={a} />
@@ -1498,7 +1637,11 @@ function AffiliateColumn({
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-4 py-1 rounded-full text-white font-bold text-xs transition-all duration-200 hover:scale-105"
-                    style={{ background: "linear-gradient(135deg, #fb923c, #f97316)", boxShadow: "0 2px 8px rgba(249,115,22,0.4)", textShadow: "none" }}
+                    style={{
+                      background: "linear-gradient(135deg, #fb923c, #f97316)",
+                      boxShadow: "0 2px 8px rgba(249,115,22,0.4)",
+                      textShadow: "none",
+                    }}
                   >
                     Go to {name} →
                   </a>

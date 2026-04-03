@@ -2,6 +2,7 @@
 const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
+    qualities: [75, 100],
     remotePatterns: [
       {
         // Supabase storage (replace YOUR_PROJECT_REF with your actual project ref)

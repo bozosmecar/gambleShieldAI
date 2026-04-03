@@ -42,6 +42,7 @@ export default function Navbar() {
     { href: "/blog/best-casinos", label: "Best Casinos" },
     { href: "/blog/tips-and-education", label: "Tips & Education" },
     { href: "/blog", label: "Blog" },
+    { href: "/#faq", label: "FAQ" },
     ...(isAdmin ? [{ href: "/admin/blog", label: "Admin" }] : []),
     ...(!user
       ? [
@@ -52,6 +53,20 @@ export default function Navbar() {
   ];
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  const handleNavClick = (e, href) => {
+    if (href === "/#faq") {
+      e.preventDefault();
+      closeMobileMenu();
+      if (pathname === "/") {
+        document.getElementById("faq")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        window.location.assign("/#faq");
+      }
+      return;
+    }
+    closeMobileMenu();
+  };
 
   const navClassName = isBlog
     ? `fixed top-0 left-0 right-0 bg-transparent z-[100] transition-transform duration-300 ${
@@ -83,15 +98,18 @@ export default function Navbar() {
         {/* Desktop: Navigation Links */}
         <div className="hidden md:flex items-center gap-6 sm:gap-8">
           {navLinks.map((link) => {
+            const isHashFaq = link.href === "/#faq";
             const isActive =
-              pathname === link.href ||
-              (link.href !== "/" &&
-                link.href !== "/blog" &&
-                pathname?.startsWith(link.href + "/"));
+              !isHashFaq &&
+              (pathname === link.href ||
+                (link.href !== "/" &&
+                  link.href !== "/blog" &&
+                  pathname?.startsWith(link.href + "/")));
             return (
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className={`font-bold transition-colors ${
                   isActive
                     ? "text-black border-b-2 border-black"
@@ -148,16 +166,18 @@ export default function Navbar() {
       >
         <div className="border-t border-black/20 bg-black/0 backdrop-blur-md px-4 py-4 flex flex-col gap-2">
           {navLinks.map((link) => {
+            const isHashFaq = link.href === "/#faq";
             const isActive =
-              pathname === link.href ||
-              (link.href !== "/" &&
-                link.href !== "/blog" &&
-                pathname?.startsWith(link.href + "/"));
+              !isHashFaq &&
+              (pathname === link.href ||
+                (link.href !== "/" &&
+                  link.href !== "/blog" &&
+                  pathname?.startsWith(link.href + "/")));
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={closeMobileMenu}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className={`py-3 px-3 rounded-lg font-bold transition-colors ${
                   isActive
                     ? "text-black font-bold bg-black/20"
