@@ -4,28 +4,58 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 
-const SCROLL_COLOR_MAP = {
+const BLOG_THEME_MAP = {
   "/3_Affiliate/crvena/5.png": {
-    folder: "red",
-    prefix: "red",
-    botSuffix: "bottom",
+    pageGradient:
+      "linear-gradient(160deg, #2b0b0f 0%, #5a1018 45%, #1f090d 100%)",
+    heroGradient:
+      "linear-gradient(135deg, rgba(179, 28, 42, 0.72) 0%, rgba(120, 17, 29, 0.52) 100%)",
+    navColor: "#7f1d1d",
+    linkColor: "#fca5a5",
+    linkHoverColor: "#fecaca",
   },
-  "/3_Affiliate/plava/5.png": { folder: "blue", prefix: "blue" },
-  "/3_Affiliate/zelena/5.png": { folder: "green", prefix: "green" },
-  "/3_Affiliate/zlatna/5.png": { folder: "gold", prefix: "gold" },
-  "/3_Affiliate/ljubicasta/5.png": { folder: "purple", prefix: "purple" },
+  "/3_Affiliate/plava/5.png": {
+    pageGradient:
+      "linear-gradient(160deg, #0b1935 0%, #153164 48%, #09162d 100%)",
+    heroGradient:
+      "linear-gradient(135deg, rgba(37, 99, 235, 0.68) 0%, rgba(29, 78, 216, 0.5) 100%)",
+    navColor: "#1d4ed8",
+    linkColor: "#93c5fd",
+    linkHoverColor: "#bfdbfe",
+  },
+  "/3_Affiliate/zelena/5.png": {
+    pageGradient:
+      "linear-gradient(160deg, #082116 0%, #0f3f2b 46%, #071b13 100%)",
+    heroGradient:
+      "linear-gradient(135deg, rgba(22, 163, 74, 0.66) 0%, rgba(21, 128, 61, 0.48) 100%)",
+    navColor: "#15803d",
+    linkColor: "#6ee7b7",
+    linkHoverColor: "#a7f3d0",
+  },
+  "/3_Affiliate/zlatna/5.png": {
+    pageGradient:
+      "linear-gradient(160deg, #2f1f07 0%, #5f3b0e 44%, #231704 100%)",
+    heroGradient:
+      "linear-gradient(135deg, rgba(245, 158, 11, 0.68) 0%, rgba(217, 119, 6, 0.5) 100%)",
+    navColor: "#b45309",
+    linkColor: "#fcd34d",
+    linkHoverColor: "#fde68a",
+  },
+  "/3_Affiliate/ljubicasta/5.png": {
+    pageGradient:
+      "linear-gradient(160deg, #210c32 0%, #3e1a63 48%, #190a27 100%)",
+    heroGradient:
+      "linear-gradient(135deg, rgba(147, 51, 234, 0.66) 0%, rgba(109, 40, 217, 0.5) 100%)",
+    navColor: "#6d28d9",
+    linkColor: "#c4b5fd",
+    linkHoverColor: "#ddd6fe",
+  },
 };
 
-function getScrollImages(cardBackground) {
-  const color =
-    SCROLL_COLOR_MAP[cardBackground] ||
-    SCROLL_COLOR_MAP["/3_Affiliate/zlatna/5.png"];
-  const bot = color.botSuffix || "bot";
-  return {
-    top: `/blog/${color.folder}/${color.prefix}-top.png`,
-    mid: `/blog/${color.folder}/${color.prefix}-mid.png`,
-    bottom: `/blog/${color.folder}/${color.prefix}-${bot}.png`,
-  };
+function getTheme(cardBackground) {
+  return (
+    BLOG_THEME_MAP[cardBackground] || BLOG_THEME_MAP["/3_Affiliate/zlatna/5.png"]
+  );
 }
 
 export default function BlogPostContent({ post }) {
@@ -37,78 +67,49 @@ export default function BlogPostContent({ post }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scroll = getScrollImages(post.cardBackground);
+  const theme = getTheme(post.cardBackground);
   const safeContent = DOMPurify.sanitize(post.content || "");
 
   return (
     <div
       className="min-h-screen normal-case text-white"
-      style={{ backgroundColor: "#f59e0b" }}
+      style={{ background: theme.pageGradient }}
     >
-      <div
-        className="pt-25"
-        style={{
-          backgroundImage: "url(/blog/backgroundPost.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-          backgroundRepeat: "no-repeat",
-          backgroundColor: "#8B7355",
-        }}
-      >
+      <div className="pt-25">
         <div
           className={`fixed top-0 left-0 right-0 z-[98] transition-transform duration-300 ${
             navBarHidden ? "-translate-y-full" : "translate-y-0"
           }`}
           style={{
             height: "100px",
-            background: "#f59e0b",
+            background: theme.navColor,
             pointerEvents: "none",
           }}
         />
-        <div
-          className="grid gap-0 overflow-x-visible"
-          style={{ gridTemplateRows: "auto auto auto" }}
-        >
-          {/* Row 1: top */}
-          <div className="w-full relative flex justify-center z-10">
-            <img
-              src={scroll.top}
-              alt=""
-              aria-hidden
-              className="w-[100vw] lg:w-[80vw] h-auto block"
-            />
-            <div
-              className="absolute inset-0 flex flex-col items-center justify-center mx-auto px-4 sm:px-8 md:px-16 py-4 w-[95%] sm:w-[85%] md:w-[70%] lg:w-[55%] xl:w-[50%] text-center"
-              style={{ top: "clamp(0px, 10vw, 100px)" }}
+        <div className="w-full px-4 sm:px-6 lg:px-10 pb-16">
+          <div className="mx-auto max-w-5xl">
+            <header
+              className="mt-4 sm:mt-6 rounded-3xl p-8 sm:p-10 lg:p-14 border border-white/20 shadow-2xl"
+              style={{ background: theme.heroGradient }}
             >
               <h1
-                className="font-bold text-white mb-2 sm:mb-4 leading-tight"
-                style={{ fontSize: "clamp(0.9rem, 2.8vw, 3.5rem)" }}
+                className="font-bold text-white mb-4 leading-tight text-center"
+                style={{ fontSize: "clamp(1.35rem, 4vw, 3.1rem)" }}
               >
                 {post.title}
               </h1>
-              <span
-                className="text-white/90"
-                style={{ fontSize: "clamp(0.5rem, 0.9vw, 0.9rem)" }}
+              <p
+                className="text-white/90 text-center"
+                style={{ fontSize: "clamp(0.8rem, 1.6vw, 1rem)" }}
               >
                 {post.date}
-              </span>
-            </div>
-          </div>
+              </p>
+            </header>
 
-          {/* Row 2: mid */}
-          <div
-            className="bg-center relative w-[100vw] lg:w-[80vw] mx-auto"
-            style={{
-              backgroundImage: `url(${scroll.mid})`,
-              backgroundSize: "100% 100%",
-              backgroundRepeat: "no-repeat",
-            }}
-          >
-            <article className="mx-auto pb-20 pt-8 lg:pt-12" style={{ width: "clamp(280px, 65%, 900px)" }}>
-              <div className="px-4 sm:px-6 md:px-10 mx-auto w-full">
+            <article className="mx-auto mt-8 sm:mt-10">
+              <div className="rounded-3xl border border-white/15 bg-black/45 backdrop-blur-sm px-4 sm:px-6 md:px-10 py-8 sm:py-10 shadow-2xl">
                 {post.image && (
-                  <div className="mb-12">
+                  <div className="mb-10">
                     <img
                       src={post.image}
                       alt={post.imageAlt || post.title}
@@ -119,7 +120,7 @@ export default function BlogPostContent({ post }) {
                 )}
 
                 <div
-                  className="prose max-w-none prose-invert
+                  className={`blog-content prose max-w-none prose-invert
                   prose-headings:!text-white prose-headings:font-bold
                   prose-h2:mt-12 prose-h2:mb-6
                   prose-h3:mt-8 prose-h3:mb-4
@@ -129,8 +130,8 @@ export default function BlogPostContent({ post }) {
                   prose-strong:!text-white prose-strong:font-semibold
                   prose-em:!text-white prose-blockquote:!text-white
                   prose-td:!text-white prose-th:!text-white
-                  [&_*]:!text-white [&_a]:!text-orange-300 [&_a:hover]:!text-orange-200"
-                  style={{ fontSize: "clamp(0.8rem, 1.5vw, 1.1rem)" }}
+                  [&_*]:!text-white [&_a]:underline`}
+                  style={{ fontSize: "clamp(0.9rem, 1.45vw, 1.08rem)" }}
                   dangerouslySetInnerHTML={{ __html: safeContent }}
                 />
 
@@ -144,7 +145,8 @@ export default function BlogPostContent({ post }) {
                   <div>
                     <Link
                       href="/blog"
-                      className="text-orange-400 hover:text-orange-300 font-medium"
+                      className="font-medium underline"
+                      style={{ color: theme.linkColor }}
                     >
                       View all articles &rarr;
                     </Link>
@@ -153,17 +155,16 @@ export default function BlogPostContent({ post }) {
               </div>
             </article>
           </div>
-
-          {/* Row 3: bottom */}
-          <div className="relative flex justify-center w-[100vw] lg:w-[80vw] mx-auto mb-15">
-            <img
-              src={scroll.bottom}
-              alt=""
-              aria-hidden
-              className="w-full h-auto block"
-            />
-          </div>
         </div>
+        <style jsx>{`
+          .blog-content :global(a) {
+            color: ${theme.linkColor};
+            transition: color 160ms ease;
+          }
+          .blog-content :global(a:hover) {
+            color: ${theme.linkHoverColor};
+          }
+        `}</style>
       </div>
     </div>
   );

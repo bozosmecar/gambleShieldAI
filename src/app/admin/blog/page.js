@@ -186,7 +186,9 @@ export default function AdminBlogPage() {
   const getAuthToken = async () => {
     const supabase = getSupabaseClient();
     if (!supabase) return null;
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
     return session?.access_token ?? null;
   };
 
@@ -469,7 +471,9 @@ export default function AdminBlogPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     URL Slug{" "}
-                    <span className="font-normal text-gray-400">(adresa članka)</span>
+                    <span className="font-normal text-gray-400">
+                      (adresa članka)
+                    </span>
                   </label>
                   <input
                     type="text"
@@ -496,7 +500,8 @@ export default function AdminBlogPage() {
                   )}
                   {!formData.slug && (
                     <p className="mt-1 text-xs text-gray-400">
-                      Ostavi prazno → koristit će se numerički ID (npr. /blog/19)
+                      Ostavi prazno → koristit će se numerički ID (npr.
+                      /blog/19)
                     </p>
                   )}
                 </div>
@@ -534,7 +539,9 @@ export default function AdminBlogPage() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white"
                     >
                       <option value="Best Casinos">Best Casinos</option>
-                      <option value="Tips and Education">Tips and Education</option>
+                      <option value="Tips and Education">
+                        Tips and Education
+                      </option>
                       <option value="__other__">Other (upiši ručno)</option>
                     </select>
                     {formData.category !== "Best Casinos" &&
@@ -542,7 +549,9 @@ export default function AdminBlogPage() {
                         <input
                           type="text"
                           value={formData.category}
-                          onChange={(e) => updateForm("category", e.target.value)}
+                          onChange={(e) =>
+                            updateForm("category", e.target.value)
+                          }
                           className="mt-2 w-full px-3 py-2 border border-gray-300 rounded-lg"
                           placeholder="Upiši kategoriju (npr. Safety)"
                         />
@@ -651,8 +660,12 @@ export default function AdminBlogPage() {
                     Card background (scroll background)
                   </label>
                   <select
-                    value={formData.cardBackground || "/3_Affiliate/zlatna/5.png"}
-                    onChange={(e) => updateForm("cardBackground", e.target.value)}
+                    value={
+                      formData.cardBackground || "/3_Affiliate/zlatna/5.png"
+                    }
+                    onChange={(e) =>
+                      updateForm("cardBackground", e.target.value)
+                    }
                     className="w-full max-w-xs px-3 py-2 border border-gray-300 rounded-lg bg-white"
                   >
                     {CARD_BACKGROUND_OPTIONS.map((opt) => (
@@ -815,7 +828,9 @@ export default function AdminBlogPage() {
 
                         {/* Date */}
                         {formData.date && (
-                          <p className="text-sm text-gray-500">{formData.date}</p>
+                          <p className="text-sm text-gray-500">
+                            {formData.date}
+                          </p>
                         )}
                       </header>
 
@@ -847,7 +862,7 @@ export default function AdminBlogPage() {
                         dangerouslySetInnerHTML={{
                           __html: DOMPurify.sanitize(
                             formData.content ||
-                            '<p class="text-gray-400">Content preview will appear here...</p>'
+                              '<p class="text-gray-400">Content preview will appear here...</p>',
                           ),
                         }}
                       />

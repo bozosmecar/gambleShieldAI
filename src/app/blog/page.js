@@ -44,12 +44,18 @@ export default function BlogPage() {
         <header className="bg-amber-500 py-20">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-4xl font-bold text-white">Blog</h1>
-            <p className="text-white/80 mt-2 text-lg">News, guides &amp; insights from GambleShield</p>
+            <p className="text-white/80 mt-2 text-lg">
+              News, guides &amp; insights from GambleShield
+            </p>
           </div>
         </header>
         <div
           className="w-full py-12 min-h-screen"
-          style={{ backgroundImage: "url(/blog/background.png)", backgroundSize: "cover", backgroundPosition: "center" }}
+          style={{
+            backgroundImage: "url(/blog/background.png)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         >
           <div className="container mx-auto px-4 w-full">
             <div className="flex flex-wrap justify-center gap-8 gap-y-14">
@@ -68,7 +74,9 @@ export default function BlogPage() {
       <header className="bg-amber-500 py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold text-white">Blog</h1>
-          <p className="text-white/80 mt-2 text-lg">News, guides & insights from GambleShield</p>
+          <p className="text-white/80 mt-2 text-lg">
+            News, guides & insights from GambleShield
+          </p>
         </div>
       </header>
 
@@ -97,22 +105,26 @@ export default function BlogPage() {
                 Previous
               </button>
               <div className="flex items-center gap-1">
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`w-10 h-10 rounded-lg font-medium transition-colors ${
-                      currentPage === page
-                        ? "bg-orange-500 text-white"
-                        : "border border-white/50 text-white hover:bg-white/20"
-                    }`}
-                  >
-                    {page}
-                  </button>
-                ))}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+                        currentPage === page
+                          ? "bg-orange-500 text-white"
+                          : "border border-white/50 text-white hover:bg-white/20"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ),
+                )}
               </div>
               <button
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
                 disabled={currentPage === totalPages}
                 className="px-4 py-2 rounded-lg border border-white/50 text-white hover:bg-white/20 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
               >
@@ -124,7 +136,9 @@ export default function BlogPage() {
           {gridPosts.length === 0 && (
             <div className="text-center py-20">
               <div className="text-6xl mb-4">📝</div>
-              <h3 className="text-2xl font-bold text-white mb-2">Još članaka uskoro</h3>
+              <h3 className="text-2xl font-bold text-white mb-2">
+                Još članaka uskoro
+              </h3>
             </div>
           )}
         </div>
@@ -133,7 +147,8 @@ export default function BlogPage() {
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-400">
-            © 2026 GambleShield. All rights reserved. | Promoting responsible gaming worldwide.
+            © 2026 GambleShield. All rights reserved. | Promoting responsible
+            gaming worldwide.
           </p>
         </div>
       </footer>
