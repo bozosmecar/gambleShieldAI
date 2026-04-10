@@ -234,7 +234,16 @@ export default function AdminBlogPage() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
-      const imgTag = `<img src="${data.url}" alt="" class="max-w-full h-auto rounded-lg" referrerpolicy="no-referrer" />`;
+      const rawFileName = (file.name || "image").replace(/\.[^/.]+$/, "");
+      const captionDefault = rawFileName
+        .replace(/[_-]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      const safeCaption = captionDefault
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+      const imgTag = `<figure class="my-8"><img src="${data.url}" alt="" class="max-w-full h-auto rounded-lg mx-auto block" referrerpolicy="no-referrer" /><figcaption class="mt-2 text-center text-sm">${safeCaption || "image"}</figcaption></figure>`;
       const content = formData.content || "";
       const newContent = content.slice(0, start) + imgTag + content.slice(end);
       updateForm("content", newContent);
@@ -244,6 +253,28 @@ export default function AdminBlogPage() {
       setUploadingContentImage(false);
       e.target.value = "";
     }
+  };
+
+  const insertAtCursor = (textToInsert) => {
+    const textarea = contentTextareaRef.current;
+    if (!textarea) {
+      updateForm("content", (formData.content || "") + textToInsert);
+      return;
+    }
+
+    const start = textarea.selectionStart ?? contentCursorRef.current.start ?? 0;
+    const end = textarea.selectionEnd ?? contentCursorRef.current.end ?? start;
+    const content = formData.content || "";
+    const newContent = content.slice(0, start) + textToInsert + content.slice(end);
+
+    updateForm("content", newContent);
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+      const cursorPos = start + textToInsert.length;
+      textarea.setSelectionRange(cursorPos, cursorPos);
+      contentCursorRef.current = { start: cursorPos, end: cursorPos };
+    });
   };
 
   if (!loaded) {
@@ -680,6 +711,17 @@ export default function AdminBlogPage() {
                     Content (HTML)
                   </label>
                   <div className="flex gap-2 mb-2">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        insertAtCursor(
+                          '<a href="https://example.com" style="color:#93c5fd;text-decoration:underline;">Link text</a>',
+                        )
+                      }
+                      className="px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 text-sm font-medium text-blue-700"
+                    >
+                      Insert link template
+                    </button>
                     <label className="px-3 py-1.5 bg-gray-100 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-200 text-sm font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed">
                       {uploadingContentImage ? "Uploading..." : "Insert image"}
                       <input

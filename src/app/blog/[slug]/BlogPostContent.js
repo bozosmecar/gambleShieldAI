@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DOMPurify from "dompurify";
 
 const BLOG_THEME_MAP = {
@@ -58,6 +58,17 @@ function getTheme(cardBackground) {
   );
 }
 
+function slugifyHeading(text) {
+  return (text || "")
+    .toLowerCase()
+    .trim()
+    .replace(/&[a-z0-9#]+;/gi, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 export default function BlogPostContent({ post }) {
   const [navBarHidden, setNavBarHidden] = useState(false);
 
@@ -68,7 +79,44 @@ export default function BlogPostContent({ post }) {
   }, []);
 
   const theme = getTheme(post.cardBackground);
-  const safeContent = DOMPurify.sanitize(post.content || "");
+  const { introHtml, bodyFromFirstH2Html, tocItems } = useMemo(() => {
+    const sanitized = DOMPurify.sanitize(post.content || "");
+    if (typeof window === "undefined" || !sanitized) {
+      return { introHtml: sanitized, bodyFromFirstH2Html: "", tocItems: [] };
+    }
+
+    const parser = new window.DOMParser();
+    const doc = parser.parseFromString(sanitized, "text/html");
+    const headings = Array.from(doc.querySelectorAll("h2"));
+    const seenSlugs = new Map();
+
+    const toc = headings
+      .map((heading) => {
+        const text = (heading.textContent || "").trim();
+        if (!text) return null;
+        const baseSlug = slugifyHeading(text) || "section";
+        const currentCount = seenSlugs.get(baseSlug) || 0;
+        seenSlugs.set(baseSlug, currentCount + 1);
+        const id = currentCount === 0 ? baseSlug : `${baseSlug}-${currentCount + 1}`;
+        heading.setAttribute("id", id);
+        return { id, text };
+      })
+      .filter(Boolean);
+
+    const htmlWithAnchors = doc.body.innerHTML;
+    const firstH2Match = htmlWithAnchors.match(/<h2\b[^>]*>/i);
+    const firstH2Index = firstH2Match ? firstH2Match.index : -1;
+
+    if (firstH2Index === -1) {
+      return { introHtml: htmlWithAnchors, bodyFromFirstH2Html: "", tocItems: toc };
+    }
+
+    return {
+      introHtml: htmlWithAnchors.slice(0, firstH2Index),
+      bodyFromFirstH2Html: htmlWithAnchors.slice(firstH2Index),
+      tocItems: toc,
+    };
+  }, [post.content]);
 
   return (
     <div
@@ -132,8 +180,45 @@ export default function BlogPostContent({ post }) {
                   prose-td:!text-white prose-th:!text-white
                   [&_*]:!text-white [&_a]:underline`}
                   style={{ fontSize: "clamp(0.9rem, 1.45vw, 1.08rem)" }}
-                  dangerouslySetInnerHTML={{ __html: safeContent }}
+                  dangerouslySetInnerHTML={{ __html: introHtml }}
                 />
+
+                {tocItems.length > 0 && (
+                  <nav className="mb-10 rounded-2xl border border-white/20 bg-white/5 p-5 sm:p-6">
+                    <p className="text-white font-semibold mb-3">Table of Contents</p>
+                    <ul className="space-y-2">
+                      {tocItems.map((item) => (
+                        <li key={item.id}>
+                          <a
+                            href={`#${item.id}`}
+                            className="underline"
+                            style={{ color: theme.linkColor }}
+                          >
+                            {item.text}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                )}
+
+                {bodyFromFirstH2Html && (
+                  <div
+                    className={`blog-content prose max-w-none prose-invert
+                    prose-headings:!text-white prose-headings:font-bold
+                    prose-h2:mt-12 prose-h2:mb-6
+                    prose-h3:mt-8 prose-h3:mb-4
+                    prose-p:!text-white prose-p:leading-relaxed prose-p:mb-6
+                    prose-ul:my-6 prose-ul:space-y-2
+                    prose-li:!text-white
+                    prose-strong:!text-white prose-strong:font-semibold
+                    prose-em:!text-white prose-blockquote:!text-white
+                    prose-td:!text-white prose-th:!text-white
+                    [&_*]:!text-white [&_a]:underline`}
+                    style={{ fontSize: "clamp(0.9rem, 1.45vw, 1.08rem)" }}
+                    dangerouslySetInnerHTML={{ __html: bodyFromFirstH2Html }}
+                  />
+                )}
 
                 <div className="mt-16 pt-8 border-t border-white/30">
                   <h3
@@ -163,6 +248,24 @@ export default function BlogPostContent({ post }) {
           }
           .blog-content :global(a:hover) {
             color: ${theme.linkHoverColor};
+          }
+          .blog-content :global(h2) {
+            scroll-margin-top: 120px;
+          }
+          .blog-content :global(img) {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+          }
+          .blog-content :global(figcaption) {
+            text-align: center;
+            font-size: 0.9rem;
+            line-height: 1.35rem;
+            opacity: 0.8;
+            margin-top: 0.6rem;
+          }
+          html {
+            scroll-behavior: smooth;
           }
         `}</style>
       </div>
