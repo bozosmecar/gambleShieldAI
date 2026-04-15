@@ -41,6 +41,7 @@ const emptyForm = {
   image: "",
   imageAlt: "",
   imageName: "",
+  keywords: "",
   featured: false,
   content: "",
   cardBackground: "/3_Affiliate/zlatna/5.png",
@@ -109,6 +110,7 @@ export default function AdminBlogPage() {
       image: article.image || "",
       imageAlt: article.imageAlt || "",
       imageName: article.imageName || "",
+      keywords: article.keywords || "",
       featured: !!article.featured,
       content: article.content || "",
       cardBackground: article.cardBackground || "/3_Affiliate/zlatna/5.png",
@@ -365,6 +367,12 @@ export default function AdminBlogPage() {
                 <th className="text-left py-3 px-4 font-semibold text-gray-700">
                   Title
                 </th>
+                <th className="text-left py-3 px-4 font-semibold text-gray-700 w-16">
+                  Image
+                </th>
+                <th className="text-left py-3 px-4 font-semibold text-gray-700">
+                  Keywords
+                </th>
                 <th className="text-left py-3 px-4 font-semibold text-gray-700">
                   Category
                 </th>
@@ -381,8 +389,8 @@ export default function AdminBlogPage() {
             </thead>
             <tbody>
               {paginatedArticles.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="py-8 text-center text-gray-500">
+                  <tr>
+                  <td colSpan={8} className="py-8 text-center text-gray-500">
                     {search.trim()
                       ? "No articles match your search."
                       : "No articles yet. Click &quot;Add new article&quot; to create one."}
@@ -401,6 +409,24 @@ export default function AdminBlogPage() {
                       >
                         {article.title}
                       </button>
+                    </td>
+                    <td className="py-3 px-4">
+                      {article.image ? (
+                        <img
+                          src={article.image}
+                          alt={article.imageAlt || article.title || ""}
+                          referrerPolicy="no-referrer"
+                          className="w-12 h-12 object-cover rounded-lg border border-gray-200"
+                          onError={(e) => { e.target.style.display = "none"; }}
+                        />
+                      ) : (
+                        <span className="text-gray-300 text-xs">—</span>
+                      )}
+                    </td>
+                    <td className="py-3 px-4 text-gray-500 text-sm max-w-[180px]">
+                      <span className="line-clamp-2 block" title={article.keywords || ""}>
+                        {article.keywords || <span className="text-gray-300">—</span>}
+                      </span>
                     </td>
                     <td className="py-3 px-4 text-gray-600">
                       {article.category}
@@ -695,6 +721,19 @@ export default function AdminBlogPage() {
                     onChange={(e) => updateForm("imageAlt", e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                     placeholder="e.g. Casino review banner showing logo"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Keywords{" "}
+                    <span className="font-normal text-gray-400">(SEO, odvojeni zarezom)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.keywords}
+                    onChange={(e) => updateForm("keywords", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                    placeholder="e.g. online casino, bonus, free spins"
                   />
                 </div>
                 <div className="flex items-center gap-2">
