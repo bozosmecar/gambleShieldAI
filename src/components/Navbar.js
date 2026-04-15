@@ -86,7 +86,7 @@ export default function Navbar() {
               </Link>
             );
           })}
-          {user && (
+          {user ? (
             <button
               type="button"
               onClick={handleLogout}
@@ -95,6 +95,31 @@ export default function Navbar() {
             >
               Log out
             </button>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className={`font-bold transition-colors ${
+                  pathname === "/login"
+                    ? "text-black border-b-2 border-black"
+                    : "text-black/90 hover:text-black"
+                }`}
+                style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className={`font-bold transition-colors ${
+                  pathname === "/register"
+                    ? "text-black border-b-2 border-black"
+                    : "text-black/90 hover:text-black"
+                }`}
+                style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.1rem)" }}
+              >
+                Register
+              </Link>
+            </>
           )}
         </div>
 
@@ -152,7 +177,7 @@ export default function Navbar() {
               </Link>
             );
           })}
-          {user && (
+          {user ? (
             <button
               type="button"
               onClick={handleLogout}
@@ -161,6 +186,33 @@ export default function Navbar() {
             >
               Log out
             </button>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                onClick={closeMobileMenu}
+                className={`py-3 px-3 rounded-lg font-bold transition-colors ${
+                  pathname === "/login"
+                    ? "text-black font-bold bg-black/20"
+                    : "text-black hover:bg-black/20"
+                }`}
+                style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                onClick={closeMobileMenu}
+                className={`py-3 px-3 rounded-lg font-bold transition-colors ${
+                  pathname === "/register"
+                    ? "text-black font-bold bg-black/20"
+                    : "text-black hover:bg-black/20"
+                }`}
+                style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
+              >
+                Register
+              </Link>
+            </>
           )}
         </div>
       </div>
