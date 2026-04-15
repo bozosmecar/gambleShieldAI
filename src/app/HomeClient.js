@@ -981,28 +981,23 @@ export default function HomeClient() {
                 How It Works
               </h3>
 
-              <div
-                className="flex flex-wrap gap-8 mb-12 w-full"
-                style={{ justifyContent: "center" }}
-              >
+              <div className="mx-auto mb-12 grid w-full max-w-[1700px] grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 xl:grid-cols-4">
                 {/* Watch Stream */}
                 <div
-                  className="text-center flex flex-col"
+                  className="text-center flex flex-col items-center w-full"
                   style={{
                     padding: "clamp(1.5rem, 3vw, 3rem)",
-                    width: "20%",
-                    minWidth: "200px",
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
                     <span
-                      className="text-red-400 font-bold uppercase tracking-widest mb-1"
+                      className="text-red-400 font-bold uppercase tracking-widest mb-3 block leading-none"
                       style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
                     >
                       Step 1
                     </span>
                     <div
-                      className="text-red-600 font-bold h-16 flex items-center justify-center"
+                      className="text-red-600 font-bold min-h-[96px] flex items-start justify-center"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
                       <h3 className="m-0 leading-tight text-center">
@@ -1042,22 +1037,20 @@ export default function HomeClient() {
 
                 {/* Upgrade Your Character */}
                 <div
-                  className="text-center flex flex-col"
+                  className="text-center flex flex-col items-center w-full"
                   style={{
                     padding: "clamp(1.5rem, 3vw, 3rem)",
-                    width: "20%",
-                    minWidth: "200px",
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
                     <span
-                      className="text-red-400 font-bold uppercase tracking-widest mb-1"
+                      className="text-red-400 font-bold uppercase tracking-widest mb-3 block leading-none"
                       style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
                     >
                       Step 2
                     </span>
                     <div
-                      className="text-red-600 font-bold h-16 flex items-center justify-center"
+                      className="text-red-600 font-bold min-h-[96px] flex items-start justify-center"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
                       <h3 className="m-0 leading-tight text-center">
@@ -1095,22 +1088,20 @@ export default function HomeClient() {
 
                 {/* Vote Which Slot Will Be Played */}
                 <div
-                  className="text-center flex flex-col"
+                  className="text-center flex flex-col items-center w-full"
                   style={{
                     padding: "clamp(1.5rem, 3vw, 3rem)",
-                    width: "20%",
-                    minWidth: "200px",
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
                     <span
-                      className="text-red-400 font-bold uppercase tracking-widest mb-1"
+                      className="text-red-400 font-bold uppercase tracking-widest mb-3 block leading-none"
                       style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
                     >
                       Step 3
                     </span>
                     <div
-                      className="text-red-600 font-bold h-16 flex items-center justify-center"
+                      className="text-red-600 font-bold min-h-[96px] flex items-start justify-center"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
                       <h3 className="m-0 leading-tight text-center">
@@ -1150,22 +1141,20 @@ export default function HomeClient() {
 
                 {/* Play Extra Games to Earn More */}
                 <div
-                  className="text-center flex flex-col"
+                  className="text-center flex flex-col items-center w-full"
                   style={{
                     padding: "clamp(1.5rem, 3vw, 3rem)",
-                    width: "20%",
-                    minWidth: "200px",
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
                     <span
-                      className="text-red-400 font-bold uppercase tracking-widest mb-1"
+                      className="text-red-400 font-bold uppercase tracking-widest mb-3 block leading-none"
                       style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
                     >
                       Step 4
                     </span>
                     <div
-                      className="text-red-600 font-bold h-16 flex items-center justify-center"
+                      className="text-red-600 font-bold min-h-[96px] flex items-start justify-center"
                       style={{ fontSize: "clamp(1.25rem, 2vw, 1.5rem)" }}
                     >
                       <h3 className="m-0 leading-tight text-center">
@@ -1205,218 +1194,80 @@ export default function HomeClient() {
             </div>
           </section>
 
-          {/* CTA before FAQ */}
-          <div className="w-full bg-[#FFF3C4] flex flex-col items-center gap-4 pt-16 px-4">
-            <h3
-              className="font-bold text-gray-800 text-center"
-              style={{ fontSize: "clamp(1.3rem, 2.5vw, 2rem)" }}
-            >
-              Ready to play smarter?
-            </h3>
-            <p
-              className="text-gray-600 text-center max-w-xl"
-              style={{ fontSize: "clamp(0.875rem, 1.4vw, 1rem)" }}
-            >
-              Join GambleShield, earn points on our 24/7 stream, and access the
-              best verified casinos — all for free.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center mt-2">
-              <a
-                href="/register"
-                className="inline-block px-8 py-3 rounded-full font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                style={{
-                  background: "linear-gradient(135deg, #fb923c, #f97316)",
-                  fontSize: "clamp(0.9rem, 1.4vw, 1rem)",
-                  boxShadow: "0 4px 16px rgba(249,115,22,0.35)",
-                }}
-              >
-                Create Free Account
-              </a>
-              <a
-                href="/stream"
-                className="inline-block px-8 py-3 rounded-full font-bold text-gray-800 border-2 border-gray-400/50 bg-white/60 transition-all duration-300 hover:scale-105 hover:bg-white"
-                style={{ fontSize: "clamp(0.9rem, 1.4vw, 1rem)" }}
-              >
-                Watch Live Stream
-              </a>
-            </div>
-          </div>
-
-          {/* FAQ Section */}
+          {/* Sales placeholder section (replaces homepage FAQ) */}
           <section
-            id="faq"
-            className="w-full bg-[#FFF3C4] px-4 pb-20 scroll-mt-[120px]"
+            className="w-full bg-[#FFF3C4] px-4 pb-20"
             style={{ paddingTop: "clamp(3rem, 6vw, 5rem)" }}
           >
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-6xl mx-auto">
               <h2
-                className="text-center font-bold mb-12 text-red-600"
-                style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
+                className="text-center font-bold mb-4 text-red-600"
+                style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.7rem)" }}
               >
-                Frequently Asked Questions
+                More Sales Placements (Placeholder)
               </h2>
-              <div className="space-y-3">
-                {[
-                  {
-                    q: "What is GambleShield?",
-                    a: "GambleShield is an independent gambling review platform built by experienced players. We provide in-depth casino analysis, transparent affiliate links, 24/7 live streaming, and a unique RPG-based user experience. For players, by players.",
-                  },
-                  {
-                    q: "Is GambleShield free to use?",
-                    a: "Yes — creating an account, watching streams, earning points, and accessing all casino reviews is completely free.",
-                  },
-                  {
-                    q: "Is GambleShield affiliated with any casinos?",
-                    a: "Yes, we maintain transparent affiliate partnerships with vetted casinos including Powerup Casino, Tonybet, Mr Green, Casino Action, mBit Casino, Casumo and Spinline. We earn a commission when players register through our links, but this never influences our reviews.",
-                  },
-                  {
-                    q: "How is GambleShield different from other casino review sites?",
-                    a: "We combine 24/7 live casino streaming, an RPG character progression system, real hands-on gameplay testing, and transparent reviews — built by people who actually gamble, not just write about it.",
-                  },
-                  {
-                    q: "Where can I watch the GambleShield live stream?",
-                    a: "Visit the Stream page on GambleShield. We stream 24/7 on Kick with live casino gameplay, slot reviews, and real-time community interaction.",
-                  },
-                  {
-                    q: "Can I suggest which slot gets played on stream?",
-                    a: "Yes. Registered users can use their GambleShield points to vote on which slot gets played next. Visit the Stream page to participate in active polls.",
-                  },
-                  {
-                    q: "How do I create a GambleShield account?",
-                    a: "Click Register in the navigation bar. All you need is an email and password — it takes under a minute and is completely free.",
-                  },
-                  {
-                    q: "How do I earn GambleShield points?",
-                    a: "Earn points by watching the live stream, voting on polls, and playing mini-games on the platform.",
-                  },
-                  {
-                    q: "What can I do with my points?",
-                    a: "Use points to vote on which slot gets played on stream and level up your GambleShield avatar to unlock exclusive features and rewards.",
-                  },
-                  {
-                    q: "How does the character/avatar upgrade system work?",
-                    a: "Your GambleShield avatar levels up as you accumulate experience through platform activity — streaming, voting, and mini-games. Higher levels unlock exclusive features and rewards.",
-                  },
-                  {
-                    q: "What are the different character levels?",
-                    a: "Progress through four tiers: Bronze → Silver → Gold → Diamond. Each tier unlocks better rewards and exclusive features.",
-                  },
-                  {
-                    q: "How do you choose which casinos to recommend?",
-                    a: "Through hands-on testing, mathematical analysis, and thorough due diligence — we verify licensing, bonus terms, payout speeds, and player complaint history. We never recommend unlicensed or illegitimate casinos.",
-                  },
-                  {
-                    q: "Are the casino links on GambleShield safe?",
-                    a: "Yes. Every casino we list is verified for valid licensing (Curaçao, MGA, UKGC, Estonia), fair terms, and reliable payouts. We test bonuses ourselves and openly discuss any fine print.",
-                  },
-                  {
-                    q: "Do I get exclusive bonuses through GambleShield links?",
-                    a: "Yes — our affiliate partnerships often include exclusive welcome bonuses not available when visiting casinos directly.",
-                  },
-                  {
-                    q: 'What does "Licensed & Fair" mean on a casino listing?',
-                    a: "It means we've confirmed the casino holds a valid gambling license and operates under regulated fair-play standards with certified Random Number Generators (RNGs).",
-                  },
-                  {
-                    q: "Does GambleShield promote responsible gambling?",
-                    a: "Absolutely. We educate players about bonus terms, RTP, and gambling risks — and openly discuss losses from our own experience. We want you to gamble smarter, not more.",
-                  },
-                  {
-                    q: "What should I do if I think I have a gambling problem?",
-                    a: (
-                      <>
-                        Seek help immediately. Contact{" "}
-                        <a
-                          href="https://www.gamcare.org.uk"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-red-600 underline hover:text-red-800 font-semibold"
-                        >
-                          GamCare
-                        </a>
-                        ,{" "}
-                        <a
-                          href="https://www.begambleaware.org"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-red-600 underline hover:text-red-800 font-semibold"
-                        >
-                          BeGambleAware
-                        </a>
-                        , or{" "}
-                        <a
-                          href="https://www.gamblersanonymous.org"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-red-600 underline hover:text-red-800 font-semibold"
-                        >
-                          Gamblers Anonymous
-                        </a>
-                        . Most licensed casinos also offer self-exclusion and
-                        deposit limit tools.
-                      </>
-                    ),
-                  },
-                ].map(({ q, a }, i) => (
-                  <FAQItem key={i} question={q} answer={a} />
-                ))}
+              <p
+                className="text-center text-gray-700 mb-10"
+                style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.05rem)" }}
+              >
+                FAQ je premješten na zasebnu stranicu. Ovaj prostor je rezerviran
+                za dodatne prodajne blokove i interne promocije.
+              </p>
+
+              <div className="grid gap-5 md:grid-cols-3">
+                <div className="rounded-2xl border border-red-200 bg-white/70 p-5">
+                  <p className="text-xs uppercase tracking-wider text-red-500 font-bold mb-2">
+                    Placeholder A
+                  </p>
+                  <h3 className="font-bold text-gray-900 mb-2">
+                    Additional Casino Lists
+                  </h3>
+                  <p className="text-gray-700 text-sm leading-relaxed mb-4">
+                    Prostor za još “Best Casino” listi po geu, valuti ili bonus
+                    tipu.
+                  </p>
+                  <Link href="/blog/best-casinos" className="text-red-600 underline font-semibold">
+                    Open casino lists &rarr;
+                  </Link>
+                </div>
+
+                <div className="rounded-2xl border border-red-200 bg-white/70 p-5">
+                  <p className="text-xs uppercase tracking-wider text-red-500 font-bold mb-2">
+                    Placeholder B
+                  </p>
+                  <h3 className="font-bold text-gray-900 mb-2">
+                    Stream Conversion Block
+                  </h3>
+                  <p className="text-gray-700 text-sm leading-relaxed mb-4">
+                    Prostor za CTA prema live streamu i fallback YouTube arhivi kad
+                    nema live prijenosa.
+                  </p>
+                  <Link href="/stream" className="text-red-600 underline font-semibold">
+                    Watch stream &rarr;
+                  </Link>
+                </div>
+
+                <div className="rounded-2xl border border-red-200 bg-white/70 p-5">
+                  <p className="text-xs uppercase tracking-wider text-red-500 font-bold mb-2">
+                    Placeholder C
+                  </p>
+                  <h3 className="font-bold text-gray-900 mb-2">
+                    Top 3 Casinos Widget
+                  </h3>
+                  <p className="text-gray-700 text-sm leading-relaxed mb-4">
+                    Prostor za dinamični Top 3 ranking s direktnim affiliate
+                    linkovima.
+                  </p>
+                  <Link href="/blog/best-casinos" className="text-red-600 underline font-semibold">
+                    View top 3 &rarr;
+                  </Link>
+                </div>
               </div>
             </div>
           </section>
         </div>
       </div>
     </main>
-  );
-}
-
-function FAQItem({ question, answer }) {
-  const [open, setOpen] = useState(false);
-  const contentRef = useRef(null);
-  const [height, setHeight] = useState(0);
-
-  useEffect(() => {
-    if (contentRef.current) {
-      setHeight(open ? contentRef.current.scrollHeight : 0);
-    }
-  }, [open]);
-
-  return (
-    <div className="border border-red-200 rounded-xl overflow-hidden bg-white/60">
-      <button
-        className="w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-gray-800 hover:bg-red-50 transition-colors duration-200"
-        style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.05rem)" }}
-        onClick={() => setOpen((o) => !o)}
-      >
-        <span>{question}</span>
-        <span
-          className="ml-4 shrink-0 text-red-500"
-          style={{
-            transform: open ? "rotate(45deg)" : "rotate(0deg)",
-            transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-            fontSize: "1.5rem",
-            lineHeight: 1,
-            display: "inline-block",
-          }}
-        >
-          +
-        </span>
-      </button>
-      <div
-        ref={contentRef}
-        style={{
-          height: `${height}px`,
-          overflow: "hidden",
-          transition: "height 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
-      >
-        <div
-          className="px-6 pb-5 text-gray-600 leading-relaxed"
-          style={{ fontSize: "clamp(0.85rem, 1.3vw, 0.975rem)" }}
-        >
-          {answer}
-        </div>
-      </div>
-    </div>
   );
 }
 

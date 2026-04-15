@@ -19,6 +19,19 @@ const CARD_BACKGROUND_OPTIONS = [
   { value: "/3_Affiliate/ljubicasta/5.png", label: "5 Purple (ljubicasta)" },
 ];
 
+function parseRelatedSlugs(rawValue) {
+  return (rawValue || "")
+    .split(",")
+    .map((value) =>
+      value
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, ""),
+    )
+    .filter(Boolean);
+}
+
 const emptyForm = {
   title: "",
   slug: "",
@@ -31,6 +44,7 @@ const emptyForm = {
   featured: false,
   content: "",
   cardBackground: "/3_Affiliate/zlatna/5.png",
+  relatedSlugsText: "",
 };
 
 export default function AdminBlogPage() {
@@ -49,7 +63,7 @@ export default function AdminBlogPage() {
   const contentTextareaRef = useRef(null);
   const contentCursorRef = useRef({ start: 0, end: 0 });
 
-  const ITEMS_PER_PAGE = 5;
+  const ITEMS_PER_PAGE = 12;
 
   const filteredArticles = articles.filter((a) => {
     if (!search.trim()) return true;
@@ -98,6 +112,7 @@ export default function AdminBlogPage() {
       featured: !!article.featured,
       content: article.content || "",
       cardBackground: article.cardBackground || "/3_Affiliate/zlatna/5.png",
+      relatedSlugsText: (article.relatedSlugs || []).join(", "),
     });
     setError(null);
   };
@@ -119,8 +134,12 @@ export default function AdminBlogPage() {
     setSaving(true);
     setError(null);
     try {
+      const payload = {
+        ...formData,
+        relatedSlugs: parseRelatedSlugs(formData.relatedSlugsText),
+      };
       if (editingId === "new") {
-        const created = await createArticle(formData);
+        const created = await createArticle(payload);
         if (created) {
           setArticlesState((prev) => [created, ...prev]);
           handleCancel();
@@ -128,7 +147,7 @@ export default function AdminBlogPage() {
           setError("Failed to create article. Check console for details.");
         }
       } else {
-        const updated = await updateArticle(editingId, formData);
+        const updated = await updateArticle(editingId, payload);
         if (updated) {
           setArticlesState((prev) =>
             prev.map((a) => (a.id === editingId ? updated : a)),
@@ -181,6 +200,13 @@ export default function AdminBlogPage() {
 
   const updateForm = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const addRelatedSlug = (slugToAdd) => {
+    if (!slugToAdd) return;
+    const current = parseRelatedSlugs(formData.relatedSlugsText);
+    if (current.includes(slugToAdd)) return;
+    updateForm("relatedSlugsText", [...current, slugToAdd].join(", "));
   };
 
   const getAuthToken = async () => {
@@ -768,6 +794,43 @@ export default function AdminBlogPage() {
                     rows={12}
                     placeholder="<h2>Heading</h2><p>Paragraph...</p>"
                   />
+                </div>
+                <div className="border border-gray-200 rounded-xl p-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Manual related article slugs
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.relatedSlugsText}
+                    onChange={(e) => updateForm("relatedSlugsText", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg font-mono text-sm"
+                    placeholder="casino-bonus-guide, best-crypto-casino"
+                  />
+                  <p className="mt-1 text-xs text-gray-500">
+                    Upiši slugove odvojene zarezom. Ovo ima prioritet za “Related
+                    Articles”.
+                  </p>
+                  <div className="mt-3">
+                    <p className="text-xs font-semibold text-gray-600 mb-2">
+                      Quick add from existing posts:
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {articles
+                        .filter((article) => article.slug && article.id !== editingId)
+                        .slice(0, 12)
+                        .map((article) => (
+                          <button
+                            type="button"
+                            key={article.id}
+                            onClick={() => addRelatedSlug(article.slug)}
+                            className="px-2 py-1 text-xs border border-gray-300 rounded-md hover:bg-gray-100"
+                            title={article.title}
+                          >
+                            + {article.slug}
+                          </button>
+                        ))}
+                    </div>
+                  </div>
                 </div>
 
                 <div className="border border-amber-200 bg-amber-50/50 rounded-xl p-4">

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 
@@ -12,20 +12,6 @@ export default function Navbar() {
   const router = useRouter();
   const { user, isAdmin } = useUserProfile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  const isBlog =
-    pathname === "/blog" ||
-    pathname === "/blog/best-casinos" ||
-    pathname === "/blog/tips-and-education" ||
-    pathname?.startsWith("/blog/");
-
-  useEffect(() => {
-    if (!isBlog) return;
-    const handleScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isBlog]);
 
   const handleLogout = async () => {
     const supabase = getSupabaseClient();
@@ -37,42 +23,23 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    ...(user ? [{ href: "/profile", label: "Profile" }] : []),
     { href: "/stream", label: "Stream" },
+    ...(user ? [{ href: "/profile", label: "Profile" }] : []),
     { href: "/blog/best-casinos", label: "Best Casinos" },
     { href: "/blog/tips-and-education", label: "Tips & Education" },
     { href: "/blog", label: "Blog" },
-    { href: "/#faq", label: "FAQ" },
+    { href: "/faq", label: "FAQ" },
+    { href: "/about", label: "About" },
     ...(isAdmin ? [{ href: "/admin/blog", label: "Admin" }] : []),
-    ...(!user
-      ? [
-          { href: "/register", label: "Register" },
-          { href: "/login", label: "Login" },
-        ]
-      : []),
   ];
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
-  const handleNavClick = (e, href) => {
-    if (href === "/#faq") {
-      e.preventDefault();
-      closeMobileMenu();
-      if (pathname === "/") {
-        document.getElementById("faq")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else {
-        window.location.assign("/#faq");
-      }
-      return;
-    }
+  const handleNavClick = (_e, _href) => {
     closeMobileMenu();
   };
 
-  const navClassName = isBlog
-    ? `fixed top-0 left-0 right-0 bg-transparent z-[100] transition-transform duration-300 ${
-        scrolled ? "-translate-y-full pointer-events-none" : "translate-y-0"
-      }`
-    : "fixed top-0 left-0 right-0 bg-white/0 backdrop-blur-md z-[100]";
+  const navClassName = "fixed top-0 left-0 right-0 bg-white/0 backdrop-blur-md z-[100]";
 
   return (
     <nav className={navClassName} style={{ height: "70px" }}>
@@ -98,13 +65,11 @@ export default function Navbar() {
         {/* Desktop: Navigation Links */}
         <div className="hidden md:flex items-center gap-6 sm:gap-8">
           {navLinks.map((link) => {
-            const isHashFaq = link.href === "/#faq";
             const isActive =
-              !isHashFaq &&
-              (pathname === link.href ||
-                (link.href !== "/" &&
-                  link.href !== "/blog" &&
-                  pathname?.startsWith(link.href + "/")));
+              pathname === link.href ||
+              (link.href !== "/" &&
+                link.href !== "/blog" &&
+                pathname?.startsWith(link.href + "/"));
             return (
               <Link
                 key={link.href}
@@ -166,13 +131,11 @@ export default function Navbar() {
       >
         <div className="border-t border-black/20 bg-black/0 backdrop-blur-md px-4 py-4 flex flex-col gap-2">
           {navLinks.map((link) => {
-            const isHashFaq = link.href === "/#faq";
             const isActive =
-              !isHashFaq &&
-              (pathname === link.href ||
-                (link.href !== "/" &&
-                  link.href !== "/blog" &&
-                  pathname?.startsWith(link.href + "/")));
+              pathname === link.href ||
+              (link.href !== "/" &&
+                link.href !== "/blog" &&
+                pathname?.startsWith(link.href + "/"));
             return (
               <Link
                 key={link.href}

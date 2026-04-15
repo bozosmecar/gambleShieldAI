@@ -1,18 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { getArticles } from "@/lib/blogArticles";
+import { compareArticlesByNewest, getArticles } from "@/lib/blogArticles";
 import BlogPostCard from "@/components/BlogPostCard";
 import { isTipsEducation } from "@/lib/categoryUtils";
 import BlogPostCardSkeleton from "@/components/BlogPostCardSkeleton";
 
 const POSTS_PER_PAGE = 12;
-
-function parseDate(dateStr) {
-  if (!dateStr) return 0;
-  const d = new Date(dateStr);
-  return isNaN(d.getTime()) ? 0 : d.getTime();
-}
 
 export default function TipsAndEducationPage() {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -31,7 +25,7 @@ export default function TipsAndEducationPage() {
   const gridPosts = useMemo(() => {
     return [...blogPosts]
       .filter((p) => isTipsEducation(p.category))
-      .sort((a, b) => parseDate(b.date) - parseDate(a.date));
+      .sort(compareArticlesByNewest);
   }, [blogPosts]);
 
   const totalPages = Math.ceil(gridPosts.length / POSTS_PER_PAGE) || 1;
@@ -41,10 +35,10 @@ export default function TipsAndEducationPage() {
   if (loading) {
     return (
       <div className="min-h-screen normal-case">
-        <header className="bg-green-700 py-20">
+        <header className="bg-[#FFF3C4] pt-20 pb-10">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl font-bold text-white">Tips &amp; Education</h1>
-            <p className="text-white/80 mt-2 text-lg">Gambling guides, strategies &amp; responsible gaming tips</p>
+            <h1 className="text-4xl font-bold text-red-600">Tips &amp; Education</h1>
+            <p className="text-gray-700 mt-2 text-lg">Gambling guides, strategies &amp; responsible gaming tips</p>
           </div>
         </header>
         <div
@@ -65,10 +59,10 @@ export default function TipsAndEducationPage() {
 
   return (
     <div className="min-h-screen normal-case">
-      <header className="bg-green-700 py-20">
+      <header className="bg-[#FFF3C4] pt-20 pb-10">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-white">Tips &amp; Education</h1>
-          <p className="text-white/80 mt-2 text-lg">
+          <h1 className="text-4xl font-bold text-red-600">Tips &amp; Education</h1>
+          <p className="text-gray-700 mt-2 text-lg">
             Gambling guides, strategies &amp; responsible gaming tips
           </p>
         </div>
@@ -83,6 +77,16 @@ export default function TipsAndEducationPage() {
         }}
       >
         <div className="container mx-auto px-4 w-full text-white">
+          <section className="mx-auto max-w-4xl rounded-2xl border border-white/25 bg-black/25 p-6 mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">
+              Tips &amp; Education Intro (Placeholder)
+            </h2>
+            <p className="text-white/85 leading-relaxed">
+              Ovdje ide edukativni uvod koji i dalje podržava prodaju: kraći savjeti,
+              odgovorno igranje i jasni interni linkovi prema “Best Casinos Ei
+              “Watch Stream Esekcijama.
+            </p>
+          </section>
           <div className="flex flex-wrap justify-center gap-8 gap-y-14">
             {paginatedPosts.map((post) => (
               <BlogPostCard key={post.id} post={post} />

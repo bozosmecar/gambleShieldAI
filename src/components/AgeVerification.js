@@ -1,12 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+
+function subscribe(onStoreChange) {
+  window.addEventListener("storage", onStoreChange);
+  return () => {
+    window.removeEventListener("storage", onStoreChange);
+  };
+}
+
+function getSnapshot() {
+  return !localStorage.getItem("ageVerified");
+}
 
 export default function AgeVerification() {
-  const [visible, setVisible] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return !localStorage.getItem("ageVerified");
-  });
+  const visible = useSyncExternalStore(subscribe, getSnapshot, () => false);
 
   useEffect(() => {
     document.body.style.overflow = visible ? "hidden" : "";
@@ -17,7 +25,7 @@ export default function AgeVerification() {
 
   function handleConfirm() {
     localStorage.setItem("ageVerified", "true");
-    setVisible(false);
+    window.dispatchEvent(new Event("storage"));
     document.body.style.overflow = "";
   }
 
@@ -28,7 +36,7 @@ export default function AgeVerification() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center">
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
 

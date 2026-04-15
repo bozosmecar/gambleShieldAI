@@ -1,8 +1,7 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import DOMPurify from "dompurify";
+import { useMemo } from "react";
 
 const BLOG_THEME_MAP = {
   "/3_Affiliate/crvena/5.png": {
@@ -54,7 +53,8 @@ const BLOG_THEME_MAP = {
 
 function getTheme(cardBackground) {
   return (
-    BLOG_THEME_MAP[cardBackground] || BLOG_THEME_MAP["/3_Affiliate/zlatna/5.png"]
+    BLOG_THEME_MAP[cardBackground] ||
+    BLOG_THEME_MAP["/3_Affiliate/zlatna/5.png"]
   );
 }
 
@@ -69,46 +69,66 @@ function slugifyHeading(text) {
     .replace(/^-|-$/g, "");
 }
 
-export default function BlogPostContent({ post }) {
-  const [navBarHidden, setNavBarHidden] = useState(false);
+function stripHtmlTags(value) {
+  return (value || "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
-  useEffect(() => {
-    const handleScroll = () => setNavBarHidden(window.scrollY > 60);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+function buildAnchoredHtmlAndToc(rawHtml) {
+  const source = rawHtml || "";
+  if (!source) return { htmlWithAnchors: "", tocItems: [] };
 
+  const seenSlugs = new Map();
+  const tocItems = [];
+  const htmlWithAnchors = source.replace(
+    /<h2\b([^>]*)>([\s\S]*?)<\/h2>/gi,
+    (fullMatch, attrs = "", inner = "") => {
+      const headingText = stripHtmlTags(inner);
+      if (!headingText) return fullMatch;
+
+      const baseSlug = slugifyHeading(headingText) || "section";
+      const currentCount = seenSlugs.get(baseSlug) || 0;
+      seenSlugs.set(baseSlug, currentCount + 1);
+      const id =
+        currentCount === 0 ? baseSlug : `${baseSlug}-${currentCount + 1}`;
+      tocItems.push({ id, text: headingText });
+
+      const attrsWithoutId = String(attrs).replace(
+        /\s+id\s*=\s*(['"]).*?\1/i,
+        "",
+      );
+      return `<h2${attrsWithoutId} id="${id}">${inner}</h2>`;
+    },
+  );
+
+  return { htmlWithAnchors, tocItems };
+}
+
+export default function BlogPostContent({ post, relatedArticles = [] }) {
   const theme = getTheme(post.cardBackground);
   const { introHtml, bodyFromFirstH2Html, tocItems } = useMemo(() => {
-    const sanitized = DOMPurify.sanitize(post.content || "");
-    if (typeof window === "undefined" || !sanitized) {
-      return { introHtml: sanitized, bodyFromFirstH2Html: "", tocItems: [] };
+    const { htmlWithAnchors, tocItems: toc } = buildAnchoredHtmlAndToc(
+      post.content || "",
+    );
+    if (!htmlWithAnchors) {
+      return { introHtml: "", bodyFromFirstH2Html: "", tocItems: [] };
     }
 
-    const parser = new window.DOMParser();
-    const doc = parser.parseFromString(sanitized, "text/html");
-    const headings = Array.from(doc.querySelectorAll("h2"));
-    const seenSlugs = new Map();
-
-    const toc = headings
-      .map((heading) => {
-        const text = (heading.textContent || "").trim();
-        if (!text) return null;
-        const baseSlug = slugifyHeading(text) || "section";
-        const currentCount = seenSlugs.get(baseSlug) || 0;
-        seenSlugs.set(baseSlug, currentCount + 1);
-        const id = currentCount === 0 ? baseSlug : `${baseSlug}-${currentCount + 1}`;
-        heading.setAttribute("id", id);
-        return { id, text };
-      })
-      .filter(Boolean);
-
-    const htmlWithAnchors = doc.body.innerHTML;
     const firstH2Match = htmlWithAnchors.match(/<h2\b[^>]*>/i);
     const firstH2Index = firstH2Match ? firstH2Match.index : -1;
 
     if (firstH2Index === -1) {
-      return { introHtml: htmlWithAnchors, bodyFromFirstH2Html: "", tocItems: toc };
+      return {
+        introHtml: htmlWithAnchors,
+        bodyFromFirstH2Html: "",
+        tocItems: toc,
+      };
     }
 
     return {
@@ -118,24 +138,78 @@ export default function BlogPostContent({ post }) {
     };
   }, [post.content]);
 
+  const relatedCards = [
+    ...relatedArticles.slice(0, 3).map((article) => ({
+      ...article,
+      isPlaceholder: false,
+    })),
+    ...Array.from(
+      { length: Math.max(0, 3 - relatedArticles.length) },
+      (_, index) => ({
+        id: `placeholder-${index + 1}`,
+        title: "Related article coming soon",
+        excerpt:
+          "This slot is reserved for articles with similar keywords and topic.",
+        slug: null,
+        isPlaceholder: true,
+      }),
+    ),
+  ];
+  const leftRailCards = [
+    {
+      id: "best-casinos",
+      title: "Best Casinos 2026",
+      description:
+        "High-intent traffic: push directly to ranked casino lists and bonus offers.",
+      href: "/blog/best-casinos",
+      cta: "Open best casino list",
+      external: false,
+    },
+    {
+      id: "top-3-casinos",
+      title: "Top 3 Casino Picks",
+      description:
+        "Placeholder for top 3 conversion widget (commission-focused placements).",
+      href: "/blog/best-casinos",
+      cta: "View top 3 picks",
+      external: false,
+    },
+  ];
+
+  const rightRailCards = [
+    {
+      id: "watch-stream",
+      title: "Watch Live Stream",
+      description:
+        "Move engaged readers into live stream touchpoints, polls and offer CTAs.",
+      href: "/stream",
+      cta: "Watch stream now",
+      external: false,
+    },
+    {
+      id: "youtube-archive",
+      title: "YouTube Archive (Offline)",
+      description:
+        "When stream is offline, route traffic to recorded sessions and highlights.",
+      href: "https://youtube.com/gambleshield",
+      cta: "Open YouTube archive",
+      external: true,
+    },
+  ];
+
   return (
     <div
       className="min-h-screen normal-case text-white"
-      style={{ background: theme.pageGradient }}
+      style={{
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.52)), url('/blog/pozadina_blog.jpg'), ${theme.pageGradient}`,
+        backgroundSize: "cover, cover, cover",
+        backgroundPosition: "center, center, center",
+        backgroundRepeat: "no-repeat, no-repeat, no-repeat",
+      }}
     >
       <div className="pt-25">
-        <div
-          className={`fixed top-0 left-0 right-0 z-[98] transition-transform duration-300 ${
-            navBarHidden ? "-translate-y-full" : "translate-y-0"
-          }`}
-          style={{
-            height: "100px",
-            background: theme.navColor,
-            pointerEvents: "none",
-          }}
-        />
         <div className="w-full px-4 sm:px-6 lg:px-10 pb-16">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-[1800px]">
             <header
               className="mt-4 sm:mt-6 rounded-3xl p-8 sm:p-10 lg:p-14 border border-white/20 shadow-2xl"
               style={{ background: theme.heroGradient }}
@@ -154,21 +228,51 @@ export default function BlogPostContent({ post }) {
               </p>
             </header>
 
-            <article className="mx-auto mt-8 sm:mt-10">
-              <div className="rounded-3xl border border-white/15 bg-black/45 backdrop-blur-sm px-4 sm:px-6 md:px-10 py-8 sm:py-10 shadow-2xl">
-                {post.image && (
-                  <div className="mb-10">
-                    <img
-                      src={post.image}
-                      alt={post.imageAlt || post.title}
-                      className="w-full h-auto rounded-2xl"
-                      referrerPolicy="no-referrer"
-                    />
+            <div className="mx-auto mt-8 sm:mt-10 grid gap-6 xl:grid-cols-[210px_minmax(0,1fr)_210px] items-start">
+              <aside className="hidden xl:block xl:sticky xl:top-28">
+                <div className="rounded-3xl border border-white/20 bg-black/45 backdrop-blur-sm p-4 shadow-2xl">
+                  <p className="text-xs uppercase tracking-wider text-white/70 mb-3">
+                    Sales Focus Left
+                  </p>
+                  <div className="space-y-3">
+                    {leftRailCards.map((card) => (
+                      <div
+                        key={card.id}
+                        className="rounded-2xl border border-white/20 bg-white/5 p-4"
+                      >
+                        <p className="font-semibold text-white mb-2">
+                          {card.title}
+                        </p>
+                        <p className="text-sm text-white/80 mb-3 leading-relaxed">
+                          {card.description}
+                        </p>
+                        <Link
+                          href={card.href}
+                          className="text-sm underline"
+                          style={{ color: theme.linkColor }}
+                        >
+                          {card.cta} &rarr;
+                        </Link>
+                      </div>
+                    ))}
                   </div>
-                )}
+                </div>
+              </aside>
+              <article>
+                <div className="w-full max-w-6xl mx-auto rounded-3xl border border-white/15 bg-black/45 backdrop-blur-sm px-4 sm:px-6 md:px-10 py-8 sm:py-10 shadow-2xl">
+                  {post.image && (
+                    <div className="mb-10">
+                      <img
+                        src={post.image}
+                        alt={post.imageAlt || post.title}
+                        className="w-full lg:w-[60%] h-auto rounded-2xl mx-auto"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  )}
 
-                <div
-                  className={`blog-content prose max-w-none prose-invert
+                  <div
+                    className={`blog-content prose max-w-none prose-invert
                   prose-headings:!text-white prose-headings:font-bold
                   prose-h2:mt-12 prose-h2:mb-6
                   prose-h3:mt-8 prose-h3:mb-4
@@ -179,32 +283,34 @@ export default function BlogPostContent({ post }) {
                   prose-em:!text-white prose-blockquote:!text-white
                   prose-td:!text-white prose-th:!text-white
                   [&_*]:!text-white [&_a]:underline`}
-                  style={{ fontSize: "clamp(0.9rem, 1.45vw, 1.08rem)" }}
-                  dangerouslySetInnerHTML={{ __html: introHtml }}
-                />
+                    style={{ fontSize: "clamp(0.9rem, 1.45vw, 1.08rem)" }}
+                    dangerouslySetInnerHTML={{ __html: introHtml }}
+                  />
 
-                {tocItems.length > 0 && (
-                  <nav className="mb-10 rounded-2xl border border-white/20 bg-white/5 p-5 sm:p-6">
-                    <p className="text-white font-semibold mb-3">Table of Contents</p>
-                    <ul className="space-y-2">
-                      {tocItems.map((item) => (
-                        <li key={item.id}>
-                          <a
-                            href={`#${item.id}`}
-                            className="underline"
-                            style={{ color: theme.linkColor }}
-                          >
-                            {item.text}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </nav>
-                )}
+                  {tocItems.length > 0 && (
+                    <nav className="mb-10 rounded-2xl border border-white/20 bg-white/5 p-5 sm:p-6">
+                      <p className="text-white font-semibold mb-3">
+                        Table of Contents
+                      </p>
+                      <ul className="space-y-2">
+                        {tocItems.map((item) => (
+                          <li key={item.id}>
+                            <a
+                              href={`#${item.id}`}
+                              className="underline"
+                              style={{ color: theme.linkColor }}
+                            >
+                              {item.text}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </nav>
+                  )}
 
-                {bodyFromFirstH2Html && (
-                  <div
-                    className={`blog-content prose max-w-none prose-invert
+                  {bodyFromFirstH2Html && (
+                    <div
+                      className={`blog-content prose max-w-none prose-invert
                     prose-headings:!text-white prose-headings:font-bold
                     prose-h2:mt-12 prose-h2:mb-6
                     prose-h3:mt-8 prose-h3:mb-4
@@ -215,30 +321,97 @@ export default function BlogPostContent({ post }) {
                     prose-em:!text-white prose-blockquote:!text-white
                     prose-td:!text-white prose-th:!text-white
                     [&_*]:!text-white [&_a]:underline`}
-                    style={{ fontSize: "clamp(0.9rem, 1.45vw, 1.08rem)" }}
-                    dangerouslySetInnerHTML={{ __html: bodyFromFirstH2Html }}
-                  />
-                )}
+                      style={{ fontSize: "clamp(0.9rem, 1.45vw, 1.08rem)" }}
+                      dangerouslySetInnerHTML={{ __html: bodyFromFirstH2Html }}
+                    />
+                  )}
 
-                <div className="mt-16 pt-8 border-t border-white/30">
-                  <h3
-                    className="font-bold text-white mb-6"
-                    style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
-                  >
-                    Related Articles
-                  </h3>
-                  <div>
-                    <Link
-                      href="/blog"
-                      className="font-medium underline"
-                      style={{ color: theme.linkColor }}
+                  <div className="mt-16 pt-8 border-t border-white/30">
+                    <h3
+                      className="font-bold text-white mb-6"
+                      style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
                     >
-                      View all articles &rarr;
-                    </Link>
+                      Related Articles
+                    </h3>
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 mb-6">
+                      {relatedCards.map((article) => (
+                        <article
+                          key={article.id}
+                          className="rounded-2xl border border-white/20 bg-white/5 p-4"
+                        >
+                          <p className="text-white font-semibold mb-2">
+                            {article.title}
+                          </p>
+                          <p className="text-white/80 text-sm leading-relaxed">
+                            {article.excerpt ||
+                              "Explore more articles on this topic."}
+                          </p>
+                          {article.slug && (
+                            <Link
+                              href={`/blog/${article.slug}`}
+                              className="inline-block mt-3 text-sm underline"
+                              style={{ color: theme.linkColor }}
+                            >
+                              Read article &rarr;
+                            </Link>
+                          )}
+                        </article>
+                      ))}
+                    </div>
+                    <div>
+                      <Link
+                        href="/blog"
+                        className="font-medium underline"
+                        style={{ color: theme.linkColor }}
+                      >
+                        View all articles &rarr;
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
+              </article>
+              <aside className="hidden xl:block xl:sticky xl:top-28">
+                <div className="rounded-3xl border border-white/20 bg-black/45 backdrop-blur-sm p-4 sm:p-5 shadow-2xl">
+                  <p className="text-xs uppercase tracking-wider text-white/70 mb-3">
+                    Sales Focus Right
+                  </p>
+                  <div className="space-y-3">
+                    {rightRailCards.map((card) => (
+                      <div
+                        key={card.id}
+                        className="rounded-2xl border border-white/20 bg-white/5 p-4"
+                      >
+                        <p className="font-semibold text-white mb-2">
+                          {card.title}
+                        </p>
+                        <p className="text-sm text-white/80 mb-3 leading-relaxed">
+                          {card.description}
+                        </p>
+                        {card.external ? (
+                          <a
+                            href={card.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm underline"
+                            style={{ color: theme.linkColor }}
+                          >
+                            {card.cta} &rarr;
+                          </a>
+                        ) : (
+                          <Link
+                            href={card.href}
+                            className="text-sm underline"
+                            style={{ color: theme.linkColor }}
+                          >
+                            {card.cta} &rarr;
+                          </Link>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </aside>
+            </div>
           </div>
         </div>
         <style jsx>{`

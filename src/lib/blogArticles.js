@@ -15,8 +15,42 @@ function rowToArticle(row) {
     imageName: row.image_name || '',
     featured: !!row.featured,
     content: row.content || '',
+    createdAt: row.created_at || '',
     cardBackground: row.card_background || '/3_Affiliate/zlatna/5.png',
+    relatedSlugs: Array.isArray(row.related_slugs)
+      ? row.related_slugs.filter((value) => typeof value === 'string' && value.trim())
+      : [],
   };
+}
+
+function parseFlexibleDate(value) {
+  if (!value || typeof value !== 'string') return 0;
+  const trimmed = value.trim();
+  if (!trimmed) return 0;
+
+  const direct = new Date(trimmed);
+  if (!Number.isNaN(direct.getTime())) return direct.getTime();
+
+  const ddmmyyyy = trimmed.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/);
+  if (ddmmyyyy) {
+    const [, day, month, year] = ddmmyyyy;
+    const normalized = new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`);
+    if (!Number.isNaN(normalized.getTime())) return normalized.getTime();
+  }
+
+  return 0;
+}
+
+export function compareArticlesByNewest(a, b) {
+  const bDate = parseFlexibleDate(b?.date);
+  const aDate = parseFlexibleDate(a?.date);
+  if (bDate !== aDate) return bDate - aDate;
+
+  const bCreated = parseFlexibleDate(b?.createdAt);
+  const aCreated = parseFlexibleDate(a?.createdAt);
+  if (bCreated !== aCreated) return bCreated - aCreated;
+
+  return (Number(b?.id) || 0) - (Number(a?.id) || 0);
 }
 
 /** Map app article to DB row format */
@@ -33,6 +67,11 @@ function articleToRow(article) {
     featured: !!article.featured,
     content: article.content || '',
     card_background: article.cardBackground || '/3_Affiliate/zlatna/5.png',
+    related_slugs: Array.isArray(article.relatedSlugs)
+      ? article.relatedSlugs
+          .map((value) => (typeof value === 'string' ? value.trim() : ''))
+          .filter(Boolean)
+      : [],
   };
 }
 
@@ -162,20 +201,47 @@ export async function updateArticle(id, article) {
 
   try {
     const row = articleToRow(article);
-    const { data, error } = await supabase
-      .from('blog_articles')
-      .update({ ...row, updated_at: new Date().toISOString() })
-      .eq('id', id)
-      .select()
-      .single();
+    const payload = { ...row, updated_at: new Date().toISOString() };
+
+    const runUpdate = async (updatePayload) =>
+      supabase
+        .from('blog_articles')
+        .update(updatePayload)
+        .eq('id', id)
+        .select()
+        .single();
+
+    let { data, error } = await runUpdate(payload);
+
+    // Backward-compatibility: some environments might not yet have related_slugs column
+    if (
+      error &&
+      Object.prototype.hasOwnProperty.call(payload, 'related_slugs') &&
+      String(error?.message || '').toLowerCase().includes('related_slugs')
+    ) {
+      const { related_slugs, ...fallbackPayload } = payload;
+      ({ data, error } = await runUpdate(fallbackPayload));
+    }
 
     if (error) {
-      console.error('Supabase updateArticle error:', error);
+      const errorDetails = {
+        message: error?.message || null,
+        details: error?.details || null,
+        hint: error?.hint || null,
+        code: error?.code || null,
+        raw: error,
+      };
+      console.error('Supabase updateArticle error details:', errorDetails);
       return null;
     }
+
     return rowToArticle(data);
   } catch (err) {
-    console.error('updateArticle error:', err);
+    console.error('updateArticle error:', {
+      message: err?.message || null,
+      stack: err?.stack || null,
+      raw: err,
+    });
     return null;
   }
 }

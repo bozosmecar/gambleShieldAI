@@ -5,12 +5,14 @@ import { usePathname } from "next/navigation";
 
 /**
  * Needs env (see .env.local):
- *   NEXT_PUBLIC_GOOGLE_ADS_ID  — Google Ads tag, e.g. AW-1234567890
+ *   NEXT_PUBLIC_GA4_ID         — GA4 measurement id, e.g. G-XXXXXXXXXX
+ *   NEXT_PUBLIC_GOOGLE_ADS_ID  — (optional) Google Ads tag, e.g. AW-1234567890
  *   NEXT_PUBLIC_META_PIXEL_ID  — Meta Pixel ID (digits only)
  *
  * Scripts load only after the user accepts cookies (CookieConsent).
  */
 
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID?.trim() || "";
 const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID?.trim() || "";
 const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim() || "";
 
@@ -25,8 +27,8 @@ function initDataLayer() {
   }
 }
 
-function loadGoogleAds() {
-  if (!GOOGLE_ADS_ID || typeof document === "undefined") return;
+function loadGoogleTrackers() {
+  if ((!GA4_ID && !GOOGLE_ADS_ID) || typeof document === "undefined") return;
 
   initDataLayer();
 
@@ -36,16 +38,22 @@ function loadGoogleAds() {
     script = document.createElement("script");
     script.id = GTAG_SCRIPT_ID;
     script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GOOGLE_ADS_ID)}`;
+    const scriptId = GA4_ID || GOOGLE_ADS_ID;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(scriptId)}`;
     document.head.appendChild(script);
   }
 
-  window.gtag("config", GOOGLE_ADS_ID, {
-    page_path:
-      typeof window !== "undefined"
-        ? `${window.location.pathname}${window.location.search}`
-        : undefined,
-  });
+  const pagePath =
+    typeof window !== "undefined"
+      ? `${window.location.pathname}${window.location.search}`
+      : undefined;
+
+  if (GA4_ID) {
+    window.gtag("config", GA4_ID, { page_path: pagePath });
+  }
+  if (GOOGLE_ADS_ID) {
+    window.gtag("config", GOOGLE_ADS_ID, { page_path: pagePath });
+  }
 }
 
 function bootstrapMetaFbq() {
@@ -86,11 +94,20 @@ function loadMetaPixel() {
 }
 
 function syncGtagPagePath() {
-  if (!GOOGLE_ADS_ID || typeof window === "undefined" || typeof window.gtag !== "function")
+  if (
+    (!GA4_ID && !GOOGLE_ADS_ID) ||
+    typeof window === "undefined" ||
+    typeof window.gtag !== "function"
+  )
     return;
-  window.gtag("config", GOOGLE_ADS_ID, {
-    page_path: `${window.location.pathname}${window.location.search}`,
-  });
+
+  const page_path = `${window.location.pathname}${window.location.search}`;
+  if (GA4_ID) {
+    window.gtag("config", GA4_ID, { page_path });
+  }
+  if (GOOGLE_ADS_ID) {
+    window.gtag("config", GOOGLE_ADS_ID, { page_path });
+  }
 }
 
 function syncMetaPageView() {
@@ -118,16 +135,16 @@ export default function AnalyticsLoader() {
       trackersReady.current = false;
       return;
     }
-    if (!GOOGLE_ADS_ID && !META_PIXEL_ID) return;
+    if (!GA4_ID && !GOOGLE_ADS_ID && !META_PIXEL_ID) return;
 
-    loadGoogleAds();
+    loadGoogleTrackers();
     loadMetaPixel();
     trackersReady.current = true;
   }, [consent]);
 
   useEffect(() => {
     if (consent !== "accepted" || !trackersReady.current) return;
-    if (!GOOGLE_ADS_ID && !META_PIXEL_ID) return;
+    if (!GA4_ID && !GOOGLE_ADS_ID && !META_PIXEL_ID) return;
 
     syncGtagPagePath();
     syncMetaPageView();

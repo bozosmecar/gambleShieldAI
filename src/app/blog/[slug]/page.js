@@ -1,8 +1,14 @@
 import { notFound } from "next/navigation";
-import { getArticleBySlug } from "@/lib/blogArticles";
+import { getArticleBySlug, getArticles } from "@/lib/blogArticles";
 import BlogPostContent from "./BlogPostContent";
 
 const BASE_URL = "https://gamble-shield-ai.vercel.app";
+
+function toIsoDateOrUndefined(value) {
+  if (!value) return undefined;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
+}
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -11,6 +17,7 @@ export async function generateMetadata({ params }) {
     return { title: "Post Not Found | GambleShield" };
   }
   const canonical = `${BASE_URL}/blog/${post.slug || post.id}`;
+  const publishedTime = toIsoDateOrUndefined(post.date);
   return {
     title: `${post.title} | GambleShield`,
     description:
@@ -22,7 +29,7 @@ export async function generateMetadata({ params }) {
       url: canonical,
       siteName: "GambleShield",
       type: "article",
-      publishedTime: post.date ? new Date(post.date).toISOString() : undefined,
+      publishedTime,
       images: post.image
         ? [{ url: post.image, alt: post.imageAlt || post.title }]
         : [{ url: "/og-image.png", width: 1200, height: 630, alt: "GambleShield" }],
@@ -39,7 +46,7 @@ export async function generateMetadata({ params }) {
 
 function buildArticleJsonLd(post) {
   const canonical = `${BASE_URL}/blog/${post.slug || post.id}`;
-  const datePublished = post.date ? new Date(post.date).toISOString() : undefined;
+  const datePublished = toIsoDateOrUndefined(post.date);
 
   return {
     "@context": "https://schema.org",
@@ -103,10 +110,71 @@ function buildArticleJsonLd(post) {
   };
 }
 
+function extractKeywords(value) {
+  return (value || "")
+    .toLowerCase()
+    .replace(/<[^>]*>/g, " ")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter((word) => word.length >= 4);
+}
+
+function getRelatedArticles(currentPost, allPosts) {
+  const manualSlugs = Array.isArray(currentPost.relatedSlugs)
+    ? currentPost.relatedSlugs
+    : [];
+  const manualRelated = manualSlugs
+    .map((manualSlug) =>
+      allPosts.find(
+        (candidate) =>
+          candidate.id !== currentPost.id && candidate.slug === manualSlug
+      )
+    )
+    .filter(Boolean);
+
+  const currentKeywords = new Set([
+    ...extractKeywords(currentPost.title),
+    ...extractKeywords(currentPost.excerpt),
+    ...extractKeywords(currentPost.category),
+  ]);
+
+  if (currentKeywords.size === 0) {
+    return manualRelated.slice(0, 3);
+  }
+
+  const keywordBased = allPosts
+    .filter((candidate) => candidate.id !== currentPost.id)
+    .map((candidate) => {
+      const candidateKeywords = [
+        ...extractKeywords(candidate.title),
+        ...extractKeywords(candidate.excerpt),
+        ...extractKeywords(candidate.category),
+      ];
+      const score = candidateKeywords.reduce(
+        (total, word) => total + (currentKeywords.has(word) ? 1 : 0),
+        0
+      );
+      return { candidate, score };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((item) => item.candidate);
+
+  const combined = [...manualRelated];
+  keywordBased.forEach((candidate) => {
+    if (combined.some((entry) => entry.id === candidate.id)) return;
+    combined.push(candidate);
+  });
+
+  return combined.slice(0, 3);
+}
+
 export default async function BlogPostPage({ params }) {
   const { slug } = await params;
   const post = await getArticleBySlug(slug);
   if (!post) notFound();
+  const allPosts = await getArticles();
+  const relatedArticles = getRelatedArticles(post, allPosts);
 
   const jsonLd = buildArticleJsonLd(post);
 
@@ -116,7 +184,7 @@ export default async function BlogPostPage({ params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BlogPostContent post={post} />
+      <BlogPostContent post={post} relatedArticles={relatedArticles} />
     </>
   );
 }

@@ -1,18 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { getArticles } from "@/lib/blogArticles";
+import { compareArticlesByNewest, getArticles } from "@/lib/blogArticles";
 import BlogPostCard from "@/components/BlogPostCard";
 import { isOtherCategory } from "@/lib/categoryUtils";
 import BlogPostCardSkeleton from "@/components/BlogPostCardSkeleton";
 
 const POSTS_PER_PAGE = 12;
-
-function parseDate(dateStr) {
-  if (!dateStr) return 0;
-  const d = new Date(dateStr);
-  return isNaN(d.getTime()) ? 0 : d.getTime();
-}
 
 export default function BlogPage() {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -31,7 +25,7 @@ export default function BlogPage() {
   const gridPosts = useMemo(() => {
     return [...blogPosts]
       .filter((p) => isOtherCategory(p.category))
-      .sort((a, b) => parseDate(b.date) - parseDate(a.date));
+      .sort(compareArticlesByNewest);
   }, [blogPosts]);
 
   const totalPages = Math.ceil(gridPosts.length / POSTS_PER_PAGE) || 1;
@@ -41,10 +35,10 @@ export default function BlogPage() {
   if (loading) {
     return (
       <div className="min-h-screen normal-case">
-        <header className="bg-amber-500 py-20">
+        <header className="bg-[#FFF3C4] pt-20 pb-10">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl font-bold text-white">Blog</h1>
-            <p className="text-white/80 mt-2 text-lg">
+            <h1 className="text-4xl font-bold text-red-600">Blog</h1>
+            <p className="text-gray-700 mt-2 text-lg">
               News, guides &amp; insights from GambleShield
             </p>
           </div>
@@ -71,10 +65,10 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen normal-case">
-      <header className="bg-amber-500 py-20">
+      <header className="bg-[#FFF3C4] pt-20 pb-10">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-white">Blog</h1>
-          <p className="text-white/80 mt-2 text-lg">
+          <h1 className="text-4xl font-bold text-red-600">Blog</h1>
+          <p className="text-gray-700 mt-2 text-lg">
             News, guides & insights from GambleShield
           </p>
         </div>
@@ -89,6 +83,16 @@ export default function BlogPage() {
         }}
       >
         <div className="container mx-auto px-4 w-full text-white">
+          <section className="mx-auto max-w-4xl rounded-2xl border border-white/25 bg-black/25 p-6 mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">
+              Blog Content Hub (Placeholder)
+            </h2>
+            <p className="text-white/85 leading-relaxed">
+              Ovdje ide uvodni marketinški tekst za Blog sekciju. Primarni cilj:
+              usmjeriti korisnika prema komercijalnim stranicama i offerima;
+              sadržaj je potpora za trust i SEO.
+            </p>
+          </section>
           <div className="flex flex-wrap justify-center gap-8 gap-y-14">
             {paginatedPosts.map((post) => (
               <BlogPostCard key={post.id} post={post} />
