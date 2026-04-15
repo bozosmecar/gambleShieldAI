@@ -201,7 +201,7 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
     <div
       className="min-h-screen normal-case text-white"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.38), rgba(0, 0, 0, 0.52)), url('/blog/pozadina_blog.jpg'), ${theme.pageGradient}`,
+        backgroundImage: ` ${theme.pageGradient}`,
         backgroundSize: "cover, cover, cover",
         backgroundPosition: "center, center, center",
         backgroundRepeat: "no-repeat, no-repeat, no-repeat",
