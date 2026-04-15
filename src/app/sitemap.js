@@ -50,12 +50,16 @@ export default async function sitemap() {
   ];
 
   const articles = await getArticles();
-  const blogRoutes = articles.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug || post.id}`,
-    lastModified: post.date ? new Date(post.date) : lastModified,
-    changeFrequency: 'monthly',
-    priority: 0.6,
-  }));
+  const blogRoutes = articles.map((post) => {
+    const d = post.date ? new Date(post.date) : null;
+    const validDate = d instanceof Date && !isNaN(d) ? d : lastModified;
+    return {
+      url: `${baseUrl}/blog/${post.slug || post.id}`,
+      lastModified: validDate,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    };
+  });
 
   return [...staticRoutes, ...blogRoutes];
 }
