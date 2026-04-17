@@ -201,7 +201,7 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
     <div
       className="min-h-screen normal-case text-white"
       style={{
-        backgroundImage: `url('/blog/backgroundPost.png'), ${theme.pageGradient}`,
+        backgroundImage: `url('/blog/backgroundPost.webp'), ${theme.pageGradient}`,
         backgroundSize: "auto, cover",
         backgroundPosition: "top left, center",
         backgroundRepeat: "repeat, no-repeat",
@@ -230,7 +230,7 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
 
             <div className="mx-auto mt-8 sm:mt-10 grid gap-6 xl:grid-cols-[210px_minmax(0,1fr)_210px]">
               <aside className="hidden xl:block">
-                <div className="sticky top-28 rounded-3xl border border-white/20 bg-black/45 backdrop-blur-sm p-4 shadow-2xl max-h-[calc(100vh-9rem)] overflow-y-auto">
+                <div className="sticky top-28 rounded-3xl border border-white/20 bg-black/80 backdrop-blur-sm p-4 shadow-2xl max-h-[calc(100vh-9rem)] overflow-y-auto">
                   <p className="text-xs uppercase tracking-wider text-white/70 mb-3">
                     Sales Focus Left
                   </p>
@@ -259,7 +259,7 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
                 </div>
               </aside>
               <article className="self-start">
-                <div className="w-full max-w-6xl mx-auto rounded-3xl border border-white/15 bg-black/45 backdrop-blur-sm px-4 sm:px-6 md:px-10 py-8 sm:py-10 shadow-2xl">
+                <div className="w-full max-w-6xl mx-auto rounded-3xl border border-white/15 bg-black/80 backdrop-blur-sm px-4 sm:px-6 md:px-10 py-8 sm:py-10 shadow-2xl">
                   {post.image && (
                     <div className="mb-10">
                       <img
@@ -371,7 +371,7 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
                 </div>
               </article>
               <aside className="hidden xl:block">
-                <div className="sticky top-28 rounded-3xl border border-white/20 bg-black/45 backdrop-blur-sm p-4 sm:p-5 shadow-2xl max-h-[calc(100vh-9rem)] overflow-y-auto">
+                <div className="sticky top-28 rounded-3xl border border-white/20 bg-black/80 backdrop-blur-sm p-4 sm:p-5 shadow-2xl max-h-[calc(100vh-9rem)] overflow-y-auto">
                   <p className="text-xs uppercase tracking-wider text-white/70 mb-3">
                     Sales Focus Right
                   </p>
