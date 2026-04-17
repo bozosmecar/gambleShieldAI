@@ -201,10 +201,10 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
     <div
       className="min-h-screen normal-case text-white"
       style={{
-        backgroundImage: ` ${theme.pageGradient}`,
-        backgroundSize: "cover, cover, cover",
-        backgroundPosition: "center, center, center",
-        backgroundRepeat: "no-repeat, no-repeat, no-repeat",
+        backgroundImage: `url('/blog/backgroundPost.png'), ${theme.pageGradient}`,
+        backgroundSize: "auto, cover",
+        backgroundPosition: "top left, center",
+        backgroundRepeat: "repeat, no-repeat",
       }}
     >
       <div className="pt-25">
