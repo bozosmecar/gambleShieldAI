@@ -174,11 +174,23 @@ export async function createArticle(article) {
 
   try {
     const row = articleToRow(article);
-    const { data, error } = await supabase
-      .from('blog_articles')
-      .insert(row)
-      .select()
-      .single();
+
+    const runInsert = async (payload) =>
+      supabase.from('blog_articles').insert(payload).select().single();
+
+    let { data, error } = await runInsert(row);
+
+    // Fallback 1: remove keywords if column doesn't exist yet
+    if (error) {
+      const { keywords, ...rowWithoutKeywords } = row;
+      ({ data, error } = await runInsert(rowWithoutKeywords));
+    }
+
+    // Fallback 2: also remove related_slugs if still failing
+    if (error) {
+      const { keywords, related_slugs, ...rowCore } = row;
+      ({ data, error } = await runInsert(rowCore));
+    }
 
     if (error) {
       console.error('Supabase createArticle error:', error);
@@ -215,13 +227,15 @@ export async function updateArticle(id, article) {
 
     let { data, error } = await runUpdate(payload);
 
-    // Backward-compatibility: some environments might not yet have related_slugs column
-    if (
-      error &&
-      Object.prototype.hasOwnProperty.call(payload, 'related_slugs') &&
-      String(error?.message || '').toLowerCase().includes('related_slugs')
-    ) {
-      const { related_slugs, ...fallbackPayload } = payload;
+    // Fallback 1: remove keywords if column doesn't exist yet
+    if (error) {
+      const { keywords, ...fallbackPayload } = payload;
+      ({ data, error } = await runUpdate(fallbackPayload));
+    }
+
+    // Fallback 2: also remove related_slugs if still failing
+    if (error) {
+      const { keywords, related_slugs, ...fallbackPayload } = payload;
       ({ data, error } = await runUpdate(fallbackPayload));
     }
 

@@ -6,7 +6,7 @@ import BlogPostCard from "@/components/BlogPostCard";
 import { isBestCasinos } from "@/lib/categoryUtils";
 import BlogPostCardSkeleton from "@/components/BlogPostCardSkeleton";
 
-const POSTS_PER_PAGE = 12;
+const POSTS_PER_PAGE = 9;
 
 export default function BestCasinosPage() {
   const [blogPosts, setBlogPosts] = useState([]);

@@ -4,10 +4,21 @@ import Link from "next/link";
 
 const DEFAULT_CARD_BG = "/3_Affiliate/zlatna/5.png";
 
+function getFirstSentence(html) {
+  if (!html) return "";
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const match = text.match(/^[^.!?]*[.!?]/);
+  return match ? match[0].trim() : text.slice(0, 150);
+}
+
 export default function BlogPostCard({ post }) {
   if (!post) return null;
 
   const cardBg = post.cardBackground || DEFAULT_CARD_BG;
+  const introText = getFirstSentence(post.content) || post.excerpt || "";
 
   return (
     <Link
@@ -29,12 +40,12 @@ export default function BlogPostCard({ post }) {
               {post.category}
             </span>
           </div>
-          <div className="rounded-lg overflow-hidden mb-3 shrink-0">
+          <div className="rounded-lg overflow-hidden mb-3 shrink-0 max-h-[200px]">
             {post.image ? (
               <img
                 src={post.image}
                 alt={post.imageAlt || post.title}
-                className="w-full h-auto rounded-lg"
+                className="w-full h-full max-h-[240px] object-cover rounded-lg"
                 referrerPolicy="no-referrer"
               />
             ) : (
@@ -43,11 +54,11 @@ export default function BlogPostCard({ post }) {
               </div>
             )}
           </div>
-          <h3 className="text-lg font-bold mb-2 text-white hover:text-orange-300 transition-colors line-clamp-2 drop-shadow-sm shrink-0 text-ellipsis overflow-hidden">
+          <h3 className="text-2xl font-bold mb-2 text-white hover:text-orange-300 transition-colors line-clamp-2 drop-shadow-sm shrink-0 text-ellipsis overflow-hidden">
             {post.title}
           </h3>
           <p className="text-white/90 text-sm mb-3 line-clamp-3 flex-1 min-h-0 drop-shadow-sm overflow-hidden text-ellipsis">
-            {post.excerpt}
+            {introText}
           </p>
           <div className="flex items-center justify-end pt-3 border-t border-white/30 shrink-0">
             <p className="text-xs text-white/90">{post.date}</p>
