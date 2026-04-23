@@ -24,7 +24,7 @@ export default function TipsAndEducationPage() {
 
   const gridPosts = useMemo(() => {
     return [...blogPosts]
-      .filter((p) => isTipsEducation(p.category))
+      .filter((p) => isTipsEducation(p.category) && !p.hidden)
       .sort(compareArticlesByNewest);
   }, [blogPosts]);
 
@@ -35,15 +35,14 @@ export default function TipsAndEducationPage() {
   if (loading) {
     return (
       <div className="min-h-screen normal-case">
-        <header className="bg-[#FFF3C4] pt-20 pb-10">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl font-bold text-red-600">Tips &amp; Education</h1>
-            <p className="text-gray-700 mt-2 text-lg">Gambling guides, strategies &amp; responsible gaming tips</p>
-          </div>
-        </header>
         <div
-          className="w-full py-12 min-h-screen"
-          style={{ backgroundImage: "url(/blog/background.png)", backgroundSize: "cover", backgroundPosition: "center" }}
+          className="w-full pt-28 pb-12 min-h-screen"
+          style={{
+            backgroundImage: "url(/1_Home%20page/pozadina_blog.webp)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed",
+          }}
         >
           <div className="container mx-auto px-4 w-full">
             <div className="flex flex-wrap justify-center gap-8 gap-y-14">
@@ -59,32 +58,23 @@ export default function TipsAndEducationPage() {
 
   return (
     <div className="min-h-screen normal-case">
-      <header className="bg-[#FFF3C4] pt-20 pb-10">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-red-600">Tips &amp; Education</h1>
-          <p className="text-gray-700 mt-2 text-lg">
-            Gambling guides, strategies &amp; responsible gaming tips
-          </p>
-        </div>
-      </header>
-
       <div
-        className="w-full py-12 min-h-screen"
+        className="w-full pt-28 pb-12 min-h-screen"
         style={{
-          backgroundImage: "url(/blog/background.png)",
+          backgroundImage: "url(/1_Home%20page/pozadina_blog.webp)",
           backgroundSize: "cover",
           backgroundPosition: "center",
+          backgroundAttachment: "fixed",
         }}
       >
         <div className="container mx-auto px-4 w-full text-white">
-          <section className="mx-auto max-w-4xl rounded-2xl border border-white/25 bg-black/25 p-6 mb-10">
+          <section className="mx-auto max-w-4xl rounded-2xl border border-white/25 bg-black/60 p-6 mb-10 shadow-xl">
             <h2 className="text-2xl md:text-3xl font-bold mb-3">
-              Tips &amp; Education Intro (Placeholder)
+              GambleShield Tips and Education
             </h2>
-            <p className="text-white/85 leading-relaxed">
-              Ovdje ide edukativni uvod koji i dalje podržava prodaju: kraći savjeti,
-              odgovorno igranje i jasni interni linkovi prema “Best Casinos Ei
-              “Watch Stream Esekcijama.
+            <p className="text-white/90 leading-relaxed">
+              GambleShield knows what players need in order to stay safe and
+              enjoy their gambling experience.
             </p>
           </section>
           <div className="flex flex-wrap justify-center gap-8 gap-y-14">
@@ -135,14 +125,6 @@ export default function TipsAndEducationPage() {
           )}
         </div>
       </div>
-
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-400">
-            © 2026 GambleShield. All rights reserved. | Promoting responsible gaming worldwide.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

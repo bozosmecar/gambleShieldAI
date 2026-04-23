@@ -159,8 +159,7 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
     {
       id: "best-casinos",
       title: "Best Casinos 2026",
-      description:
-        "High-intent traffic: push directly to ranked casino lists and bonus offers.",
+      description: "Read about the best casinos by GambleShield.",
       href: "/blog/best-casinos",
       cta: "Open best casino list",
       external: false,
@@ -169,7 +168,7 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
       id: "top-3-casinos",
       title: "Top 3 Casino Picks",
       description:
-        "Placeholder for top 3 conversion widget (commission-focused placements).",
+        "GambleShield curated top 3 safest casinos with regular updates.",
       href: "/blog/best-casinos",
       cta: "View top 3 picks",
       external: false,
@@ -180,19 +179,17 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
     {
       id: "watch-stream",
       title: "Watch Live Stream",
-      description:
-        "Move engaged readers into live stream touchpoints, polls and offer CTAs.",
+      description: "Check out what GambleShield is streaming right now.",
       href: "/stream",
       cta: "Watch stream now",
       external: false,
     },
     {
-      id: "youtube-archive",
-      title: "YouTube Archive (Offline)",
-      description:
-        "When stream is offline, route traffic to recorded sessions and highlights.",
+      id: "social-media",
+      title: "Social Media",
+      description: "Follow GambleShield on social media.",
       href: "https://youtube.com/gambleshield",
-      cta: "Open YouTube archive",
+      cta: "Follow GambleShield",
       external: true,
     },
   ];
@@ -201,10 +198,10 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
     <div
       className="min-h-screen normal-case text-white"
       style={{
-        backgroundImage: `url('/blog/backgroundPost.webp'), ${theme.pageGradient}`,
-        backgroundSize: "auto, cover",
-        backgroundPosition: "top left, center",
-        backgroundRepeat: "repeat, no-repeat",
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.34), rgba(0,0,0,0.1)), url('/blog/backgroundPost.webp'), ${theme.pageGradient}`,
+        backgroundSize: "auto, 1400px auto, cover",
+        backgroundPosition: "center, top left, center",
+        backgroundRepeat: "no-repeat, repeat, no-repeat",
       }}
     >
       <div className="pt-25">
@@ -230,10 +227,7 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
 
             <div className="mx-auto mt-8 sm:mt-10 grid gap-6 xl:grid-cols-[210px_minmax(0,1fr)_210px]">
               <aside className="hidden xl:block">
-                <div className="sticky top-28 rounded-3xl border border-white/20 bg-black/80 backdrop-blur-sm p-4 shadow-2xl max-h-[calc(100vh-9rem)] overflow-y-auto">
-                  <p className="text-xs uppercase tracking-wider text-white/70 mb-3">
-                    Sales Focus Left
-                  </p>
+                <div className="sticky top-28 rounded-3xl border border-white/20 bg-black/50 backdrop-blur-sm p-4 shadow-2xl max-h-[calc(100vh-9rem)] overflow-y-auto">
                   <div className="space-y-3">
                     {leftRailCards.map((card) => (
                       <div
@@ -259,13 +253,13 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
                 </div>
               </aside>
               <article className="self-start">
-                <div className="w-full max-w-6xl mx-auto rounded-3xl border border-white/15 bg-black/80 backdrop-blur-sm px-4 sm:px-6 md:px-10 py-8 sm:py-10 shadow-2xl">
+                <div className="w-full max-w-6xl mx-auto rounded-3xl border border-white/15 bg-black/50 backdrop-blur-sm px-4 sm:px-6 md:px-10 py-8 sm:py-10 shadow-2xl">
                   {post.image && (
                     <div className="mb-10">
                       <img
                         src={post.image}
                         alt={post.imageAlt || post.title}
-                        className="w-full lg:w-[60%] h-auto rounded-2xl mx-auto"
+                        className="w-full lg:w-[85%] h-auto rounded-2xl mx-auto"
                         referrerPolicy="no-referrer"
                       />
                     </div>
@@ -371,10 +365,7 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
                 </div>
               </article>
               <aside className="hidden xl:block">
-                <div className="sticky top-28 rounded-3xl border border-white/20 bg-black/80 backdrop-blur-sm p-4 sm:p-5 shadow-2xl max-h-[calc(100vh-9rem)] overflow-y-auto">
-                  <p className="text-xs uppercase tracking-wider text-white/70 mb-3">
-                    Sales Focus Right
-                  </p>
+                <div className="sticky top-28 rounded-3xl border border-white/20 bg-black/50 backdrop-blur-sm p-4 sm:p-5 shadow-2xl max-h-[calc(100vh-9rem)] overflow-y-auto">
                   <div className="space-y-3">
                     {rightRailCards.map((card) => (
                       <div
@@ -416,11 +407,12 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
         </div>
         <style jsx>{`
           .blog-content :global(a) {
-            color: ${theme.linkColor};
+            color: #3b82f6;
+            text-decoration: underline;
             transition: color 160ms ease;
           }
           .blog-content :global(a:hover) {
-            color: ${theme.linkHoverColor};
+            color: #60a5fa;
           }
           .blog-content :global(h2) {
             scroll-margin-top: 120px;

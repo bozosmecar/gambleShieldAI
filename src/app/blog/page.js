@@ -24,7 +24,7 @@ export default function BlogPage() {
 
   const gridPosts = useMemo(() => {
     return [...blogPosts]
-      .filter((p) => isOtherCategory(p.category))
+      .filter((p) => isOtherCategory(p.category) && !p.hidden)
       .sort(compareArticlesByNewest);
   }, [blogPosts]);
 
@@ -35,20 +35,13 @@ export default function BlogPage() {
   if (loading) {
     return (
       <div className="min-h-screen normal-case">
-        <header className="bg-[#FFF3C4] pt-20 pb-10">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl font-bold text-red-600">Blog</h1>
-            <p className="text-gray-700 mt-2 text-lg">
-              News, guides &amp; insights from GambleShield
-            </p>
-          </div>
-        </header>
         <div
-          className="w-full py-12 min-h-screen"
+          className="w-full pt-28 pb-12 min-h-screen"
           style={{
-            backgroundImage: "url(/blog/background.png)",
+            backgroundImage: "url(/1_Home%20page/pozadina_blog.webp)",
             backgroundSize: "cover",
             backgroundPosition: "center",
+            backgroundAttachment: "fixed",
           }}
         >
           <div className="container mx-auto px-4 w-full">
@@ -65,32 +58,24 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen normal-case">
-      <header className="bg-[#FFF3C4] pt-20 pb-10">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-red-600">Blog</h1>
-          <p className="text-gray-700 mt-2 text-lg">
-            News, guides & insights from GambleShield
-          </p>
-        </div>
-      </header>
-
       <div
-        className="w-full py-12 min-h-screen"
+        className="w-full pt-28 pb-12 min-h-screen"
         style={{
-          backgroundImage: "url(blog/background.png)",
+          backgroundImage: "url(/1_Home%20page/pozadina_blog.webp)",
           backgroundSize: "cover",
           backgroundPosition: "center",
+          backgroundAttachment: "fixed",
         }}
       >
         <div className="container mx-auto px-4 w-full text-white">
-          <section className="mx-auto max-w-4xl rounded-2xl border border-white/25 bg-black/25 p-6 mb-10">
+          <section className="mx-auto max-w-4xl rounded-2xl border border-white/25 bg-black/60 p-6 mb-10 shadow-xl">
             <h2 className="text-2xl md:text-3xl font-bold mb-3">
-              Blog Content Hub (Placeholder)
+              GambleShield Blog
             </h2>
-            <p className="text-white/85 leading-relaxed">
-              Ovdje ide uvodni marketinški tekst za Blog sekciju. Primarni cilj:
-              usmjeriti korisnika prema komercijalnim stranicama i offerima;
-              sadržaj je potpora za trust i SEO.
+            <p className="text-white/90 leading-relaxed">
+              GambleShield blogs cover a wide range of casino-related topics,
+              gambling news and player&apos;s experiences with online casinos,
+              as well as interviews, deep-dives and reports.
             </p>
           </section>
           <div className="flex flex-wrap justify-center gap-8 gap-y-14">
@@ -141,21 +126,12 @@ export default function BlogPage() {
             <div className="text-center py-20">
               <div className="text-6xl mb-4">📝</div>
               <h3 className="text-2xl font-bold text-white mb-2">
-                Još članaka uskoro
+                No articles yet
               </h3>
             </div>
           )}
         </div>
       </div>
-
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-400">
-            © 2026 GambleShield. All rights reserved. | Promoting responsible
-            gaming worldwide.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

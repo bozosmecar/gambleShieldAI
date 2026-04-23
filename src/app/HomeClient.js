@@ -442,7 +442,7 @@ export default function HomeClient() {
             >
               <defs>
                 {/* r=1100 → sagitta≈104, peak y≈75 (arch crown), endpoints y=179 */}
-                <path id="archCurve" d="M 33,190 A 1100,1100 0 0,1 967,190" />
+                <path id="archCurve" d="M 24,200 A 1100,1200 0 0,1 976,200" />
                 <filter
                   id="archTextShadow"
                   x="-2%"
@@ -505,7 +505,7 @@ export default function HomeClient() {
                   by experienced gamblers who want to provide information and
                   in-depth analysis of online casino sites, and offer the best
                   and most trusted casino links available to the global gambling
-                  player base. Because of our stream and upgraded user
+                  player base. Because of our stream and interactive player
                   experience, GambleShield is different from the rest of the
                   casino review platforms on the web. We want you to win, and
                   for the house to lose.
@@ -547,13 +547,12 @@ export default function HomeClient() {
             style={{ position: "relative", zIndex: 30 }}
           >
             <p
-              className="font-bold text-white drop-shadow-lg tracking-wide text-center"
+              className="font-bold text-black tracking-wide text-center"
               style={{
                 fontSize: "clamp(1rem, 2vw, 1.4rem)",
-                textShadow: "0 2px 12px rgba(0,0,0,0.7)",
               }}
             >
-              Browse our safe recommended online casinos
+              Browse GambleShield safe recommended online casinos
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
               {[
@@ -609,8 +608,6 @@ export default function HomeClient() {
               minHeight: "70vh",
               overflow: "hidden",
               position: "relative",
-              paddingTop: "clamp(150px, 10vw, 150px)",
-              paddingBottom: "clamp(2rem, 5vw, 3rem)",
               backgroundImage: "url(/3_Affiliate/testNebo.png)",
             }}
           >
@@ -925,7 +922,7 @@ export default function HomeClient() {
                 textShadow: "0 1px 4px rgba(255,255,255,0.4)",
               }}
             >
-              Our pleasure is your gambling leisure
+              GambleShield recommends safe casinos for best RTP
             </h3>
             <p
               className="text-sky-900 text-center max-w-xl"
@@ -960,11 +957,15 @@ export default function HomeClient() {
           <section
             id="how-it-works"
             aria-label="How Gamble Shield Works - Watch, Vote, Play and Upgrade"
-            className="relative w-full bg-[#FFF3C4] py-16 px-4 scroll-mt-[120px]"
+            className="relative w-full py-16 px-4 scroll-mt-[120px]"
             style={{
               minHeight: "80vh",
               paddingTop: "clamp(4rem, 8vw, 6rem)",
               paddingBottom: "clamp(4rem, 8vw, 6rem)",
+              backgroundImage: "url('/how_it_works/how_it_works.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
             }}
           >
             <div className="w-full">
@@ -984,15 +985,15 @@ export default function HomeClient() {
               <div className="mx-auto mb-12 grid w-full max-w-[1700px] grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 xl:grid-cols-4">
                 {/* Watch Stream */}
                 <div
-                  className="text-center flex flex-col items-center w-full"
+                  className="text-center flex flex-col items-center w-full rounded-2xl bg-white/70 backdrop-blur-md shadow-lg ring-1 ring-white/40"
                   style={{
                     padding: "clamp(1.5rem, 3vw, 3rem)",
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
                     <span
-                      className="text-red-400 font-bold uppercase tracking-widest mb-3 block leading-none"
-                      style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
+                      className="text-red-500 font-black uppercase tracking-widest mb-3 block leading-none"
+                      style={{ fontSize: "clamp(1rem, 1.6vw, 1.35rem)" }}
                     >
                       Step 1
                     </span>
@@ -1029,23 +1030,29 @@ export default function HomeClient() {
                       lineHeight: "1.6",
                     }}
                   >
-                    Watch live gambling streams and real gameplay on the
-                    GambleShield stream page. Learn from GambleShield players
-                    and see how bonuses work in practice.
+                    Watch live gambling streams and real gameplay on the{" "}
+                    <Link
+                      href="/stream"
+                      className="text-red-600 font-semibold underline hover:text-red-700"
+                    >
+                      GambleShield stream page
+                    </Link>
+                    . Learn from GambleShield players and see how bonuses work
+                    in practice.
                   </p>
                 </div>
 
                 {/* Upgrade Your Character */}
                 <div
-                  className="text-center flex flex-col items-center w-full"
+                  className="text-center flex flex-col items-center w-full rounded-2xl bg-white/70 backdrop-blur-md shadow-lg ring-1 ring-white/40"
                   style={{
                     padding: "clamp(1.5rem, 3vw, 3rem)",
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
                     <span
-                      className="text-red-400 font-bold uppercase tracking-widest mb-3 block leading-none"
-                      style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
+                      className="text-red-500 font-black uppercase tracking-widest mb-3 block leading-none"
+                      style={{ fontSize: "clamp(1rem, 1.6vw, 1.35rem)" }}
                     >
                       Step 2
                     </span>
@@ -1080,23 +1087,29 @@ export default function HomeClient() {
                       lineHeight: "1.6",
                     }}
                   >
-                    Upgrade your GambleShield avatar and unlock new features.
-                    Progress through levels and unlock exclusive rewards and
-                    affiliate casino bonuses.
+                    Upgrade your{" "}
+                    <Link
+                      href="/profile"
+                      className="text-red-600 font-semibold underline hover:text-red-700"
+                    >
+                      GambleShield avatar
+                    </Link>{" "}
+                    and unlock new features. Progress through levels and unlock
+                    exclusive rewards and affiliate casino bonuses.
                   </p>
                 </div>
 
                 {/* Vote Which Slot Will Be Played */}
                 <div
-                  className="text-center flex flex-col items-center w-full"
+                  className="text-center flex flex-col items-center w-full rounded-2xl bg-white/70 backdrop-blur-md shadow-lg ring-1 ring-white/40"
                   style={{
                     padding: "clamp(1.5rem, 3vw, 3rem)",
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
                     <span
-                      className="text-red-400 font-bold uppercase tracking-widest mb-3 block leading-none"
-                      style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
+                      className="text-red-500 font-black uppercase tracking-widest mb-3 block leading-none"
+                      style={{ fontSize: "clamp(1rem, 1.6vw, 1.35rem)" }}
                     >
                       Step 3
                     </span>
@@ -1134,22 +1147,29 @@ export default function HomeClient() {
                     }}
                   >
                     Use your GambleShield points to vote on which slot game will
-                    be played next on the stream. Influence the stream and
-                    interact with streamers in real-time.
+                    be played next on the{" "}
+                    <Link
+                      href="/stream"
+                      className="text-red-600 font-semibold underline hover:text-red-700"
+                    >
+                      stream
+                    </Link>
+                    . Influence the stream and interact with streamers in
+                    real-time.
                   </p>
                 </div>
 
                 {/* Play Extra Games to Earn More */}
                 <div
-                  className="text-center flex flex-col items-center w-full"
+                  className="text-center flex flex-col items-center w-full rounded-2xl bg-white/70 backdrop-blur-md shadow-lg ring-1 ring-white/40"
                   style={{
                     padding: "clamp(1.5rem, 3vw, 3rem)",
                   }}
                 >
                   <div className="flex flex-col items-center mb-4 shrink-0">
                     <span
-                      className="text-red-400 font-bold uppercase tracking-widest mb-3 block leading-none"
-                      style={{ fontSize: "clamp(0.7rem, 1vw, 0.85rem)" }}
+                      className="text-red-500 font-black uppercase tracking-widest mb-3 block leading-none"
+                      style={{ fontSize: "clamp(1rem, 1.6vw, 1.35rem)" }}
                     >
                       Step 4
                     </span>
@@ -1186,8 +1206,21 @@ export default function HomeClient() {
                       lineHeight: "1.6",
                     }}
                   >
-                    Play mini-games to earn extra points and unlock special
-                    GambleShield stream bonuses.
+                    Play mini-games on your{" "}
+                    <Link
+                      href="/profile"
+                      className="text-red-600 font-semibold underline hover:text-red-700"
+                    >
+                      profile
+                    </Link>{" "}
+                    to earn extra points and unlock special{" "}
+                    <Link
+                      href="/stream"
+                      className="text-red-600 font-semibold underline hover:text-red-700"
+                    >
+                      GambleShield stream
+                    </Link>{" "}
+                    bonuses.
                   </p>
                 </div>
               </div>
@@ -1201,65 +1234,53 @@ export default function HomeClient() {
           >
             <div className="max-w-6xl mx-auto">
               <h2
-                className="text-center font-bold mb-4 text-red-600"
+                className="text-center font-bold mb-10 text-red-600"
                 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.7rem)" }}
               >
-                More Sales Placements (Placeholder)
+                GambleShield &ndash; watch live stream and stay informed about
+                the best online casinos
               </h2>
-              <p
-                className="text-center text-gray-700 mb-10"
-                style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.05rem)" }}
-              >
-                FAQ je premješten na zasebnu stranicu. Ovaj prostor je rezerviran
-                za dodatne prodajne blokove i interne promocije.
-              </p>
 
               <div className="grid gap-5 md:grid-cols-3">
                 <div className="rounded-2xl border border-red-200 bg-white/70 p-5">
-                  <p className="text-xs uppercase tracking-wider text-red-500 font-bold mb-2">
-                    Placeholder A
-                  </p>
-                  <h3 className="font-bold text-gray-900 mb-2">
-                    Additional Casino Lists
-                  </h3>
-                  <p className="text-gray-700 text-sm leading-relaxed mb-4">
-                    Prostor za još “Best Casino” listi po geu, valuti ili bonus
-                    tipu.
-                  </p>
-                  <Link href="/blog/best-casinos" className="text-red-600 underline font-semibold">
-                    Open casino lists &rarr;
+                  <Link href="/blog/best-casinos" className="block group">
+                    <h4 className="font-bold text-red-600 mb-2 text-lg group-hover:underline">
+                      GambleShield casino lists
+                    </h4>
+                    <p className="text-gray-700 text-sm leading-relaxed mb-4">
+                      Safe casinos by GambleShield for best bonuses and RTP.
+                    </p>
+                    <span className="text-red-600 underline font-semibold">
+                      Open casino lists &rarr;
+                    </span>
                   </Link>
                 </div>
 
                 <div className="rounded-2xl border border-red-200 bg-white/70 p-5">
-                  <p className="text-xs uppercase tracking-wider text-red-500 font-bold mb-2">
-                    Placeholder B
-                  </p>
-                  <h3 className="font-bold text-gray-900 mb-2">
-                    Stream Conversion Block
-                  </h3>
-                  <p className="text-gray-700 text-sm leading-relaxed mb-4">
-                    Prostor za CTA prema live streamu i fallback YouTube arhivi kad
-                    nema live prijenosa.
-                  </p>
-                  <Link href="/stream" className="text-red-600 underline font-semibold">
-                    Watch stream &rarr;
+                  <Link href="/stream" className="block group">
+                    <h4 className="font-bold text-red-600 mb-2 text-lg group-hover:underline">
+                      GambleShield stream
+                    </h4>
+                    <p className="text-gray-700 text-sm leading-relaxed mb-4">
+                      Watch GambleShield stream &amp; earn rewards.
+                    </p>
+                    <span className="text-red-600 underline font-semibold">
+                      Watch stream &rarr;
+                    </span>
                   </Link>
                 </div>
 
                 <div className="rounded-2xl border border-red-200 bg-white/70 p-5">
-                  <p className="text-xs uppercase tracking-wider text-red-500 font-bold mb-2">
-                    Placeholder C
-                  </p>
-                  <h3 className="font-bold text-gray-900 mb-2">
-                    Top 3 Casinos Widget
-                  </h3>
-                  <p className="text-gray-700 text-sm leading-relaxed mb-4">
-                    Prostor za dinamični Top 3 ranking s direktnim affiliate
-                    linkovima.
-                  </p>
-                  <Link href="/blog/best-casinos" className="text-red-600 underline font-semibold">
-                    View top 3 &rarr;
+                  <Link href="/blog/best-casinos" className="block group">
+                    <h4 className="font-bold text-red-600 mb-2 text-lg group-hover:underline">
+                      Top 3 GambleShield casinos
+                    </h4>
+                    <p className="text-gray-700 text-sm leading-relaxed mb-4">
+                      View casino lists, updated daily.
+                    </p>
+                    <span className="text-red-600 underline font-semibold">
+                      View top 3 &rarr;
+                    </span>
                   </Link>
                 </div>
               </div>

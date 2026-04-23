@@ -50,7 +50,7 @@ export default async function sitemap() {
   ];
 
   const articles = await getArticles();
-  const blogRoutes = articles.map((post) => {
+  const blogRoutes = articles.filter((post) => !post.hidden).map((post) => {
     const d = post.date ? new Date(post.date) : null;
     const validDate = d instanceof Date && !isNaN(d) ? d : lastModified;
     return {

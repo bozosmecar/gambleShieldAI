@@ -24,7 +24,7 @@ export default function BestCasinosPage() {
 
   const gridPosts = useMemo(() => {
     return [...blogPosts]
-      .filter((p) => isBestCasinos(p.category))
+      .filter((p) => isBestCasinos(p.category) && !p.hidden)
       .sort(compareArticlesByNewest);
   }, [blogPosts]);
 
@@ -35,20 +35,13 @@ export default function BestCasinosPage() {
   if (loading) {
     return (
       <div className="min-h-screen normal-case">
-        <header className="bg-[#FFF3C4] pt-20 pb-10">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl font-bold text-red-600">Best Casinos</h1>
-            <p className="text-gray-700 mt-2 text-lg">
-              Top-rated online casinos reviewed and tested by real players
-            </p>
-          </div>
-        </header>
         <div
-          className="w-full py-12 min-h-screen"
+          className="w-full pt-28 pb-12 min-h-screen"
           style={{
-            backgroundImage: "url(/blog/background.png)",
+            backgroundImage: "url(/1_Home%20page/pozadina_blog.webp)",
             backgroundSize: "cover",
             backgroundPosition: "center",
+            backgroundAttachment: "fixed",
           }}
         >
           <div className="container mx-auto px-4 w-full">
@@ -65,32 +58,23 @@ export default function BestCasinosPage() {
 
   return (
     <div className="min-h-screen normal-case">
-      <header className="bg-[#FFF3C4] pt-20 pb-10">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl font-bold text-red-600">Best Casinos</h1>
-          <p className="text-gray-700 mt-2 text-lg">
-            Top-rated online casinos reviewed and tested by real players
-          </p>
-        </div>
-      </header>
-
       <div
-        className="w-full py-12 min-h-screen"
+        className="w-full pt-28 pb-12 min-h-screen"
         style={{
-          backgroundImage: "url(/blog/background.png)",
+          backgroundImage: "url(/1_Home%20page/pozadina_blog.webp)",
           backgroundSize: "cover",
           backgroundPosition: "center",
+          backgroundAttachment: "fixed",
         }}
       >
         <div className="container mx-auto px-4 w-full text-white">
-          <section className="mx-auto max-w-4xl rounded-2xl border border-white/25 bg-black/25 p-6 mb-10">
+          <section className="mx-auto max-w-4xl rounded-2xl border border-white/25 bg-black/60 p-6 mb-10 shadow-xl">
             <h2 className="text-2xl md:text-3xl font-bold mb-3">
-              Best Casinos Intro (Placeholder)
+              GambleShield Best Casinos
             </h2>
-            <p className="text-white/85 leading-relaxed">
-              Ovdje ide prodajni intro za “Best Casinos E Fokus: brzo voditi
-              usera prema top casinima, bonusima i affiliate CTA-ovima, uz
-              kratki social proof i trust elemente.
+            <p className="text-white/90 leading-relaxed">
+              GambleShield curated casino lists with best bonuses, optimal RTP
+              and strong safety features.
             </p>
           </section>
           <div className="flex flex-wrap justify-center gap-8 gap-y-14">
@@ -147,15 +131,6 @@ export default function BestCasinosPage() {
           )}
         </div>
       </div>
-
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-400">
-            © 2026 GambleShield. All rights reserved. | Promoting responsible
-            gaming worldwide.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

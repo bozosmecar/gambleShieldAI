@@ -15,6 +15,7 @@ function rowToArticle(row) {
     imageName: row.image_name || '',
     keywords: row.keywords || '',
     featured: !!row.featured,
+    hidden: !!row.hidden,
     content: row.content || '',
     createdAt: row.created_at || '',
     cardBackground: row.card_background || '/3_Affiliate/zlatna/5.png',
@@ -67,6 +68,7 @@ function articleToRow(article) {
     image_name: article.imageName || '',
     keywords: article.keywords || '',
     featured: !!article.featured,
+    hidden: !!article.hidden,
     content: article.content || '',
     card_background: article.cardBackground || '/3_Affiliate/zlatna/5.png',
     related_slugs: Array.isArray(article.relatedSlugs)
@@ -144,7 +146,10 @@ export async function getArticleBySlug(slugOrId) {
       .eq('slug', slugOrId)
       .maybeSingle();
 
-    if (bySlug) return rowToArticle(bySlug);
+    if (bySlug) {
+      if (bySlug.hidden) return null;
+      return rowToArticle(bySlug);
+    }
 
     // Fall back to numeric ID (so old /blog/18 URLs keep working)
     const numericId = Number(slugOrId);
@@ -156,7 +161,9 @@ export async function getArticleBySlug(slugOrId) {
       .eq('id', numericId)
       .maybeSingle();
 
-    return byId ? rowToArticle(byId) : null;
+    if (!byId) return null;
+    if (byId.hidden) return null;
+    return rowToArticle(byId);
   } catch (err) {
     console.error('getArticleBySlug error:', err);
     return null;
@@ -189,6 +196,12 @@ export async function createArticle(article) {
     // Fallback 2: also remove related_slugs if still failing
     if (error) {
       const { keywords, related_slugs, ...rowCore } = row;
+      ({ data, error } = await runInsert(rowCore));
+    }
+
+    // Fallback 3: also remove hidden if column doesn't exist yet
+    if (error) {
+      const { keywords, related_slugs, hidden, ...rowCore } = row;
       ({ data, error } = await runInsert(rowCore));
     }
 
@@ -236,6 +249,12 @@ export async function updateArticle(id, article) {
     // Fallback 2: also remove related_slugs if still failing
     if (error) {
       const { keywords, related_slugs, ...fallbackPayload } = payload;
+      ({ data, error } = await runUpdate(fallbackPayload));
+    }
+
+    // Fallback 3: also remove hidden if column doesn't exist yet
+    if (error) {
+      const { keywords, related_slugs, hidden, ...fallbackPayload } = payload;
       ({ data, error } = await runUpdate(fallbackPayload));
     }
 

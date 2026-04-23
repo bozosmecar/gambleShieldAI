@@ -1,11 +1,23 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const FAQ_ITEMS = [
   {
     q: "What is GambleShield?",
-    a: "GambleShield is an independent gambling review platform built by experienced players. We provide in-depth casino analysis, transparent affiliate links, 24/7 live streaming, and a unique RPG-based user experience. For players, by players.",
+    a: (
+      <>
+        GambleShield is an independent gambling review platform built by
+        experienced players. We provide in-depth casino analysis, transparent
+        affiliate links, 24/7 live streaming, and a unique RPG-based user
+        experience. For players, by players. Browse our{" "}
+        <Link href="/blog" className="text-red-600 underline font-semibold">
+          blog
+        </Link>{" "}
+        to learn more.
+      </>
+    ),
   },
   {
     q: "Is GambleShield free to use?",
@@ -13,7 +25,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Is GambleShield affiliated with any casinos?",
-    a: "Yes, we maintain transparent affiliate partnerships with vetted casinos including Powerup Casino, Tonybet, Mr Green, Casino Action, mBit Casino, Casumo and Spinline. We earn a commission when players register through our links, but this never influences our reviews.",
+    a: "Yes, we maintain transparent affiliate partnerships with vetted, licensed casinos. We earn a commission when players register through our links, but this never influences our reviews or rankings.",
   },
   {
     q: "How is GambleShield different from other casino review sites?",
@@ -21,11 +33,35 @@ const FAQ_ITEMS = [
   },
   {
     q: "Where can I watch the GambleShield live stream?",
-    a: "Visit the Stream page on GambleShield. We stream 24/7 on Kick with live casino gameplay, slot reviews, and real-time community interaction.",
+    a: (
+      <>
+        Visit the{" "}
+        <Link
+          href="/stream"
+          className="text-red-600 underline font-semibold"
+        >
+          Stream page
+        </Link>{" "}
+        on GambleShield. We stream 24/7 on Kick with live casino gameplay, slot
+        reviews, and real-time community interaction.
+      </>
+    ),
   },
   {
     q: "Can I suggest which slot gets played on stream?",
-    a: "Yes. Registered users can use their GambleShield points to vote on which slot gets played next. Visit the Stream page to participate in active polls.",
+    a: (
+      <>
+        Yes. Registered users can use their GambleShield points to vote on
+        which slot gets played next. Visit the{" "}
+        <Link
+          href="/stream"
+          className="text-red-600 underline font-semibold"
+        >
+          Stream page
+        </Link>{" "}
+        to participate in active polls.
+      </>
+    ),
   },
   {
     q: "How do I create a GambleShield account?",
@@ -33,15 +69,52 @@ const FAQ_ITEMS = [
   },
   {
     q: "How do I earn GambleShield points?",
-    a: "Earn points by watching the live stream, voting on polls, and playing mini-games on the platform.",
+    a: (
+      <>
+        Earn points by watching the live stream, voting on polls, and playing
+        mini-games on your{" "}
+        <Link
+          href="/profile"
+          className="text-red-600 underline font-semibold"
+        >
+          profile
+        </Link>
+        .
+      </>
+    ),
   },
   {
     q: "What can I do with my points?",
-    a: "Use points to vote on which slot gets played on stream and level up your GambleShield avatar to unlock exclusive features and rewards.",
+    a: (
+      <>
+        Use points to vote on which slot gets played on stream and level up
+        your{" "}
+        <Link
+          href="/profile"
+          className="text-red-600 underline font-semibold"
+        >
+          GambleShield avatar
+        </Link>{" "}
+        to unlock exclusive features and rewards.
+      </>
+    ),
   },
   {
     q: "How do you choose which casinos to recommend?",
-    a: "Through hands-on testing, mathematical analysis, and thorough due diligence - we verify licensing, bonus terms, payout speeds, and player complaint history. We never recommend unlicensed or illegitimate casinos.",
+    a: (
+      <>
+        Through hands-on testing, mathematical analysis, and thorough due
+        diligence - we verify licensing, bonus terms, payout speeds, and player
+        complaint history. Read full reviews on our{" "}
+        <Link
+          href="/blog/best-casinos"
+          className="text-red-600 underline font-semibold"
+        >
+          best casinos
+        </Link>{" "}
+        page. We never recommend unlicensed or illegitimate casinos.
+      </>
+    ),
   },
   {
     q: "Are the casino links on GambleShield safe?",
@@ -51,16 +124,21 @@ const FAQ_ITEMS = [
 
 export default function FaqPage() {
   return (
-    <main className="min-h-screen bg-[#FFF3C4] px-4 pt-28 pb-20">
+    <main
+      className="min-h-screen px-4 pt-28 pb-20 bg-fixed bg-cover bg-center"
+      style={{
+        backgroundImage: "url(/1_Home%20page/faq_background.webp)",
+      }}
+    >
       <div className="max-w-4xl mx-auto">
         <h1
-          className="text-center font-bold mb-4 text-red-600"
+          className="text-center font-bold mb-4 text-red-600 drop-shadow-[0_2px_6px_rgba(255,255,255,0.6)]"
           style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
         >
           Frequently Asked Questions
         </h1>
         <p
-          className="text-center text-gray-700 mb-10"
+          className="text-center text-gray-800 mb-10 font-medium"
           style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.05rem)" }}
         >
           Most common questions about GambleShield, reviews, stream and player safety.
@@ -86,9 +164,9 @@ function FaqItem({ question, answer }) {
   }, [open]);
 
   return (
-    <div className="border border-red-200 rounded-xl overflow-hidden bg-white/60">
+    <div className="border border-red-200 rounded-xl overflow-hidden bg-white/95 shadow-lg">
       <button
-        className="w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-gray-800 hover:bg-red-50 transition-colors duration-200"
+        className="w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-gray-900 hover:bg-red-50 transition-colors duration-200"
         style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.05rem)" }}
         onClick={() => setOpen((value) => !value)}
       >
@@ -115,7 +193,7 @@ function FaqItem({ question, answer }) {
         }}
       >
         <div
-          className="px-6 pb-5 text-gray-600 leading-relaxed"
+          className="px-6 pb-5 text-gray-700 leading-relaxed"
           style={{ fontSize: "clamp(0.85rem, 1.3vw, 0.975rem)" }}
         >
           {answer}

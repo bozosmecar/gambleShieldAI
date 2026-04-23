@@ -43,6 +43,7 @@ const emptyForm = {
   imageName: "",
   keywords: "",
   featured: false,
+  hidden: false,
   content: "",
   cardBackground: "/3_Affiliate/zlatna/5.png",
   relatedSlugsText: "",
@@ -61,6 +62,7 @@ export default function AdminBlogPage() {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadingContentImage, setUploadingContentImage] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [togglingHiddenId, setTogglingHiddenId] = useState(null);
   const contentTextareaRef = useRef(null);
   const contentCursorRef = useRef({ start: 0, end: 0 });
 
@@ -112,6 +114,7 @@ export default function AdminBlogPage() {
       imageName: article.imageName || "",
       keywords: article.keywords || "",
       featured: !!article.featured,
+      hidden: !!article.hidden,
       content: article.content || "",
       cardBackground: article.cardBackground || "/3_Affiliate/zlatna/5.png",
       relatedSlugsText: (article.relatedSlugs || []).join(", "),
@@ -172,6 +175,31 @@ export default function AdminBlogPage() {
       if (editingId === id) handleCancel();
     } else {
       setError("Failed to delete article. Check console for details.");
+    }
+  };
+
+  const handleToggleHidden = async (article) => {
+    setTogglingHiddenId(article.id);
+    setError(null);
+    try {
+      const updated = await updateArticle(article.id, {
+        ...article,
+        hidden: !article.hidden,
+      });
+      if (updated) {
+        setArticlesState((prev) =>
+          prev.map((a) => (a.id === article.id ? updated : a)),
+        );
+        if (editingId === article.id) {
+          setFormData((f) => ({ ...f, hidden: updated.hidden }));
+        }
+      } else {
+        setError(
+          "Failed to toggle unlist. Make sure the 'hidden' column exists in blog_articles (run migration 20260423000001_blog_hidden.sql).",
+        );
+      }
+    } finally {
+      setTogglingHiddenId(null);
     }
   };
 
@@ -382,6 +410,9 @@ export default function AdminBlogPage() {
                 <th className="text-center py-3 px-4 font-semibold text-gray-700 w-28">
                   Featured
                 </th>
+                <th className="text-center py-3 px-4 font-semibold text-gray-700 w-28">
+                  Listed
+                </th>
                 <th className="text-right py-3 px-4 font-semibold text-gray-700">
                   Actions
                 </th>
@@ -390,7 +421,7 @@ export default function AdminBlogPage() {
             <tbody>
               {paginatedArticles.length === 0 ? (
                   <tr>
-                  <td colSpan={8} className="py-8 text-center text-gray-500">
+                  <td colSpan={9} className="py-8 text-center text-gray-500">
                     {search.trim()
                       ? "No articles match your search."
                       : "No articles yet. Click &quot;Add new article&quot; to create one."}
@@ -448,6 +479,28 @@ export default function AdminBlogPage() {
                             : "Set as featured"}
                         </button>
                       )}
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <button
+                        onClick={() => handleToggleHidden(article)}
+                        disabled={togglingHiddenId === article.id}
+                        className={`px-2 py-1 text-sm font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed ${
+                          article.hidden
+                            ? "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                            : "bg-green-100 text-green-800 hover:bg-green-200"
+                        }`}
+                        title={
+                          article.hidden
+                            ? "Article is hidden from public listings and returns 404 on direct access. Click to list it."
+                            : "Article is publicly visible. Click to unlist (hide from site, keep in DB)."
+                        }
+                      >
+                        {togglingHiddenId === article.id
+                          ? "…"
+                          : article.hidden
+                            ? "Unlisted — List"
+                            : "Listed — Unlist"}
+                      </button>
                     </td>
                     <td className="py-3 px-4 text-right">
                       {confirmDeleteId === article.id ? (
@@ -736,20 +789,37 @@ export default function AdminBlogPage() {
                     placeholder="e.g. online casino, bonus, free spins"
                   />
                 </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id="featured"
-                    checked={formData.featured}
-                    onChange={(e) => updateForm("featured", e.target.checked)}
-                    className="rounded border-gray-300"
-                  />
-                  <label
-                    htmlFor="featured"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Featured article
-                  </label>
+                <div className="flex items-center gap-6 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="featured"
+                      checked={formData.featured}
+                      onChange={(e) => updateForm("featured", e.target.checked)}
+                      className="rounded border-gray-300"
+                    />
+                    <label
+                      htmlFor="featured"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Featured article
+                    </label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="hidden"
+                      checked={formData.hidden}
+                      onChange={(e) => updateForm("hidden", e.target.checked)}
+                      className="rounded border-gray-300"
+                    />
+                    <label
+                      htmlFor="hidden"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Unlisted (hidden from site, stays in DB)
+                    </label>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
