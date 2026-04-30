@@ -1,4 +1,7 @@
 import { getSupabaseClient } from "./supabaseClient";
+import { awardXp } from "./xp";
+
+const POLL_VOTE_XP = 10;
 
 const now = () => new Date().toISOString();
 
@@ -140,6 +143,14 @@ export async function castVote(pollId, optionId, userId) {
   const supabase = getSupabaseClient();
   if (!supabase || !pollId || !optionId || !userId) return false;
 
+  // Detect first-time vote so we only award XP once per (user, poll).
+  const { data: existing } = await supabase
+    .from("poll_votes")
+    .select("id")
+    .eq("poll_id", pollId)
+    .eq("user_id", userId)
+    .maybeSingle();
+
   const { error } = await supabase.from("poll_votes").upsert(
     { poll_id: pollId, option_id: optionId, user_id: userId },
     { onConflict: "poll_id,user_id" }
@@ -147,6 +158,10 @@ export async function castVote(pollId, optionId, userId) {
   if (error) {
     console.error("castVote error:", error);
     return false;
+  }
+
+  if (!existing) {
+    awardXp(POLL_VOTE_XP, "Voted in poll", { poll_id: pollId }).catch(() => {});
   }
   return true;
 }

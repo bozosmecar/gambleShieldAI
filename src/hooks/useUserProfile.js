@@ -24,11 +24,23 @@ export function useUserProfile() {
         setProfile(null);
         return;
       }
-      const { data } = await supabase
+      // Try the full schema first (with xp/level/tier). If those columns don't
+      // exist yet (migration not run), fall back to the minimal column set so
+      // the app keeps working.
+      let { data, error } = await supabase
         .from("users")
-        .select("id, username, email, role")
+        .select("id, username, email, role, experience, level, tier, created_at")
         .eq("id", userId)
         .single();
+
+      if (error) {
+        const fallback = await supabase
+          .from("users")
+          .select("id, username, email, role, created_at")
+          .eq("id", userId)
+          .single();
+        data = fallback.data;
+      }
       setProfile(data || null);
     }
 
