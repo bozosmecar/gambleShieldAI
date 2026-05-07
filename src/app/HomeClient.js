@@ -428,11 +428,6 @@ export default function HomeClient() {
               zIndex: 2000,
             }}
           >
-            {/* Visually hidden H1 for SEO crawlers — visual version is the SVG below */}
-            <h1 className="sr-only">
-              GambleShield: The Best Safe Online Casino Recommendations
-            </h1>
-
             {/* H1 text curved along the arch — SVG textPath follows luk4.png inner arc */}
             <svg
               viewBox="0 0 1000 430"
@@ -1507,7 +1502,7 @@ function AffiliateColumn({
                   <a
                     href={casinoLink}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="sponsored nofollow noopener noreferrer"
                     className="px-4 py-1 rounded-full text-white font-bold text-xs transition-all duration-200 hover:scale-105"
                     style={{
                       background: "linear-gradient(135deg, #fb923c, #f97316)",
@@ -1533,7 +1528,11 @@ function AffiliateColumn({
           }}
         >
           {casinoLink ? (
-            <a href={casinoLink} target="_blank" rel="noopener noreferrer">
+            <a
+              href={casinoLink}
+              target="_blank"
+              rel="sponsored nofollow noopener noreferrer"
+            >
               <Image
                 src={logo}
                 alt={`${name} - Best Casino List on Gamble Shield`}

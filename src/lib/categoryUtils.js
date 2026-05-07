@@ -2,7 +2,7 @@
 const TIPS_EDUCATION_CATS = ["tips", "education", "tips and education"];
 
 /** Categories that belong to "Best Casinos" section */
-const BEST_CASINOS_CATS = ["best casinos", "best casinos", "casino", "casinos"];
+const BEST_CASINOS_CATS = ["best casinos", "best casino", "casino", "casinos"];
 
 export function isTipsEducation(category) {
   return TIPS_EDUCATION_CATS.includes((category || "").toLowerCase().trim());

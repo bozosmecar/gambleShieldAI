@@ -29,7 +29,9 @@ export function useUserProfile() {
       // the app keeps working.
       let { data, error } = await supabase
         .from("users")
-        .select("id, username, email, role, experience, level, tier, created_at")
+        .select(
+          "id, username, email, role, experience, level, tier, shield_tokens, created_at",
+        )
         .eq("id", userId)
         .single();
 
@@ -54,7 +56,17 @@ export function useUserProfile() {
         setUser(authUser);
         await fetchProfile(authUser?.id || null);
       } catch (err) {
-        if (err?.name === "AbortError" || err?.message?.includes("aborted")) return;
+        // Benign: another tab / hot reload stole the auth-token lock. Supabase
+        // already retries internally; the next onAuthStateChange will repopulate.
+        const msg = err?.message || "";
+        if (
+          err?.name === "AbortError" ||
+          msg.includes("aborted") ||
+          msg.includes("Lock") ||
+          msg.includes("lock")
+        ) {
+          return;
+        }
         console.error("useUserProfile init error:", err);
       } finally {
         if (!cancelled) setLoading(false);

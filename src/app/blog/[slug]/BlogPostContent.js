@@ -80,6 +80,44 @@ function stripHtmlTags(value) {
     .trim();
 }
 
+function enforceExternalAnchorRel(html) {
+  if (!html) return "";
+  return html.replace(/<a\b([^>]*?)>/gi, (fullMatch, attrs = "") => {
+    const hrefMatch = attrs.match(/\shref\s*=\s*(['"])(.*?)\1/i);
+    if (!hrefMatch) return fullMatch;
+    const href = hrefMatch[2] || "";
+    const isExternal = /^https?:\/\//i.test(href);
+    if (!isExternal) return fullMatch;
+
+    const requiredRelTokens = ["sponsored", "nofollow", "noopener", "noreferrer"];
+    const relMatch = attrs.match(/\srel\s*=\s*(['"])(.*?)\1/i);
+    let relValue = relMatch?.[2] || "";
+    const relSet = new Set(
+      relValue
+        .split(/\s+/)
+        .map((token) => token.trim().toLowerCase())
+        .filter(Boolean),
+    );
+    requiredRelTokens.forEach((token) => relSet.add(token));
+    const normalizedRel = Array.from(relSet).join(" ");
+
+    let nextAttrs = attrs;
+    if (relMatch) {
+      nextAttrs = nextAttrs.replace(
+        /\srel\s*=\s*(['"])(.*?)\1/i,
+        ` rel="${normalizedRel}"`,
+      );
+    } else {
+      nextAttrs += ` rel="${normalizedRel}"`;
+    }
+
+    const hasTarget = /\starget\s*=\s*(['"]).*?\1/i.test(nextAttrs);
+    if (!hasTarget) nextAttrs += ' target="_blank"';
+
+    return `<a${nextAttrs}>`;
+  });
+}
+
 function buildAnchoredHtmlAndToc(rawHtml) {
   const source = rawHtml || "";
   if (!source) return { htmlWithAnchors: "", tocItems: [] };
@@ -107,7 +145,7 @@ function buildAnchoredHtmlAndToc(rawHtml) {
     },
   );
 
-  return { htmlWithAnchors, tocItems };
+  return { htmlWithAnchors: enforceExternalAnchorRel(htmlWithAnchors), tocItems };
 }
 
 export default function BlogPostContent({ post, relatedArticles = [] }) {

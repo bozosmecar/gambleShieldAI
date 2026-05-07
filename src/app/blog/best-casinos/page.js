@@ -31,6 +31,46 @@ export default function BestCasinosPage() {
   const totalPages = Math.ceil(gridPosts.length / POSTS_PER_PAGE) || 1;
   const startIdx = (currentPage - 1) * POSTS_PER_PAGE;
   const paginatedPosts = gridPosts.slice(startIdx, startIdx + POSTS_PER_PAGE);
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://gamble-shield-ai.vercel.app";
+  const reviewSchema = useMemo(() => {
+    const reviews = gridPosts.slice(0, 10).map((post) => ({
+      "@type": "Review",
+      name: post.title || "Casino review",
+      url: `${baseUrl}/blog/${post.slug || post.id}`,
+      datePublished: post.date || undefined,
+      author: {
+        "@type": "Organization",
+        name: "GambleShield",
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "GambleShield",
+      },
+      reviewBody:
+        post.excerpt ||
+        "Independent casino review focused on safety, bonuses, and user experience.",
+      itemReviewed: {
+        "@type": "Casino",
+        name: post.title || "Online Casino",
+      },
+    }));
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "GambleShield Best Casinos",
+      url: `${baseUrl}/blog/best-casinos`,
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: reviews.map((review, idx) => ({
+          "@type": "ListItem",
+          position: idx + 1,
+          item: review,
+        })),
+      },
+    };
+  }, [baseUrl, gridPosts]);
 
   if (loading) {
     return (
@@ -58,6 +98,12 @@ export default function BestCasinosPage() {
 
   return (
     <div className="min-h-screen normal-case">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(reviewSchema),
+        }}
+      />
       <div
         className="w-full pt-28 pb-12 min-h-screen"
         style={{

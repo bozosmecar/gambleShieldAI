@@ -74,7 +74,7 @@ export default function Navbar() {
           >
             <Image
               src="/1_Home%20page/ShieldLogo.png"
-              alt=""
+              alt="GambleShield logo"
               width={140}
               height={140}
               quality={100}
@@ -170,73 +170,71 @@ export default function Navbar() {
       </div>
 
       {/* Mobile menu panel */}
-      <div
-        className={`md:hidden overflow-hidden transition-all duration-200 ease-out ${
-          mobileMenuOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className={`border-t ${mobileBorderColor} bg-black/0 backdrop-blur-md px-4 py-4 flex flex-col gap-2`}>
-          {navLinks.map((link) => {
-            const isActive =
-              pathname === link.href ||
-              (link.href !== "/" &&
-                link.href !== "/blog" &&
-                pathname?.startsWith(link.href + "/"));
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
-                className={`py-3 px-3 rounded-lg font-bold transition-colors ${
-                  isActive
-                    ? `${textColor} font-bold ${mobileActiveBg}`
-                    : `${textColor} ${mobileHoverBg}`
-                }`}
+      {mobileMenuOpen && (
+        <div className="md:hidden overflow-hidden transition-all duration-200 ease-out max-h-[80vh] opacity-100">
+          <div className={`border-t ${mobileBorderColor} bg-black/0 backdrop-blur-md px-4 py-4 flex flex-col gap-2`}>
+            {navLinks.map((link) => {
+              const isActive =
+                pathname === link.href ||
+                (link.href !== "/" &&
+                  link.href !== "/blog" &&
+                  pathname?.startsWith(link.href + "/"));
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className={`py-3 px-3 rounded-lg font-bold transition-colors ${
+                    isActive
+                      ? `${textColor} font-bold ${mobileActiveBg}`
+                      : `${textColor} ${mobileHoverBg}`
+                  }`}
+                  style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            {user ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className={`py-3 px-3 rounded-lg font-bold ${textColor} ${mobileHoverBg} transition-colors text-left`}
                 style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
               >
-                {link.label}
-              </Link>
-            );
-          })}
-          {user ? (
-            <button
-              type="button"
-              onClick={handleLogout}
-              className={`py-3 px-3 rounded-lg font-bold ${textColor} ${mobileHoverBg} transition-colors text-left`}
-              style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
-            >
-              Log out
-            </button>
-          ) : (
-            <>
-              <Link
-                href="/login"
-                onClick={closeMobileMenu}
-                className={`py-3 px-3 rounded-lg font-bold transition-colors ${
-                  pathname === "/login"
-                    ? `${textColor} font-bold ${mobileActiveBg}`
-                    : `${textColor} ${mobileHoverBg}`
-                }`}
-                style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
-              >
-                Login
-              </Link>
-              <Link
-                href="/register"
-                onClick={closeMobileMenu}
-                className={`py-3 px-3 rounded-lg font-bold transition-colors ${
-                  pathname === "/register"
-                    ? `${textColor} font-bold ${mobileActiveBg}`
-                    : `${textColor} ${mobileHoverBg}`
-                }`}
-                style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
-              >
-                Register
-              </Link>
-            </>
-          )}
+                Log out
+              </button>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  onClick={closeMobileMenu}
+                  className={`py-3 px-3 rounded-lg font-bold transition-colors ${
+                    pathname === "/login"
+                      ? `${textColor} font-bold ${mobileActiveBg}`
+                      : `${textColor} ${mobileHoverBg}`
+                  }`}
+                  style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={closeMobileMenu}
+                  className={`py-3 px-3 rounded-lg font-bold transition-colors ${
+                    pathname === "/register"
+                      ? `${textColor} font-bold ${mobileActiveBg}`
+                      : `${textColor} ${mobileHoverBg}`
+                  }`}
+                  style={{ fontSize: "clamp(0.95rem, 2vw, 1.1rem)" }}
+                >
+                  Register
+                </Link>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 }
