@@ -470,6 +470,9 @@ export default function HomeClient() {
                 </textPath>
               </text>
             </svg>
+            <h1 className="sr-only">
+              GambleShield: The Best Safe Online Casino Recommendations
+            </h1>
 
             <div
               className="relative flex flex-col md:flex-row items-stretch justify-center gap-4 md:gap-10 z-20 w-full px-4"
