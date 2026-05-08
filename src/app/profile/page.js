@@ -29,6 +29,13 @@ const GRID_SIZE = 3;
 // How many slots show in the bottom Inventory grid (owned items + empty placeholders).
 const INVENTORY_VISIBLE_SLOTS = 8;
 
+function withGambleShieldPrefix(name) {
+  const cleanName = String(name || "").trim();
+  if (!cleanName) return "GambleShield Item";
+  if (/^gambleshield/i.test(cleanName)) return cleanName;
+  return `GambleShield ${cleanName}`;
+}
+
 export default function Profile() {
   const router = useRouter();
   const { user, profile, loading, isAdmin } = useUserProfile();
@@ -151,6 +158,40 @@ export default function Profile() {
       )
     : 0;
 
+  const leftRailCards = [
+    {
+      id: "watch-stream",
+      title: "Watch Live Stream",
+      description: "Vote, earn XP, and join live casino sessions now.",
+      href: "/stream",
+      cta: "Go to stream",
+    },
+    {
+      id: "stream-rewards",
+      title: "Stream Rewards",
+      description: "Use your profile progress during live stream activities.",
+      href: "/stream",
+      cta: "Start watching",
+    },
+  ];
+
+  const rightRailCards = [
+    {
+      id: "best-casinos-2026",
+      title: "Best Casinos 2026",
+      description: "See GambleShield picks that passed our safety checks.",
+      href: "/blog/best-casinos",
+      cta: "Open best casinos",
+    },
+    {
+      id: "top-casino-picks",
+      title: "Top Casino Picks",
+      description: "Compare trusted casinos before you register.",
+      href: "/blog/best-casinos",
+      cta: "View casino list",
+    },
+  ];
+
   // ---------------------------------------------------------------------------
   // Inventory actions
   // ---------------------------------------------------------------------------
@@ -230,7 +271,10 @@ export default function Profile() {
       const fresh = await fetchUserItems(user.id);
       setUserItems(fresh);
     }
-    setShopMessage({ type: "success", text: `Purchased ${item.name}.` });
+    setShopMessage({
+      type: "success",
+      text: `Purchased ${withGambleShieldPrefix(item.name)}.`,
+    });
     setPendingItemId(null);
   };
 
@@ -371,7 +415,33 @@ export default function Profile() {
       className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-50"
       style={{ paddingTop: "70px" }}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
+      <div className="mx-auto max-w-[1800px] px-4 sm:px-6 lg:px-8 py-10">
+        <div className="grid gap-6 xl:grid-cols-[210px_minmax(0,1fr)_210px]">
+          <aside className="hidden xl:block">
+            <div className="sticky top-28 rounded-3xl border border-red-100 bg-white/90 backdrop-blur-sm p-4 shadow-xl">
+              <div className="space-y-3">
+                {leftRailCards.map((card) => (
+                  <div
+                    key={card.id}
+                    className="rounded-2xl border border-red-100 bg-gradient-to-br from-white to-amber-50 p-4"
+                  >
+                    <p className="font-semibold text-gray-900 mb-2">{card.title}</p>
+                    <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+                      {card.description}
+                    </p>
+                    <Link
+                      href={card.href}
+                      className="text-sm font-semibold underline text-[#b2041d] hover:text-[#8f0319]"
+                    >
+                      {card.cta} &rarr;
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
+
+          <div className="space-y-6">
         {/* HERO */}
         <section className="relative overflow-hidden rounded-2xl shadow-lg bg-gradient-to-br from-[#b2041d] via-[#c8181c] to-[#e03313] text-white">
           {/* Character image as soft full-card background */}
@@ -400,7 +470,7 @@ export default function Profile() {
               <Image
                 key={`${avatarSrc}-mini`}
                 src={avatarSrc}
-                alt={`Level ${level} character`}
+                alt={`GambleShield Level ${level} avatar`}
                 fill
                 sizes="(max-width: 640px) 96px, 112px"
                 className="object-contain p-1"
@@ -442,7 +512,7 @@ export default function Profile() {
             <div className="flex flex-col sm:items-end gap-2">
               <div className="text-right">
                 <div className="text-white/70 text-xs uppercase tracking-wider">
-                  Level
+                  GambleShield Level
                 </div>
                 <div className="text-5xl sm:text-6xl font-black leading-none">
                   {level}
@@ -465,10 +535,12 @@ export default function Profile() {
         <section className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
           <div className="flex flex-wrap items-end justify-between gap-3 mb-4">
             <div>
-              <h2 className="text-lg font-bold text-gray-800">Character</h2>
+              <h2 className="text-lg font-bold text-gray-800">
+                GambleShield Avatar
+              </h2>
               <p className="text-sm text-gray-500">
-                Equipped items appear over your character. Toggle them in the
-                inventory below.
+                Equipped items appear above your GambleShield avatar. Toggle
+                them in the inventory below.
               </p>
             </div>
             <span className="text-xs text-gray-500">
@@ -480,7 +552,7 @@ export default function Profile() {
             <Image
               key={`${avatarSrc}-big`}
               src={avatarSrc}
-              alt={`Level ${level} character`}
+                alt={`GambleShield Level ${level} avatar`}
               fill
               sizes="(max-width: 640px) 100vw, 560px"
               className="object-contain p-4 drop-shadow-xl"
@@ -514,7 +586,7 @@ export default function Profile() {
                   >
                     <Image
                       src={resolveItemImage(item.image_path)}
-                      alt={item.name}
+                      alt={withGambleShieldPrefix(item.name)}
                       fill
                       sizes="180px"
                       className="object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.35)]"
@@ -530,7 +602,9 @@ export default function Profile() {
         <section className="bg-white rounded-2xl shadow-lg p-6 sm:p-8">
           <div className="flex flex-wrap items-end justify-between gap-2 mb-4">
             <div>
-              <h2 className="text-lg font-bold text-gray-800">Inventory</h2>
+              <h2 className="text-lg font-bold text-gray-800">
+                GambleShield Inventory
+              </h2>
               <p className="text-sm text-gray-500">
                 Click an item to equip or unequip it on your character.
               </p>
@@ -572,7 +646,7 @@ export default function Profile() {
                     disabled={!item || isPending}
                     title={
                       item
-                        ? `${item.name} — click to ${equipped ? "unequip" : "equip"}`
+                        ? `${withGambleShieldPrefix(item.name)} — click to ${equipped ? "unequip" : "equip"}`
                         : "Empty slot"
                     }
                     className={`relative aspect-square rounded-xl border-2 transition-all group ${
@@ -586,7 +660,7 @@ export default function Profile() {
                     {item ? (
                       <Image
                         src={resolveItemImage(item.image_path)}
-                        alt={item.name}
+                        alt={withGambleShieldPrefix(item.name)}
                         fill
                         sizes="(max-width: 640px) 25vw, (max-width: 1024px) 16vw, 12vw"
                         className="object-contain p-2 transition-transform group-hover:scale-110"
@@ -603,7 +677,7 @@ export default function Profile() {
                     )}
                     {item && (
                       <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 translate-y-full opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap text-xs bg-gray-900 text-white px-2 py-1 rounded shadow-lg z-10">
-                        {item.name}
+                        {withGambleShieldPrefix(item.name)}
                       </div>
                     )}
                   </button>
@@ -629,7 +703,7 @@ export default function Profile() {
                 </span>
               </div>
               <p className="text-sm text-gray-500 mt-0.5">
-                Spend your Shield tokens on cosmetics for your character.
+                Spend your Shield tokens on GambleShield avatar cosmetics.
               </p>
             </div>
             <div className="flex items-center gap-3">
@@ -691,7 +765,7 @@ export default function Profile() {
                         <div className="relative aspect-square bg-gradient-to-br from-amber-50 via-white to-amber-100">
                           <Image
                             src={resolveItemImage(item.image_path)}
-                            alt={item.name}
+                            alt={withGambleShieldPrefix(item.name)}
                             fill
                             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                             className="object-contain p-4"
@@ -705,7 +779,7 @@ export default function Profile() {
                         <div className="p-3 flex-1 flex flex-col gap-2">
                           <div>
                             <h3 className="text-sm font-bold text-gray-900">
-                              {item.name}
+                              {withGambleShieldPrefix(item.name)}
                             </h3>
                             {item.description && (
                               <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">
@@ -878,7 +952,9 @@ export default function Profile() {
               <h2 className="text-lg font-bold text-gray-800">
                 Recent activity
               </h2>
-              <span className="text-xs text-gray-500">XP history</span>
+              <span className="text-xs text-gray-500">
+                GambleShield XP history
+              </span>
             </div>
             {events.length === 0 ? (
               <div className="text-center py-10 px-4 border-2 border-dashed border-gray-200 rounded-xl">
@@ -1055,6 +1131,33 @@ export default function Profile() {
             </form>
           </div>
         </section>
+
+          </div>
+
+          <aside className="hidden xl:block">
+            <div className="sticky top-28 rounded-3xl border border-red-100 bg-white/90 backdrop-blur-sm p-4 shadow-xl">
+              <div className="space-y-3">
+                {rightRailCards.map((card) => (
+                  <div
+                    key={card.id}
+                    className="rounded-2xl border border-red-100 bg-gradient-to-br from-white to-amber-50 p-4"
+                  >
+                    <p className="font-semibold text-gray-900 mb-2">{card.title}</p>
+                    <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+                      {card.description}
+                    </p>
+                    <Link
+                      href={card.href}
+                      className="text-sm font-semibold underline text-[#b2041d] hover:text-[#8f0319]"
+                    >
+                      {card.cta} &rarr;
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
+        </div>
       </div>
     </main>
   );

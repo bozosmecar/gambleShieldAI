@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function AboutPage() {
   return (
     <main
@@ -18,11 +20,17 @@ export default function AboutPage() {
             safe online casinos they can actually trust. We are not another
             review site recycling star ratings. GambleShield is an
             independently operated platform built on rigorous testing, genuine
-            player education, and a commitment to responsible gambling.
+            player education, and a commitment to{" "}
+            <Link href="/faq" className="text-red-600 font-semibold underline">
+              responsible gambling
+            </Link>
+            .
           </p>
 
           <h2 className="text-xl md:text-2xl font-bold mt-8 mb-3 text-red-600">
-            Only the Casinos That Pass Our Test
+            <Link href="/blog/best-casinos" className="hover:underline">
+              Only the Casinos That Pass Our Test
+            </Link>
           </h2>
           <p className="text-gray-700 leading-relaxed mb-6">
             At GambleShield, we recommend safe online casinos exclusively.
@@ -36,6 +44,14 @@ export default function AboutPage() {
             GambleShield is not a pay-to-play directory. It is a curated space
             where players can browse and compare with confidence, knowing that
             every option in front of them has already been held to account.
+            Explore our{" "}
+            <Link
+              href="/blog/best-casinos"
+              className="text-red-600 font-semibold underline"
+            >
+              best casinos
+            </Link>{" "}
+            list for currently recommended picks.
           </p>
 
           <h2 className="text-xl md:text-2xl font-bold mt-8 mb-3 text-red-600">
@@ -43,7 +59,11 @@ export default function AboutPage() {
           </h2>
           <p className="text-gray-700 leading-relaxed mb-6">
             One of the things that sets GambleShield apart is our dedicated
-            education stream. We believe that informed players are protected
+            education{" "}
+            <Link href="/stream" className="text-red-600 font-semibold underline">
+              stream
+            </Link>
+            . We believe that informed players are protected
             players. That is why GambleShield maintains a consistently updated
             library of guides, explainers, and responsible gambling resources
             designed to help both new and experienced players make smarter
@@ -56,10 +76,17 @@ export default function AboutPage() {
             An Interactive Experience Built Around Real Players
           </h2>
           <p className="text-gray-700 leading-relaxed mb-6">
-            GambleShield offers an interactive experience that puts players in
+            GambleShield offers an interactive{" "}
+            <Link href="/login" className="text-red-600 font-semibold underline">
+              experience
+            </Link>{" "}
+            that puts players in
             control of how they explore and compare safe online casinos.
-            Players can create their avatars and through them interact in the
-            stream, earning rewards and access to premium casino bonuses.
+            Players can create their avatars and through them interact in the{" "}
+            <Link href="/stream" className="text-red-600 font-semibold underline">
+              stream
+            </Link>
+            , earning rewards and access to premium casino bonuses.
             Additionally, GambleShield will also offer a direct human-based
             helpline for users of certain rank in its stream and social media.
             We want to build tools that allow players to engage with the
@@ -72,9 +99,16 @@ export default function AboutPage() {
           <p className="text-gray-700 leading-relaxed">
             The online gambling industry moves fast, and maintaining trust
             requires ongoing effort. GambleShield continuously re-evaluates
-            the casinos we recommend, responding to player feedback,
+            the{" "}
+            <Link
+              href="/blog/best-casinos"
+              className="text-red-600 font-semibold underline"
+            >
+              casinos we recommend
+            </Link>
+            , responding to player feedback,
             regulatory changes, and emerging industry standards. Our
-            relationship with the casinos on our platform is conditional —
+            relationship with the casinos on our platform is conditional
             they stay listed because they continue to meet our criteria, not
             because they once did. This living, dynamic approach to review and
             recommendation is what makes GambleShield a name players return

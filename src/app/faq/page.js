@@ -222,11 +222,12 @@ export default function FaqPage() {
 
   return (
     <main
-      className="min-h-screen px-4 pt-28 pb-20 bg-fixed bg-cover bg-center"
+      className="relative isolate min-h-screen px-4 pt-28 pb-20 bg-fixed bg-cover bg-center"
       style={{
         backgroundImage: "url(/1_Home%20page/faq_background.webp)",
       }}
     >
+      <div className="absolute inset-0 -z-10 bg-black/30" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -235,14 +236,17 @@ export default function FaqPage() {
       />
       <div className="max-w-4xl mx-auto">
         <h1
-          className="text-center font-bold mb-4 text-red-600 drop-shadow-[0_2px_6px_rgba(255,255,255,0.6)]"
+          className="text-center font-bold mb-4 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
           style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
         >
           Frequently Asked Questions
         </h1>
         <p
-          className="text-center text-gray-800 mb-10 font-medium"
-          style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.05rem)" }}
+          className="text-center mb-10 font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,0.3)]"
+          style={{
+            fontSize: "clamp(0.9rem, 1.5vw, 1.05rem)",
+            color: "rgba(255,255,255,0.88)",
+          }}
         >
           Most common questions about GambleShield, reviews, stream and player safety.
         </p>
@@ -267,9 +271,9 @@ function FaqItem({ question, answer }) {
   }, [open]);
 
   return (
-    <div className="border border-red-200 rounded-xl overflow-hidden bg-white/95 shadow-lg">
+    <div className="border border-red-200/70 rounded-xl overflow-hidden bg-white/60 backdrop-blur-[2px] shadow-lg">
       <button
-        className="w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-gray-900 hover:bg-red-50 transition-colors duration-200"
+        className="w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-gray-900 hover:bg-white/40 transition-colors duration-200"
         style={{ fontSize: "clamp(0.9rem, 1.5vw, 1.05rem)" }}
         onClick={() => setOpen((value) => !value)}
       >
