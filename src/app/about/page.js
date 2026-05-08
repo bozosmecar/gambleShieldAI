@@ -1,13 +1,70 @@
-"use client";
-
 import Link from "next/link";
 
+const BASE_URL = "https://gamble-shield-ai.vercel.app";
+const ABOUT_URL = `${BASE_URL}/about`;
+
+export const metadata = {
+  title: "About GambleShield | Independent Casino Review Platform",
+  description:
+    "Learn how GambleShield tests and recommends online casinos, supports responsible gambling, and builds player-first tools through transparent reviews and live stream education.",
+  alternates: {
+    canonical: ABOUT_URL,
+  },
+  openGraph: {
+    title: "About GambleShield",
+    description:
+      "Independent casino review platform focused on transparency, responsible gambling, and player safety.",
+    url: ABOUT_URL,
+    type: "website",
+  },
+};
+
 export default function AboutPage() {
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": `${ABOUT_URL}#aboutpage`,
+        url: ABOUT_URL,
+        name: "About GambleShield",
+        isPartOf: {
+          "@id": `${BASE_URL}/#website`,
+        },
+        about: {
+          "@id": `${BASE_URL}/#organization`,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${ABOUT_URL}#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: BASE_URL,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "About",
+            item: ABOUT_URL,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <main
       className="relative min-h-screen pt-28 pb-20 px-4 text-gray-900 bg-[#FFF3C4] bg-cover bg-center bg-no-repeat bg-fixed"
       style={{ backgroundImage: "url('/about/background.webp')" }}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutSchema) }}
+      />
       <div className="relative max-w-4xl mx-auto">
         <section className="rounded-2xl border border-red-200 bg-white/85 backdrop-blur-sm shadow-lg p-8 md:p-10">
           <h1 className="text-3xl md:text-4xl font-bold mb-6 text-red-600">

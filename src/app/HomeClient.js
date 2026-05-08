@@ -486,12 +486,12 @@ export default function HomeClient() {
                   minHeight: "280px",
                 }}
               >
-                <h1
+                <h2
                   className="font-bold mb-6"
                   style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}
                 >
                   GambleShield Vision
-                </h1>
+                </h2>
                 <p
                   className="leading-relaxed"
                   style={{ fontSize: "clamp(0.875rem, 1.5vw, 1.125rem)" }}
@@ -513,12 +513,12 @@ export default function HomeClient() {
                   minHeight: "280px",
                 }}
               >
-                <h1
+                <h2
                   className="font-bold mb-6"
                   style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}
                 >
                   GambleShield Mission
-                </h1>
+                </h2>
                 <p
                   className="leading-relaxed"
                   style={{ fontSize: "clamp(0.875rem, 1.5vw, 1.125rem)" }}
