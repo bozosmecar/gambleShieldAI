@@ -49,10 +49,18 @@ export default async function sitemap() {
     },
   ];
 
-  const articles = await getArticles();
+  let articles = [];
+  try {
+    articles = await getArticles();
+  } catch (error) {
+    // Never fail sitemap generation because of upstream content fetch issues.
+    console.error("sitemap getArticles failed:", error);
+    articles = [];
+  }
   const blogRoutes = articles.filter((post) => !post.hidden).map((post) => {
     const d = post.date ? new Date(post.date) : null;
-    const validDate = d instanceof Date && !isNaN(d) ? d : lastModified;
+    const validDate =
+      d instanceof Date && !Number.isNaN(d.getTime()) ? d : lastModified;
     return {
       url: `${baseUrl}/blog/${post.slug || post.id}`,
       lastModified: validDate,
