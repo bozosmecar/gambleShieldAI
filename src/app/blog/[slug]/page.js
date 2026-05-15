@@ -32,13 +32,20 @@ export async function generateMetadata({ params }) {
       publishedTime,
       images: post.image
         ? [{ url: post.image, alt: post.imageAlt || post.title }]
-        : [{ url: "/og-image.png", width: 1200, height: 630, alt: "GambleShield" }],
+        : [
+            {
+              url: "/1_Home%20page/ShieldLogo.png",
+              width: 553,
+              height: 451,
+              alt: "GambleShield",
+            },
+          ],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.excerpt || "",
-      images: post.image ? [post.image] : ["/og-image.png"],
+      images: post.image ? [post.image] : ["/1_Home%20page/ShieldLogo.png"],
     },
     alternates: { canonical },
   };

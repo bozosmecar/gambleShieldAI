@@ -44,7 +44,16 @@ export default function TipsAndEducationPage() {
             backgroundAttachment: "fixed",
           }}
         >
-          <div className="container mx-auto px-4 w-full">
+          <div className="container mx-auto px-4 w-full text-white">
+            <section className="mx-auto max-w-4xl rounded-2xl border border-white/25 bg-black/60 p-6 mb-10 shadow-xl">
+              <h1 className="text-2xl md:text-3xl font-bold mb-3">
+                GambleShield Tips and Education
+              </h1>
+              <p className="text-white/90 leading-relaxed">
+                GambleShield knows what players need in order to stay safe and
+                enjoy their gambling experience.
+              </p>
+            </section>
             <div className="flex flex-wrap justify-center gap-8 gap-y-14">
               {Array.from({ length: 6 }).map((_, i) => (
                 <BlogPostCardSkeleton key={i} />
@@ -69,9 +78,9 @@ export default function TipsAndEducationPage() {
       >
         <div className="container mx-auto px-4 w-full text-white">
           <section className="mx-auto max-w-4xl rounded-2xl border border-white/25 bg-black/60 p-6 mb-10 shadow-xl">
-            <h2 className="text-2xl md:text-3xl font-bold mb-3">
+            <h1 className="text-2xl md:text-3xl font-bold mb-3">
               GambleShield Tips and Education
-            </h2>
+            </h1>
             <p className="text-white/90 leading-relaxed">
               GambleShield knows what players need in order to stay safe and
               enjoy their gambling experience.

@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Poll from "@/components/Poll";
+import StreamFightVote from "@/components/StreamFightVote";
 import { getPolls } from "@/lib/polls";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
@@ -151,6 +152,10 @@ export default function Stream() {
                 />
               </div>
             </div>
+          </div>
+
+          <div className="mt-6">
+            <StreamFightVote />
           </div>
         </div>
       </main>

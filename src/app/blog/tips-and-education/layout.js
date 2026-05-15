@@ -13,9 +13,9 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "/1_Home%20page/ShieldLogo.png",
+        width: 553,
+        height: 451,
         alt: "Gambling Tips & Education – GambleShield",
       },
     ],
@@ -25,7 +25,7 @@ export const metadata = {
     title: "Gambling Tips & Education | GambleShield",
     description:
       "Learn how to gamble safely and responsibly. Strategies, bankroll management, and responsible gaming guides.",
-    images: ["/og-image.png"],
+    images: ["/1_Home%20page/ShieldLogo.png"],
   },
   alternates: {
     canonical: "https://gamble-shield-ai.vercel.app/blog/tips-and-education",

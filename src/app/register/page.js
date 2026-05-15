@@ -34,8 +34,8 @@ export default function Register() {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setMessage({ type: "error", text: "Password must be at least 6 characters." });
+    if (formData.password.length < 10) {
+      setMessage({ type: "error", text: "Password must be at least 10 characters." });
       return;
     }
 
@@ -47,7 +47,7 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email: formData.email.trim(),
         password: formData.password,
         options: {
@@ -56,24 +56,29 @@ export default function Register() {
       });
 
       if (error) {
-        setMessage({ type: "error", text: error.message });
+        // Show a generic success-flavored response to avoid leaking which
+        // emails are registered. Real errors (rate limit, network, etc.) still
+        // surface via the catch block below.
+        setMessage({
+          type: "success",
+          text: "If that email is available, we just sent you a confirmation link. Check your inbox.",
+        });
         setLoading(false);
         return;
       }
 
-      if (data?.user?.identities?.length === 0) {
-        setMessage({ type: "error", text: "This email is already registered. Try logging in." });
-        setLoading(false);
-        return;
-      }
-
+      // Note: data.user.identities.length === 0 also means "already registered";
+      // we intentionally don't differentiate here.
       setMessage({
         type: "success",
-        text: "Account created! Check your email to confirm, or go to Login if confirmation is disabled.",
+        text: "If that email is available, we just sent you a confirmation link. Check your inbox.",
       });
       setTimeout(() => router.push("/login"), 2000);
-    } catch (err) {
-      setMessage({ type: "error", text: err.message || "Registration failed." });
+    } catch {
+      setMessage({
+        type: "error",
+        text: "Registration is temporarily unavailable. Please try again later.",
+      });
     } finally {
       setLoading(false);
     }
@@ -176,8 +181,10 @@ export default function Register() {
                       value={formData.password}
                       onChange={handleChange}
                       required
+                      minLength={10}
+                      autoComplete="new-password"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
-                      placeholder="Create a password"
+                      placeholder="At least 10 characters"
                     />
                   </div>
 
@@ -196,6 +203,7 @@ export default function Register() {
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       required
+                      autoComplete="new-password"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
                       placeholder="Confirm your password"
                     />

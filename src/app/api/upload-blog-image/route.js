@@ -1,10 +1,14 @@
 import { getSupabaseAdmin } from "@/lib/supabaseAdmin";
 import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
+import {
+  buildStoragePath,
+  validateImageUpload,
+} from "@/lib/imageUpload";
 
 const BUCKET = "photos";
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+
+export const runtime = "nodejs";
 
 async function verifyAdminToken(request) {
   const authHeader = request.headers.get("authorization");
@@ -19,7 +23,10 @@ async function verifyAdminToken(request) {
     global: { headers: { Authorization: `Bearer ${token}` } },
   });
 
-  const { data: { user }, error } = await supabase.auth.getUser(token);
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser(token);
   if (error || !user) return false;
 
   const admin = getSupabaseAdmin();
@@ -42,20 +49,12 @@ export async function POST(request) {
   try {
     const formData = await request.formData();
     const file = formData.get("file");
-    if (!file || !(file instanceof File)) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
-    }
 
-    if (file.size > MAX_SIZE) {
+    const validation = await validateImageUpload(file);
+    if (!validation.ok) {
       return NextResponse.json(
-        { error: "File too large (max 5MB)" },
-        { status: 400 },
-      );
-    }
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      return NextResponse.json(
-        { error: "Invalid file type. Use JPEG, PNG, GIF, or WebP." },
-        { status: 400 },
+        { error: validation.error },
+        { status: validation.status },
       );
     }
 
@@ -67,29 +66,24 @@ export async function POST(request) {
       );
     }
 
-    const ext = file.name.split(".").pop() || "jpg";
-    const path = `blog/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    const path = `blog/${buildStoragePath("img", validation.ext)}`;
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    const { error } = await supabase.storage.from(BUCKET).upload(path, buffer, {
-      contentType: file.type,
-      upsert: false,
-    });
+    const { error } = await supabase.storage
+      .from(BUCKET)
+      .upload(path, validation.buffer, {
+        contentType: validation.mime,
+        upsert: false,
+      });
 
     if (error) {
-      console.error("Supabase storage upload error:", error);
-      return NextResponse.json(
-        { error: error.message || "Upload failed" },
-        { status: 500 },
-      );
+      console.error("upload-blog-image storage error");
+      return NextResponse.json({ error: "Upload failed" }, { status: 500 });
     }
 
     const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(path);
     return NextResponse.json({ url: urlData.publicUrl });
-  } catch (err) {
-    console.error("upload-blog-image error:", err);
+  } catch {
+    console.error("upload-blog-image error");
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }

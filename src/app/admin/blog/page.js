@@ -9,7 +9,7 @@ import {
   deleteArticle,
 } from "@/lib/blogArticles";
 import { getSupabaseClient } from "@/lib/supabaseClient";
-import DOMPurify from "dompurify";
+import { sanitizeBlogHtml } from "@/lib/sanitizeHtml";
 
 const CARD_BACKGROUND_OPTIONS = [
   { value: "/3_Affiliate/zlatna/5.png", label: "1 Gold (zlatna)" },
@@ -1074,7 +1074,7 @@ export default function AdminBlogPage() {
                           prose-li:text-gray-700
                           prose-strong:text-gray-900 prose-strong:font-semibold"
                         dangerouslySetInnerHTML={{
-                          __html: DOMPurify.sanitize(
+                          __html: sanitizeBlogHtml(
                             formData.content ||
                               '<p class="text-gray-400">Content preview will appear here...</p>',
                           ),

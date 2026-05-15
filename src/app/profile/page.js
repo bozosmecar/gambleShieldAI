@@ -59,6 +59,7 @@ export default function Profile() {
   const [tokenOverride, setTokenOverride] = useState(null);
   const [shopMessage, setShopMessage] = useState({ type: "", text: "" });
 
+  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [pwLoading, setPwLoading] = useState(false);
@@ -321,10 +322,24 @@ export default function Profile() {
     e.preventDefault();
     setPwMessage({ type: "", text: "" });
 
-    if (newPassword.length < 6) {
+    if (!currentPassword) {
       setPwMessage({
         type: "error",
-        text: "Password must be at least 6 characters.",
+        text: "Enter your current password to confirm.",
+      });
+      return;
+    }
+    if (newPassword.length < 10) {
+      setPwMessage({
+        type: "error",
+        text: "Password must be at least 10 characters.",
+      });
+      return;
+    }
+    if (newPassword === currentPassword) {
+      setPwMessage({
+        type: "error",
+        text: "New password must be different from the current one.",
       });
       return;
     }
@@ -341,6 +356,26 @@ export default function Profile() {
 
     setPwLoading(true);
     try {
+      // Re-authenticate to prove the requester knows the current password.
+      // This makes a stolen session alone insufficient to change the password
+      // and lock the user out.
+      const email = profile?.email ?? user?.email;
+      if (!email) {
+        setPwMessage({
+          type: "error",
+          text: "Could not verify your account. Please log out and back in.",
+        });
+        return;
+      }
+      const { error: reauthError } = await supabase.auth.signInWithPassword({
+        email,
+        password: currentPassword,
+      });
+      if (reauthError) {
+        setPwMessage({ type: "error", text: "Current password is incorrect." });
+        return;
+      }
+
       const { error } = await supabase.auth.updateUser({
         password: newPassword,
       });
@@ -349,6 +384,7 @@ export default function Profile() {
         return;
       }
       setPwMessage({ type: "success", text: "Password updated successfully." });
+      setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (err) {
@@ -1079,6 +1115,24 @@ export default function Profile() {
             >
               <div>
                 <label
+                  htmlFor="currentPassword"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Current password
+                </label>
+                <input
+                  type="password"
+                  id="currentPassword"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
+                  placeholder="Your current password"
+                />
+              </div>
+              <div>
+                <label
                   htmlFor="newPassword"
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
@@ -1090,9 +1144,10 @@ export default function Profile() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
-                  minLength={6}
+                  minLength={10}
+                  autoComplete="new-password"
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
-                  placeholder="At least 6 characters"
+                  placeholder="At least 10 characters"
                 />
               </div>
               <div>
@@ -1108,6 +1163,7 @@ export default function Profile() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
+                  autoComplete="new-password"
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition"
                   placeholder="Repeat your new password"
                 />

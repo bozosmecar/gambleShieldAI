@@ -28,9 +28,9 @@ export const metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "/1_Home%20page/ShieldLogo.png",
+        width: 553,
+        height: 451,
         alt: "GambleShield – Best Casino List & Online Casino Reviews 2026",
       },
     ],
@@ -40,7 +40,7 @@ export const metadata = {
     title: "GambleShield | Best Casino List & Online Casino Reviews 2026",
     description:
       "Discover the best online casinos tested by real players. Transparent reviews, live streams, and exclusive casino bonuses.",
-    images: ["/og-image.png"],
+    images: ["/1_Home%20page/ShieldLogo.png"],
   },
   robots: {
     index: true,

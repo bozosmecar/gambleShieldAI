@@ -13,9 +13,9 @@ export const metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "/1_Home%20page/ShieldLogo.png",
+        width: 553,
+        height: 451,
         alt: "Best Online Casinos 2026 – GambleShield",
       },
     ],
@@ -25,7 +25,7 @@ export const metadata = {
     title: "Best Online Casinos 2026 | GambleShield",
     description:
       "Browse GambleShield's best casino list for 2026. Every casino is reviewed and tested by real players.",
-    images: ["/og-image.png"],
+    images: ["/1_Home%20page/ShieldLogo.png"],
   },
   alternates: {
     canonical: "https://gamble-shield-ai.vercel.app/blog/best-casinos",

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
+import { sanitizeBlogHtml, safeImageUrl } from "@/lib/sanitizeHtml";
 
 const BLOG_THEME_MAP = {
   "/3_Affiliate/crvena/5.png": {
@@ -150,10 +151,12 @@ function buildAnchoredHtmlAndToc(rawHtml) {
 
 export default function BlogPostContent({ post, relatedArticles = [] }) {
   const theme = getTheme(post.cardBackground);
+  const safeHeroImage = safeImageUrl(post.image);
   const { introHtml, bodyFromFirstH2Html, tocItems } = useMemo(() => {
-    const { htmlWithAnchors, tocItems: toc } = buildAnchoredHtmlAndToc(
-      post.content || "",
-    );
+    // Sanitize FIRST so attacker-controlled HTML never reaches innerHTML.
+    const safeContent = sanitizeBlogHtml(post.content || "");
+    const { htmlWithAnchors, tocItems: toc } =
+      buildAnchoredHtmlAndToc(safeContent);
     if (!htmlWithAnchors) {
       return { introHtml: "", bodyFromFirstH2Html: "", tocItems: [] };
     }
@@ -292,10 +295,10 @@ export default function BlogPostContent({ post, relatedArticles = [] }) {
               </aside>
               <article className="self-start">
                 <div className="w-full max-w-6xl mx-auto rounded-3xl border border-white/15 bg-black/50 backdrop-blur-sm px-4 sm:px-6 md:px-10 py-8 sm:py-10 shadow-2xl">
-                  {post.image && (
+                  {safeHeroImage && (
                     <div className="mb-10">
                       <img
-                        src={post.image}
+                        src={safeHeroImage}
                         alt={post.imageAlt || post.title}
                         className="w-full lg:w-[85%] h-auto rounded-2xl mx-auto"
                         referrerPolicy="no-referrer"

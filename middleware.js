@@ -1,27 +1,22 @@
 import { createServerClient } from "@supabase/ssr";
-import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 
 export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
-  // Only protect /admin routes
   if (!pathname.startsWith("/admin")) {
     return NextResponse.next();
   }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-  if (!supabaseUrl || !supabaseAnonKey || !serviceRoleKey) {
+  if (!supabaseUrl || !supabaseAnonKey) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Build a response object so @supabase/ssr can set refreshed cookies
   let response = NextResponse.next({ request });
 
-  // Create SSR server client — reads & writes cookies automatically
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll() {
@@ -39,7 +34,6 @@ export async function middleware(request) {
     },
   });
 
-  // Verify the session server-side
   const {
     data: { user },
     error,
@@ -49,15 +43,16 @@ export async function middleware(request) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // Check admin role using service role key (bypasses RLS)
-  const adminClient = createClient(supabaseUrl, serviceRoleKey);
-  const { data: profile } = await adminClient
+  // `public.users` has a public SELECT policy, so the anon client (authenticated
+  // as the current user via cookies) can read its own role. No service-role
+  // needed here — keep that key on /api routes only.
+  const { data: profile, error: profileError } = await supabase
     .from("users")
     .select("role")
     .eq("id", user.id)
     .single();
 
-  if (profile?.role !== "admin") {
+  if (profileError || profile?.role !== "admin") {
     return NextResponse.redirect(new URL("/", request.url));
   }
 

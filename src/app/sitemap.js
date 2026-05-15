@@ -1,11 +1,30 @@
 import { getArticles } from '@/lib/blogArticles';
 
+// Next.js automatically serves sitemap.js with Content-Type: application/xml.
+// We force this route to be statically generated at build time so the response
+// is a plain, uncompressed XML file (no RSC/streaming overhead, no Vary header
+// pollution from the App Router). Google Search Console is sensitive to both.
+export const dynamic = 'force-static';
+export const revalidate = 3600;
+
+const CANONICAL_PRODUCTION_URL = 'https://gamble-shield-ai.vercel.app';
+
 function getBaseUrl() {
+  // Priority:
+  // 1. Explicit override (set this in Vercel env: NEXT_PUBLIC_SITE_URL).
+  // 2. Vercel's canonical production domain (stable across deploys).
+  // 3. Hard-coded canonical fallback.
+  //
+  // We intentionally DO NOT fall back to VERCEL_URL because that variable
+  // points to the per-deployment preview URL (e.g.
+  // gamble-shield-xxxxx-aleas-projects-...vercel.app), which is password
+  // protected by Vercel preview protection. Linking the sitemap to those
+  // URLs makes Google fetch a login page (binary/HTML) instead of real pages.
   const explicit = process.env.NEXT_PUBLIC_SITE_URL;
-  const vercel = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
+  const vercelProd = process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : '';
-  const raw = explicit || vercel || 'https://gamble-shield-ai.vercel.app';
+  const raw = explicit || vercelProd || CANONICAL_PRODUCTION_URL;
   return raw.replace(/\/+$/, '');
 }
 
